@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../EduChamp-Education-HTML-Template-Admin-Dashboard/EduChamp-Education-HTML-Template-Admin-Dashboard/admin/assets"
+		},
+		{
+			"path": "../../EduChamp-Education-HTML-Template-Admin-Dashboard - Copy/EduChamp-Education-HTML-Template-Admin-Dashboard"
+		},
+		{
+			"path": "../../FYP1"
+		},
+		{
+			"path": "../../../../Desktop/Self study"
+		},
+		{
+			"path": "../../OSPAssignment"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "EduChamp-Education-HTML-Template-Admin-Dashboard"
+	}
+}
