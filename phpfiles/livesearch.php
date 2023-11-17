@@ -18,12 +18,11 @@ $result = mysqli_query($db, $sql);
     if(mysqli_num_rows($result) > 0){
         while($row = mysqli_fetch_assoc($result)){
             $validity = $row['validity'];
-            $due = $row['due'];
+            
                 
             $today = new DateTime();
             $validity = new DateTime($validity);
-            $due = new DateTime($due);
-            
+           
     
             // Calculate days left
             if ($today <= $validity) {

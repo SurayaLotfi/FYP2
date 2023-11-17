@@ -337,11 +337,11 @@
 										//retrieving data that we want
 									
 										$validity = $row['validity'];
-										$due = $row['due'];
+										// $due = $row['due'];
 											
 										$today = new DateTime();
 										$validity = new DateTime($validity);
-										$due = new DateTime($due);
+										// $due = new DateTime($due);
 										
 								
 										// Calculate days left

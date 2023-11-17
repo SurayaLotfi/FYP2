@@ -4,6 +4,9 @@ include "connect.php";
 
 $department = $_SESSION['department'];
 $username = $_SESSION['username'];
+$due_date_threshold = date('Y-m-d');
+$limit = 3;
+
 ?>
 <html>
     <head>
@@ -13,8 +16,18 @@ $username = $_SESSION['username'];
 
             include "connect.php";
 
+            //pagination if-else
+            if(isset($_GET["page"])){ //if another page is chosen
+                $page = $_GET["page"];  
+            }else{
+                $page = 1;
+                
+            }
+            $start_from = ($page - 1)*$limit; //getting the range
+            //content if-else
             if(isset($_GET['contents'])){
                 $content = $_GET['contents'];
+                
                 ?>
 
             <div style="margin-left: 50px;">
@@ -24,10 +37,19 @@ $username = $_SESSION['username'];
             }else{
                 ?><h4>Filtered by <?php echo $content?><br></h4> <?php
             }
+            
             ?>				
             
-            </div>
+            
+            <div class="pagination-bx rounded-sm gray clearfix" id="get_pagination">
                 <?php
+                    // $due_date_threshold = date('Y-m-d');
+                    // $limit = 3; 
+                    
+                    
+                
+                  
+                
 
                 if($content == "All"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
@@ -44,14 +66,8 @@ $username = $_SESSION['username'];
                     AND username = '$username'
                     AND format = 'PDF'
                     ORDER BY class.id DESC";
-                    $resulttemp = mysqli_query($db, $query);
-                    if(mysqli_num_rows($resulttemp) == 0){
 
-                        echo "
-                        <div class='cours-bx'>
-                        <h3>  No content yet. </h3>
-                        </div>";
-                    }
+            
                 }elseif($content == "Others"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
                     WHERE class.department = '$department'
@@ -59,13 +75,7 @@ $username = $_SESSION['username'];
                     AND username = '$username'
                     AND format = 'Others'
                     ORDER BY class.id DESC";
-                    $resulttemp = mysqli_query($db, $query);
-                    if(mysqli_num_rows($resulttemp) == 0){
-                        echo "
-                        <div class='cours-bx'>
-                        <h3>  No content yet. </h3>
-                        </div>";
-                    }
+                  
                 }elseif($content == "Video"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
                     WHERE class.department = '$department'
@@ -73,13 +83,7 @@ $username = $_SESSION['username'];
                     AND username = '$username'
                     AND format = 'Video'
                     ORDER BY class.id DESC";
-                    $resulttemp = mysqli_query($db, $query);
-                    if(mysqli_num_rows($resulttemp) == 0){
-                        echo "
-                        <div class='cours-bx'>
-                        <h3>  No content yet. </h3>
-                        </div>";
-                    }
+                    
                 }elseif($content == "Images"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
                     WHERE class.department = '$department'
@@ -87,13 +91,7 @@ $username = $_SESSION['username'];
                     AND username = '$username'
                     AND format = 'Image'
                     ORDER BY class.id DESC";
-                    $resulttemp = mysqli_query($db, $query);
-                    if(mysqli_num_rows($resulttemp) == 0){
-                        echo "
-                        <div class='cours-bx'>
-                        <h3>  No content yet. </h3>
-                        </div>";
-                    }
+                   
                 }elseif($content == "Validity Date"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
                     WHERE class.department = '$department'
@@ -131,7 +129,160 @@ $username = $_SESSION['username'];
             
 
                 $result = mysqli_query($db, $query);
-										
+                $total_records = mysqli_num_rows($result);
+                $total_pages = ceil($total_records/$limit);
+
+                //pagination code
+                    //button to update the number is page-item
+                    
+                    ?> <ul class = "pagination"><?php
+                
+                    if($page > 1){ //if page is not at page 1, it was clicked
+                        $previous = $page - 1;
+                        ?><li class="page-item" id="1"><span class="page-link">First Page</span></li>
+                            <li class="page-item" id=<?php echo $previous ?> ><span class="page-link">Prev <i class="fa fa-arrow-left"></i></span></li>
+                            
+                        <?php    
+                    }?>
+
+                    
+                    <?php
+                    
+                    for($i=1; $i<=$total_pages; $i++){ //showing the index numbers
+                        $active_class = "";
+                        if($i == $page){
+                            $active_class = "active";
+                        }
+                
+                        ?><li class = "page-item <?php echo $active_class?>" id = <?php echo $i ?>><span class="page-link"><?php echo $i ?></span></li>
+                        <?php
+                    }
+                
+                    if($page < $total_pages){ //first page
+                        $page++;
+                        ?>
+                        
+                        <li class="page-item " id=<?php echo $page ?>><span class="page-link">Next <i class="fa fa-arrow-right"></i></span></li>
+                        <li class="page-item " id=<?php echo $total_pages ?>><span class="page-link">Last Page</span></li> <!--if the page > total_pages, we reached the last page-->
+                        <?php
+                    } 
+                    ?>
+                
+                        </ul>
+                    <br>
+                    </div>
+                    </div>
+                    <?php
+                            if($content == "All"){
+                            $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                                        WHERE class.department = '$department'
+                                        AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                                        AND username = '$username'
+                                        ORDER BY class.id DESC";
+            
+            
+                            }elseif($content == "PDF"){
+                                $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                                WHERE class.department = '$department'
+                                AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                                AND username = '$username'
+                                AND format = 'PDF'
+                                ORDER BY class.id DESC";
+            
+                                $resulttemp = mysqli_query($db, $query);
+                                if(mysqli_num_rows($resulttemp) == 0){
+            
+                                    echo "
+                                    <div class='cours-bx' style='padding: 50px'>
+                                    <h3>  No content yet. </h3>
+                                    </div>";
+                                }
+                            }elseif($content == "Others"){
+                                $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                                WHERE class.department = '$department'
+                                AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                                AND username = '$username'
+                                AND format = 'Others'
+                                ORDER BY class.id DESC
+                                LIMIT $start_from, $limit";
+                                $resulttemp = mysqli_query($db, $query);
+                                if(mysqli_num_rows($resulttemp) == 0){
+                                    echo "
+                                    <div class='cours-bx' style='padding: 50px'>
+                                    <h3>  No content yet. </h3>
+                                    </div>";
+                                }
+                            }elseif($content == "Video"){
+                                $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                                WHERE class.department = '$department'
+                                AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                                AND username = '$username'
+                                AND format = 'Video'
+                                ORDER BY class.id DESC
+                                LIMIT $start_from, $limit";
+                                $resulttemp = mysqli_query($db, $query);
+                                if(mysqli_num_rows($resulttemp) == 0){
+                                    echo "
+                                    <div class='cours-bx' style='padding: 50px'>
+                                    <h3>  No content yet. </h3>
+                                    </div>";
+                                }
+                            }elseif($content == "Images"){
+                                $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                                WHERE class.department = '$department'
+                                AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                                AND username = '$username'
+                                AND format = 'Image'
+                                ORDER BY class.id DESC
+                                LIMIT $start_from, $limit";
+                                $resulttemp = mysqli_query($db, $query);
+                                if(mysqli_num_rows($resulttemp) == 0){
+                                    echo "
+                                    <div class='cours-bx' style='padding: 50px'>
+                                    <h3>  No content yet. </h3>
+                                    </div>";
+                                }
+                            }elseif($content == "Validity Date"){
+                                $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                                WHERE class.department = '$department'
+                                AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                                AND username = '$username'
+                                ORDER BY class.validity
+                                LIMIT $start_from, $limit";
+                                
+                            }elseif($content == "Due Date"){
+                                $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                                WHERE class.department = '$department'
+                                AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                                AND username = '$username'
+                                ORDER BY class.due
+                                LIMIT $start_from, $limit";
+            
+                            }elseif($content == "Not Yet Started"){
+                                $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                                WHERE class.department = '$department'
+                                AND content_record.status = 'Not yet started'
+                                AND username = '$username'
+                                LIMIT $start_from, $limit";
+                                
+                            }elseif($content == "In Progress"){
+                                $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                                WHERE class.department = '$department'
+                                AND content_record.status = 'In Progress'
+                                AND username = '$username'
+                                LIMIT $start_from, $limit";
+                                
+                            }else{
+                                $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                                WHERE class.department = '$department'
+                                AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                                AND username = '$username'
+                                ORDER BY class.id DESC
+                                LIMIT $start_from, $limit";
+                            }
+
+                
+                $result = mysqli_query($db, $query);
                 while($row = mysqli_fetch_assoc($result)){
                             //retrieving data that we want
                         

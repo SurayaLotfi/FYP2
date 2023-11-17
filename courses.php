@@ -308,14 +308,78 @@
 						
 						<div class="col-lg-9 col-md-8 col-sm-12">
 						 
-							<div class="row" id="posts-container">	
-							<div style="margin-left: 50px;">
-											
+						<div class="row " id="posts-container">	
+							<div style="margin-left: 50px;">				
 							<h4> All Contents <br></h4>
+							<div class="col-lg-12 m-b20" >
+									<div class="pagination-bx rounded-sm gray clearfix" id="get_pagination">
+										<?php
+											$due_date_threshold = date('Y-m-d');
+											$limit = 3; 
+											$output = '';
+											$page = 1;
+										
+											$start_from = ($page - 1)*$limit; //getting the range
+										 	//getting the total pages for pagination display
+											$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+																		WHERE class.department = '$department'
+																		AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+																		AND username = '$username'";
+											$result = mysqli_query($db, $query);
+											$total_records = mysqli_num_rows($result);
+											$total_pages = ceil($total_records/$limit);
+											
+											//pagination code
+											//button to update the number is page-item
+											
+											?> <ul class = "pagination"><?php
+										
+											if($page > 1){ //if page is not at page 1, it was clicked
+												$previous = $page - 1;
+												?><li class="page-item" id="1"><span class="page-link">First Page</span></li>
+												  <li class="page-item" id=<?php echo $previous ?> ><span class="page-link">Prev <i class="fa fa-arrow-left"></i></span></li>
+												  
+												<?php    
+											}
+										
+											for($i=1; $i<=$total_pages; $i++){ //showing the index numbers
+												$active_class = "";
+												if($i == $page){
+													$active_class = "active";
+												}
+										
+												?><li class = "page-item <?php echo $active_class?>" id = <?php $i ?>><span class="page-link"><?php echo $i ?></span></li>
+												<?php
+											}
+										
+											if($page < $total_pages){ //first page
+												$page++;
+												?>
+												
+												<li class="page-item " id=<?php echo $page ?>><span class="page-link">Next <i class="fa fa-arrow-right"></i></span></li>
+												<li class="page-item " id=<?php echo $total_pages ?>><span class="page-link">Last Page</span></li> <!--if the page > total_pages, we reached the last page-->
+												<?php
+											} 
+											?>
+										
+											   </ul>
+											
+										
+										<!-- <ul class="pagination">
+											<li class="previous"><a href="#"><i class="ti-arrow-left"></i> Previous</a></li>
+											<li class="active"><a href="#">1</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">3</a></li>
+											<li class="next"><a href="#">Next <i class="ti-arrow-right"></i></a></li>
+										</ul> -->
+									</div>
+								</div>
 							</div>
 						
                         <?php
-								$due_date_threshold = date('Y-m-d');	
+								$due_date_threshold = date('Y-m-d');
+								$limit = 3; 
+   								
 								//echo $due_date_threshold;
 								$today = new DateTime();
 								$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
@@ -555,8 +619,8 @@
 <script src='assets/vendors/switcher/switcher.js'></script>
 <script src='filter.js'></script>
 
-       <!--Dynamic Page-->
-	   <script>
+       <!--Filter Page-->
+	   <!-- <script>
             $(document).ready(function() {
                 $('.select_format').click(function(e) {
                 e.preventDefault();
@@ -574,10 +638,138 @@
                     console.log(error);
                     }
                 });
+
+				function fetch_data(page) {
+					$.ajax({
+						url: "fetch_courses.php",
+						method: "POST",
+						data: {
+							page: page
+						},
+						success: function (data) {
+							$("#posts-container").html(data);
+						}
+					});
+				}
+
+				fetch_data();
+
+				$(document).on("click", ".page-item", function () {
+					var page = $(this).attr("id");
+					fetch_data(page);
+				});
                 });
             });
-            </script>
+            </script> -->
 
+<script>
+    $(document).ready(function() {
+		var selectedCategory;
+
+			$('.select_format').click(function (e) {
+				e.preventDefault();
+
+				// Check if it's a .select_format element
+				
+					selectedCategory = $(this).text().trim();
+
+					// Perform the code for '.select_format' selection
+					$.ajax({
+						url: 'fetch_courses.php',
+						method: 'GET',
+						data: {
+							contents: selectedCategory,
+						},
+						success: function (response) {
+							// Update the content in the #posts-container div
+							$('#posts-container').html(response);
+						},
+						error: function (xhr, status, error) {
+							console.log(error);
+						}
+					});
+				
+			});
+
+			
+			function fetch_data2(page) {
+				// Check if selectedCategory is defined
+				if (selectedCategory !== undefined) {
+					$.ajax({
+						url: "fetch_courses.php",
+						method: "GET",
+						data: {
+							page: page,
+							contents: selectedCategory
+						},
+						success: function (data) {
+							$("#posts-container").html(data);
+						}
+					});
+				}
+			}
+
+
+
+			fetch_data(1);
+
+			$(document).on("click", ".page-item", function () {
+				var page = $(this).attr("id");
+				fetch_data2(page);
+			});
+    });
+</script>
+
+		
+			<!-- Pagination -->
+			<script type="text/javascript">
+				function fetch_data(page) {
+					$.ajax({
+						url: "phpfiles/pagination.php",
+						method: "GET",
+						data: {
+							page: page
+						},
+						success: function (data) {
+							$("#posts-container").html(data);
+						}
+					});
+				}
+
+				fetch_data();
+
+				$(document).on("click", ".page-item", function () {
+					var page = $(this).attr("id");
+					fetch_data(page);
+				});
+			</script>
+
+			<!-- Pagination for filtered content -->
+			<!-- <script type="text/javascript">
+				function fetch_data_filtered(page) {
+					$.ajax({
+						url: "phpfiles/fetch_courses.php",
+						method: "POST",
+						data: {
+							page: page
+						},
+						success: function (data) {
+							$("#posts-container").html(data);
+						}
+					});
+				}
+
+				fetch_data_filtered();
+
+				$(document).on("click", ".page-item2", function () {
+					var page = $(this).attr("id");
+					console.log("Clicked page:", page);
+					fetch_data_filtered(page);
+				});
+			</script> -->
+
+
+		</script>
 		<!--Live Search-->
 		<script type="text/javascript">
 			$(document).ready(function(){
@@ -609,6 +801,8 @@
 			});
 
 		</script>
+
+
 
 
 	
