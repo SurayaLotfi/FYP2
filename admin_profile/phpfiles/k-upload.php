@@ -22,6 +22,7 @@
         $username = $_SESSION['username'];
         $format = 'PDF';
         $source = $_POST['creator'];
+        $admin_approved = $_POST['admin_approved'];
         
     
         

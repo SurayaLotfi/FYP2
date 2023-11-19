@@ -3,18 +3,19 @@
 	session_start();
 	include "connect.php";
 
-	if($_SESSION['role'] == 'user'){
-		
-        $id = $_SESSION["id"];
-        $full_name = $_SESSION["full_name"];
-        $username = $_SESSION["username"];
-        $department = $_SESSION["department"];
-        $email = $_SESSION["email"];
-        $query = "SELECT * from class where user_id = $id";
+    if(isset($_GET['user_id'])){
+        $id = $_GET["user_id"];
+        $query = "SELECT * FROM users WHERE id = $id";
         $result = mysqli_query($db,$query);
-	}else{
-		header("Location: logout.php");
-	}
+        $row = mysqli_fetch_assoc($result);
+
+        $full_name = $row["full_name"];
+        $username = $row["username"];
+        $department = $row["department"];
+        $email = $row["email"];
+
+    }
+
 	
 ?>
 
@@ -220,9 +221,9 @@
 		<div class="breadcrumb-row">
 			<div class="container">
 				<ul class="list-inline">
-					<li><a href="#">Home</a></li>
-					<li>Classess</li>
-					<li>History</li>
+					<li><a href="admin_profile/index.php">Admin</a></li>
+                    <li><a href="admin_view_profile.php?user_id=<?php echo $id?>">User Dashboard</a></li>
+					<li>User History</li>
 				</ul>
 			</div>
 		</div>

@@ -1,5 +1,6 @@
 <?php
 	session_start();
+    include "phpfiles/connect.php";
 	if($_SESSION['role'] == 'admin'){
         $username = $_SESSION['username'];
     }else{
@@ -10,7 +11,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from educhamp.themetrades.com/demo/admin/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:10:19 GMT -->
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/user-profile.php by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
 <head>
 
 	<!-- META ============================================= -->
@@ -58,26 +59,60 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
-
-	<!--Data Table-->
-	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-	<!--Initializing Data Table-->
-	<script>
 	
-	var $j = jQuery.noConflict();
-		$j(document).ready(function() {
-			// Use $j instead of $
-			$j('#dataTableid').DataTable({
-				// DataTables options
-			});
-		})
-	</script>
+    	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-	
-	
+<!-- DataTables CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script src= "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+  
+<script>
+
+var $j = jQuery.noConflict();
+$j(document).ready(function() {
+    console.log("Document ready");
+
+    var table = $j('#dataTableid').DataTable({
+        // DataTables options
+        "pagingType": "full_numbers",
+        "lengthMenu": [
+            [5, 10, 15, 50, -1],
+            [5, 10, 15, 50, "All"]
+        ],
+    });
+
+    // Add custom filter dropdown for Content Type
+    // var filterDropdown = $(
+    // 	'<select class="form-control mb-3" aria-label="Source"><option value="" selected disabled>Select Department</option><option value="">All</option><option value="engineering">Engineering</option><option value="others">Others</option></select>'
+    // )
+    // 	.css('width', '150px')
+    // 	.css('margin-top', '7px')
+    // 	.css('margin-left', '10px')
+    // 	.css('margin-right', '10px');
+
+    // // Insert filter dropdown next to the search input
+    // $('.dataTables_filter')
+    // 	.addClass('d-flex align-items-center')
+    // 	.append(filterDropdown);
+
+    // 	filterDropdown.on('change', function() {
+    // 	var filterValue = $j(this).val();
+
+    // 	if (filterValue === 'others') {
+    // 		// If "Others" is selected, filter values other than "admin"
+    // 		table.column(5).search('^(?!admin$).*$', true, false).draw();
+    // 	} else {
+    // 		// If any other option is selected, use the selected value for filtering
+    // 		table.column(5).search(filterValue).draw();
+    // 	}
+    // });
+});
+
+    </script>
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 	
@@ -284,7 +319,7 @@
 					<li>
 						<a href="courses.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-book"></i></span>
-		                	<span class="ttr-label">Knowledge Base</span>
+		                	<span class="ttr-label">Courses</span>
 		                </a>
 		            </li>
 					<!-- <li>
@@ -292,8 +327,8 @@
 							<span class="ttr-icon"><i class="ti-email"></i></span>
 		                	<span class="ttr-label">Mailbox</span>
 		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
+		                </a> -->
+		                <!-- <ul>
 		                	<li>
 		                		<a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
 		                	</li>
@@ -304,8 +339,8 @@
 		                		<a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
 		                	</li>
 		                </ul>
-		            </li> -->
-					<!-- <li>
+		            </li>
+					<li>
 						<a href="#" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-calendar"></i></span>
 		                	<span class="ttr-label">Calendar</span>
@@ -325,18 +360,13 @@
 							<span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
 		                	<span class="ttr-label">Bookmarks</span>
 		                </a>
-		            </li> -->
-					<?php
-						include "./phpfiles/connect.php";
-						$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
-						$result = mysqli_query($db,$query);
-					?>
+		            </li>-->
 					<li>
 						<a href="k-request.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-comments"></i></span>
-		                	<span class="ttr-label">Knowledge Shared ( <?php echo mysqli_num_rows($result)?> )</span>
+		                	<span class="ttr-label">Knowledge Shared</span>
 		                </a>
-		            </li>
+		            </li> 
 					<li>
 						<a href="add-listing.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
@@ -377,10 +407,10 @@
 	<main class="ttr-wrapper">
 		<div class="container-fluid">
 			<div class="db-breadcrumb">
-				<h4 class="breadcrumb-title">Knowledge</h4>
+				<h4 class="breadcrumb-title">Manage User</h4>
 				<ul class="db-breadcrumb-list">
 					<li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-					<li>Courses</li>
+					<li>Manage User</li>
 				</ul>
 			</div>	
 			<div class="row">
@@ -388,19 +418,16 @@
 				<div class="col-lg-12 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>Knowledge from Employees</h4>
+							<h4>Manage User</h4>
 						</div>
 						<div class="widget-inner">
-
-						<table border="1" id="dataTableid" class="display">
+                        <table border="1" id="dataTableid" class="display">
 							<thead>
 								<tr>
 									<th>No</th>
-									<th>Title</th>
+									<th>Full Name</th>
 									<th>Username</th>
 									<th>Department</th>
-									<th>Message</th>
-									<th>Status</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -408,28 +435,29 @@
 							
 							<?php 
 							$i = 1;
-							include "./phpfiles/connect.php";
-							$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
+							
+							$query = "SELECT * FROM users WHERE role='user'";
 							$result = mysqli_query($db,$query);
 
 							if($result){
 								while($row = mysqli_fetch_assoc($result)){
-									$id = $row['knowledge_id'];								
-			
+									$id = $row['id'];		
+																			
 						   ?>
 
+							
 								<tr>
 									<td><?php echo $i ?></td>
-									<td><?php echo $row['title'] ?></td>
+									<td><?php echo $row['full_name'] ?></td>
 									<td><?php echo $row['username'] ?></td>
 									<td><?php echo $row['department'] ?></td>
-									<td><?php echo $row['message'] ?></td>
-									<td><?php echo $row['status'] ?></td>
-								
-									
-									<td>
-									<a href="k-details.php?knowledge_id=<?php echo $id?>" class='btn'>Select</a>
-									</td>
+									<td 
+                                        <div style="display: flex; justify-content: center">
+                                            <a href="edit-user.php?user_id=<?php echo $id?>" class='btn-secondry' style="margin-right: 10px;">Edit</a>
+                                            <a href="phpfiles/delete-user.php?user_id=<?php echo $id?>" class='btn'>Delete</a>
+                                        </div>
+                                    </td>
+                                    
 								</tr>
 							<?php
 							$i++;
@@ -437,8 +465,43 @@
 							}
 							?>
 							</tbody>
-							</table>
-							
+						</table>
+							<!-- <form class="edit-profile">
+								<div class="">
+									<div class="form-group row">
+										<div class="col-sm-10 ml-auto">
+											<h3>4. Password</h3>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">Current Password</label>
+										<div class="col-sm-7">
+											<input class="form-control" type="password" value="">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">New Password</label>
+										<div class="col-sm-7">
+											<input class="form-control" type="password" value="">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">Re Type Password</label>
+										<div class="col-sm-7">
+											<input class="form-control" type="password" value="">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-2">
+									</div>
+									<div class="col-sm-7">
+										<button type="reset" class="btn">Save changes</button>
+										<button type="reset" class="btn-secondry">Cancel</button>
+									</div>
+								</div>
+									
+							</form> -->
 						</div>
 					</div>
 				</div>
@@ -466,58 +529,7 @@
 <script src="assets/vendors/chart/chart.min.js"></script>
 <script src="assets/js/admin.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
-
-
-
-<script>
-//   $(document).ready(function () {
-//     var table = $('#dataTableid').DataTable({
-//       "pagingType": "full_numbers",
-//       "lengthMenu": [
-//         [5, 10, 15, 50, -1],
-//         [5, 10, 15, 50, "All"]
-//       ],
-//       responsive: true,
-//       language: {
-//         search: "_INPUT_",
-//         searchPlaceholder: "Search",
-//       }
-//     });
-
-//     // Add custom filter dropdown for Content Type
-//     var filterDropdown = $('<select class="form-select form-control form-control-sm mb-3" aria-label="Content Type Filter"><option value="" selected disabled>Select Format</option><option value="">All</option><option value="pdf">PDF</option><option value="html">HTML</option><option value="video">Video</option><option value="image">Image</option></select>')
-//       .css('width', '150px')
-//       .css('margin-top','7px')
-//       .css('margin-left','10px')
-//       .css('margin-right','10px');
-
-
-//     // Add custom filter dropdown for Location
-//     var filterDropdown2 = $('<select class="form-select form-control form-control-sm mb-3" aria-label="Location"><option value="" selected disabled>Location</option><option value="">All</option><option value="knowledge_base">Knowledge Base</option><option value="classes">Class</option><option value="both">Both</option></select>')
-//       .css('width', '150px')
-//       .css('margin-top','7px')
-//       .css('margin-left','10px')
-//       .css('margin-right','10px');
-
-//     // Insert filter dropdowns next to the search input
-//     $('.dataTables_filter')
-//       .addClass('d-flex align-items-center')
-//       .append(filterDropdown)
-//       .append(filterDropdown2);
-
-//     filterDropdown.on('change', function () {
-//       var filterValue = $(this).val();
-//       table.column(2).search(filterValue).draw();
-//     });
-
-//     filterDropdown2.on('change', function () {
-//       var filterValue = $(this).val();
-//       table.column(2).search(filterValue).draw();
-//     });
-//   });
-
-</script>
 </body>
 
-<!-- Mirrored from educhamp.themetrades.com/demo/admin/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/user-profile.php by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
 </html>

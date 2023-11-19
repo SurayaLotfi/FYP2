@@ -349,7 +349,7 @@ if(isset($_GET['knowledge_id'])){
 		                		<a href="user-profile.php" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
 		                	</li>
 		                	<li>
-		                		<a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
+		                		<a href="manage-user.php" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
 		                	</li>
 		                </ul>
 		            </li>
@@ -499,6 +499,7 @@ if(isset($_GET['knowledge_id'])){
 									<div class="col-12">
 									
 									<input type="hidden" name="shareid" value="<?php echo $knowledge_id ?>">
+									<input type="hidden" name="admin_approved" value="<?php echo $username ?>">
     								<button type="submit" class="btn btn-info btn-rounded my-4" name="share">Approve</button>
 									<a href = 'phpfiles/delete.php?deleteid=<?php echo $content_id ?>' class ="btn btn-info btn-rounded my-4">Decline</a> <!--Just tukar status, not delete-->
 									<!--<a href='submit.php?deleteid=<?php echo $id; ?>' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#confirmDeleteModal'>Delete</a>-->

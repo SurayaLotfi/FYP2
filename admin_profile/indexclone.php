@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	include "phpfiles/connect.php";
 	if($_SESSION['role'] == 'admin'){
         $username = $_SESSION['username'];
     }else{
@@ -10,7 +11,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from educhamp.themetrades.com/demo/admin/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:10:19 GMT -->
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/index.php by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:08:15 GMT -->
 <head>
 
 	<!-- META ============================================= -->
@@ -58,26 +59,61 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+	
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-	<!--Data Table-->
-	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-	<!--Initializing Data Table-->
-	<script>
+	<!-- DataTables CSS and JS -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+	<script src= "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    
+	  
+<script>
 	
 	var $j = jQuery.noConflict();
-		$j(document).ready(function() {
-			// Use $j instead of $
-			$j('#dataTableid').DataTable({
-				// DataTables options
-			});
-		})
-	</script>
+	$j(document).ready(function() {
+		console.log("Document ready");
+	
+		var table = $j('#dataTableid').DataTable({
+			// DataTables options
+			"pagingType": "full_numbers",
+			"lengthMenu": [
+				[5, 10, 15, 50, -1],
+				[5, 10, 15, 50, "All"]
+			],
+		});
+	
+		// Add custom filter dropdown for Content Type
+		// var filterDropdown = $(
+		// 	'<select class="form-control mb-3" aria-label="Source"><option value="" selected disabled>Select Department</option><option value="">All</option><option value="engineering">Engineering</option><option value="others">Others</option></select>'
+		// )
+		// 	.css('width', '150px')
+		// 	.css('margin-top', '7px')
+		// 	.css('margin-left', '10px')
+		// 	.css('margin-right', '10px');
+	
+		// // Insert filter dropdown next to the search input
+		// $('.dataTables_filter')
+		// 	.addClass('d-flex align-items-center')
+		// 	.append(filterDropdown);
+	
+		// 	filterDropdown.on('change', function() {
+		// 	var filterValue = $j(this).val();
+	
+		// 	if (filterValue === 'others') {
+		// 		// If "Others" is selected, filter values other than "admin"
+		// 		table.column(5).search('^(?!admin$).*$', true, false).draw();
+		// 	} else {
+		// 		// If any other option is selected, use the selected value for filtering
+		// 		table.column(5).search(filterValue).draw();
+		// 	}
+		// });
+	});
+	
+		</script>
 
-	
-	
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 	
@@ -354,7 +390,7 @@
 		                		<a href="user-profile.php" class="ttr-material-button"><span class="ttr-label">Add User</span></a>
 		                	</li>
 		                	<li>
-		                		<a href="manage-user.php" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
+		                		<a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
 		                	</li>
 		                </ul>
 		            </li>
@@ -377,30 +413,153 @@
 	<main class="ttr-wrapper">
 		<div class="container-fluid">
 			<div class="db-breadcrumb">
-				<h4 class="breadcrumb-title">Knowledge</h4>
+				<h4 class="breadcrumb-title">Dashboard</h4>
 				<ul class="db-breadcrumb-list">
 					<li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-					<li>Courses</li>
+					<li>Dashboard</li>
 				</ul>
 			</div>	
+			<?php 
+				$query = "SELECT * FROM class";
+				$result = mysqli_query($db, $query);
+
+				$total_knowledge = mysqli_num_rows($result);
+
+				$query_users = "SELECT * FROM users";
+				$result_users = mysqli_query($db, $query_users);
+
+				$total_users = mysqli_num_rows($result_users);
+			?>
+			<!-- Card -->
+			<div class="row">
+				<div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-12">
+					<div class="widget-card widget-bg1">					 
+						<div class="wc-item">
+							<h4 class="wc-title">
+								Total Knowledge
+							</h4>
+							<span class="wc-des">
+								Inside KMS4MAE
+							</span>
+							<span class="wc-stats">
+								<span class="counter"><?php echo $total_knowledge?></span>
+							</span>		
+							<div class="">
+								<!-- <div class="progress-bar" role="progressbar" style="width: 78%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div> -->
+							</div>
+							<span class="wc-progress-bx">
+								
+							</span>
+						</div>				      
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-12">
+					<div class="widget-card widget-bg2">					 
+						<div class="wc-item">
+							<h4 class="wc-title">
+								Total Employees
+							</h4>
+							<span class="wc-des">
+								of MABES
+							</span>
+							<span class="wc-stats counter">
+								<?php echo $total_users ?>
+							</span>		
+							<!-- <div class="progress wc-progress">
+								<div class="progress-bar" role="progressbar" style="width: 88%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+							<span class="wc-progress-bx">
+								<span class="wc-change">
+									Change
+								</span>
+								<span class="wc-number ml-auto">
+									88%
+								</span>
+							</span> -->
+						</div>				      
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-12">
+					<div class="widget-card widget-bg3">					 
+						<div class="wc-item">
+							<h4 class="wc-title">
+								New Orders 
+							</h4>
+							<span class="wc-des">
+								Fresh Order Amount 
+							</span>
+							<span class="wc-stats counter">
+								772 
+							</span>		
+							<!--<div class="progress wc-progress">
+								<div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+							<span class="wc-progress-bx">
+								<span class="wc-change">
+									Change
+								</span>
+								<span class="wc-number ml-auto">
+									65%
+								</span>
+							</span> -->
+						</div>				      
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-12">
+					<div class="widget-card widget-bg4">					 
+						<div class="wc-item">
+							<h4 class="wc-title">
+								New Users 
+							</h4>
+							<span class="wc-des">
+								Joined New User
+							</span>
+							<span class="wc-stats counter">
+								350 
+							</span>		
+							<!-- <div class="progress wc-progress">
+								<div class="progress-bar" role="progressbar" style="width: 90%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+							<span class="wc-progress-bx">
+								<span class="wc-change">
+									Change
+								</span>
+								<span class="wc-number ml-auto">
+									90%
+								</span>
+							</span> -->
+						</div>				      
+					</div>
+				</div>
+			</div>
+			<!-- Card END -->
 			<div class="row">
 				<!-- Your Profile Views Chart -->
-				<div class="col-lg-12 m-b30">
+				<!-- <div class="col-lg-8 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>Knowledge from Employees</h4>
+							<h4>Knowledge per Departm</h4>
 						</div>
 						<div class="widget-inner">
-
+							<canvas id="chart" width="100" height="45"></canvas>
+						</div>
+					</div>
+				</div> -->
+				<!-- Your Profile Views Chart END-->
+				
+				<div class="col-lg-8 m-b30">
+					<div class="widget-box">
+						<div class="wc-title">
+							<h4>Employees</h4>
+						</div>
+						<div class="widget-inner">
 						<table border="1" id="dataTableid" class="display">
 							<thead>
 								<tr>
 									<th>No</th>
-									<th>Title</th>
+									<th>Full Name</th>
 									<th>Username</th>
 									<th>Department</th>
-									<th>Message</th>
-									<th>Status</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -408,28 +567,23 @@
 							
 							<?php 
 							$i = 1;
-							include "./phpfiles/connect.php";
-							$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
+							
+							$query = "SELECT * FROM users WHERE role='user'";
 							$result = mysqli_query($db,$query);
 
 							if($result){
 								while($row = mysqli_fetch_assoc($result)){
-									$id = $row['knowledge_id'];								
-			
+									$id = $row['id'];		
+																			
 						   ?>
 
+							
 								<tr>
 									<td><?php echo $i ?></td>
-									<td><?php echo $row['title'] ?></td>
+									<td><?php echo $row['full_name'] ?></td>
 									<td><?php echo $row['username'] ?></td>
 									<td><?php echo $row['department'] ?></td>
-									<td><?php echo $row['message'] ?></td>
-									<td><?php echo $row['status'] ?></td>
-								
-									
-									<td>
-									<a href="k-details.php?knowledge_id=<?php echo $id?>" class='btn'>Select</a>
-									</td>
+									<td><a href="../admin_view_profile.php?user_id=<?php echo $id?>" class='btn-secondry'>View Dashboard</a></td>
 								</tr>
 							<?php
 							$i++;
@@ -437,12 +591,151 @@
 							}
 							?>
 							</tbody>
-							</table>
-							
+						</table>
 						</div>
 					</div>
 				</div>
-				<!-- Your Profile Views Chart END-->
+				<div class="col-lg-4 m-b30">
+					<div class="widget-box">
+						<div class="wc-title">
+							<h4>Notifications</h4>
+						</div>
+						<div class="widget-inner">
+							<div class="noti-box-list">
+								<ul>
+									<li>
+										<span class="notification-icon dashbg-gray">
+											<i class="fa fa-check"></i>
+										</span>
+										<span class="notification-text">
+											<span>Sneha Jogi</span> sent you a message.
+										</span>
+										<span class="notification-time">
+											<a href="#" class="fa fa-close"></a>
+											<span> 02:14</span>
+										</span>
+									</li>
+									<li>
+										<span class="notification-icon dashbg-yellow">
+											<i class="fa fa-shopping-cart"></i>
+										</span>
+										<span class="notification-text">
+											<a href="#">Your order is placed</a> sent you a message.
+										</span>
+										<span class="notification-time">
+											<a href="#" class="fa fa-close"></a>
+											<span> 7 Min</span>
+										</span>
+									</li>
+									<li>
+										<span class="notification-icon dashbg-red">
+											<i class="fa fa-bullhorn"></i>
+										</span>
+										<span class="notification-text">
+											<span>Your item is shipped</span> sent you a message.
+										</span>
+										<span class="notification-time">
+											<a href="#" class="fa fa-close"></a>
+											<span> 2 May</span>
+										</span>
+									</li>
+									<li>
+										<span class="notification-icon dashbg-green">
+											<i class="fa fa-comments-o"></i>
+										</span>
+										<span class="notification-text">
+											<a href="#">Sneha Jogi</a> sent you a message.
+										</span>
+										<span class="notification-time">
+											<a href="#" class="fa fa-close"></a>
+											<span> 14 July</span>
+										</span>
+									</li>
+									<li>
+										<span class="notification-icon dashbg-primary">
+											<i class="fa fa-file-word-o"></i>
+										</span>
+										<span class="notification-text">
+											<span>Sneha Jogi</span> sent you a message.
+										</span>
+										<span class="notification-time">
+											<a href="#" class="fa fa-close"></a>
+											<span> 15 Min</span>
+										</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6 m-b30">
+					<div class="widget-box">
+						<div class="wc-title">
+							<h4>Orders</h4>
+						</div>
+						<div class="widget-inner">
+							<div class="orders-list">
+								<ul>
+									<li>
+										<span class="orders-title">
+											<a href="#" class="orders-title-name">Anna Strong </a>
+											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
+										</span>
+										<span class="orders-btn">
+											<a href="#" class="btn button-sm red">Unpaid</a>
+										</span>
+									</li>
+									<li>
+										<span class="orders-title">
+											<a href="#" class="orders-title-name">Revenue</a>
+											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
+										</span>
+										<span class="orders-btn">
+											<a href="#" class="btn button-sm red">Unpaid</a>
+										</span>
+									</li>
+									<li>
+										<span class="orders-title">
+											<a href="#" class="orders-title-name">Anna Strong </a>
+											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
+										</span>
+										<span class="orders-btn">
+											<a href="#" class="btn button-sm green">Paid</a>
+										</span>
+									</li>
+									<li>
+										<span class="orders-title">
+											<a href="#" class="orders-title-name">Revenue</a>
+											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
+										</span>
+										<span class="orders-btn">
+											<a href="#" class="btn button-sm green">Paid</a>
+										</span>
+									</li>
+									<li>
+										<span class="orders-title">
+											<a href="#" class="orders-title-name">Anna Strong </a>
+											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
+										</span>
+										<span class="orders-btn">
+											<a href="#" class="btn button-sm green">Paid</a>
+										</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12 m-b30">
+					<div class="widget-box">
+						<div class="wc-title">
+							<h4>Basic Calendar</h4>
+						</div>
+						<div class="widget-inner">
+							<div id="calendar"></div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</main>
@@ -465,59 +758,90 @@
 <script src="assets/js/functions.js"></script>
 <script src="assets/vendors/chart/chart.min.js"></script>
 <script src="assets/js/admin.js"></script>
+<script src='assets/vendors/calendar/moment.min.js'></script>
+<script src='assets/vendors/calendar/fullcalendar.js'></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
-
-
-
 <script>
-//   $(document).ready(function () {
-//     var table = $('#dataTableid').DataTable({
-//       "pagingType": "full_numbers",
-//       "lengthMenu": [
-//         [5, 10, 15, 50, -1],
-//         [5, 10, 15, 50, "All"]
-//       ],
-//       responsive: true,
-//       language: {
-//         search: "_INPUT_",
-//         searchPlaceholder: "Search",
-//       }
-//     });
+  $(document).ready(function() {
 
-//     // Add custom filter dropdown for Content Type
-//     var filterDropdown = $('<select class="form-select form-control form-control-sm mb-3" aria-label="Content Type Filter"><option value="" selected disabled>Select Format</option><option value="">All</option><option value="pdf">PDF</option><option value="html">HTML</option><option value="video">Video</option><option value="image">Image</option></select>')
-//       .css('width', '150px')
-//       .css('margin-top','7px')
-//       .css('margin-left','10px')
-//       .css('margin-right','10px');
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay,listWeek'
+      },
+      defaultDate: '2019-03-12',
+      navLinks: true, // can click day/week names to navigate views
 
+      weekNumbers: true,
+      weekNumbersWithinDays: true,
+      weekNumberCalculation: 'ISO',
 
-//     // Add custom filter dropdown for Location
-//     var filterDropdown2 = $('<select class="form-select form-control form-control-sm mb-3" aria-label="Location"><option value="" selected disabled>Location</option><option value="">All</option><option value="knowledge_base">Knowledge Base</option><option value="classes">Class</option><option value="both">Both</option></select>')
-//       .css('width', '150px')
-//       .css('margin-top','7px')
-//       .css('margin-left','10px')
-//       .css('margin-right','10px');
+      editable: true,
+      eventLimit: true, // allow "more" link when too many events
+      events: [
+        {
+          title: 'All Day Event',
+          start: '2019-03-01'
+        },
+        {
+          title: 'Long Event',
+          start: '2019-03-07',
+          end: '2019-03-10'
+        },
+        {
+          id: 999,
+          title: 'Repeating Event',
+          start: '2019-03-09T16:00:00'
+        },
+        {
+          id: 999,
+          title: 'Repeating Event',
+          start: '2019-03-16T16:00:00'
+        },
+        {
+          title: 'Conference',
+          start: '2019-03-11',
+          end: '2019-03-13'
+        },
+        {
+          title: 'Meeting',
+          start: '2019-03-12T10:30:00',
+          end: '2019-03-12T12:30:00'
+        },
+        {
+          title: 'Lunch',
+          start: '2019-03-12T12:00:00'
+        },
+        {
+          title: 'Meeting',
+          start: '2019-03-12T14:30:00'
+        },
+        {
+          title: 'Happy Hour',
+          start: '2019-03-12T17:30:00'
+        },
+        {
+          title: 'Dinner',
+          start: '2019-03-12T20:00:00'
+        },
+        {
+          title: 'Birthday Party',
+          start: '2019-03-13T07:00:00'
+        },
+        {
+          title: 'Click for Google',
+          url: 'http://google.com/',
+          start: '2019-03-28'
+        }
+      ]
+    });
 
-//     // Insert filter dropdowns next to the search input
-//     $('.dataTables_filter')
-//       .addClass('d-flex align-items-center')
-//       .append(filterDropdown)
-//       .append(filterDropdown2);
-
-//     filterDropdown.on('change', function () {
-//       var filterValue = $(this).val();
-//       table.column(2).search(filterValue).draw();
-//     });
-
-//     filterDropdown2.on('change', function () {
-//       var filterValue = $(this).val();
-//       table.column(2).search(filterValue).draw();
-//     });
-//   });
+  });
 
 </script>
+
 </body>
 
-<!-- Mirrored from educhamp.themetrades.com/demo/admin/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/index.php by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->
 </html>

@@ -330,7 +330,7 @@
 		                		<a href="user-profile.php" class="ttr-material-button"><span class="ttr-label">Add User</span></a>
 		                	</li>
 		                	<li>
-		                		<a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
+		                		<a href="manage-user.php" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
 		                	</li>
 		                </ul>
 		            </li>

@@ -1,18 +1,22 @@
 <?php
 	session_start();
 	include "connect.php";
-	if($_SESSION['role'] == 'user'){
-		
-        $id = $_SESSION["id"];
-        $full_name = $_SESSION["full_name"];
-        $username = $_SESSION["username"];
-        $department = $_SESSION["department"];
-        $email = $_SESSION["email"];
-        $query = "SELECT * from class where user_id = $id";
-        $result = mysqli_query($db,$query);
-	}else{
-		header("Location: logout.php");
-	}
+
+		if(isset($_GET['user_id'])){
+            $id = $_GET["user_id"];
+            $query = "SELECT * FROM users WHERE id = $id";
+            $result = mysqli_query($db,$query);
+            $row = mysqli_fetch_assoc($result);
+
+            $full_name = $row["full_name"];
+            $username = $row["username"];
+            $department = $row["department"];
+            $email = $row["email"];
+			$role = $row['role'];
+   
+        }
+       
+ 
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +94,7 @@
 							</li>
 							<?php 
 								if(!empty($_SESSION["id"])){ //if a user is still in a session and wants to login, we won't allow them.
-									?><li><a href="logout.php">Logout</a></li><?php
+									?><li><a href="admin_profile/index.php">Back</a></li><?php
 								}else{
 									header("Location: logout.php");
 								}
@@ -394,7 +398,7 @@
 						</div>
 						<div class="card-body text-center">
 							<h3 class="card-title"><?php echo $total_time_spent?> H</h3>
-							<a href="history.php" class='btn-secondry' style=" width: auto">View History</a>
+							<a href="admin_view_history.php?user_id=<?php echo $id?>" class='btn-secondry' style=" width: auto">View History</a>
 						</div>
 					</div>
 				</div>
@@ -405,7 +409,7 @@
 						</div>
 						<div class="card-body text-center">
 							<h3 class="card-title"><?php echo $total_knowledge_shared?></h3>
-							<a href="knowledge_shared.php" class='btn-secondry' style=" width: auto">View Knowledge</a>
+							<a href="admin_view_ks.php?user_id=<?php echo $id?>" class='btn-secondry' style=" width: auto">View Knowledge</a>
 					</div>
 						</div>
 				</div>
@@ -416,7 +420,7 @@
 						</div>
 						<div class="card-body text-center">
 							<h3 class="card-title text-center" ><?php echo $total_exceed?></h3>
-							<a href="k-exceeded.php" class='btn-secondry' style="width: auto">View Exceeded</Em></a>
+							<a href="admin_view_ek.php?user_id=<?php echo $id?>" class='btn-secondry' style="width: auto">View Exceeded</Em></a>
 						</div>
 					</div>
 				</div>
@@ -644,7 +648,7 @@
 					$result_score = mysqli_query($db, $update_score);
 				} else {
 					// Username does not exist, insert a new record
-					$insert_query = "INSERT INTO achievements (username, knowledge_shared, completed, exceeded, score) VALUES ('$username', $total_knowledge_shared, $totalCompleted, $total_exceed, $score)";
+					$insert_query = "INSERT INTO achievements (username, knowledge_shared, completed, exceeded, score, role) VALUES ('$username', $total_knowledge_shared, $totalCompleted, $total_exceed, $score, $role)";
 					$result_insert = mysqli_query($db, $insert_query);
 			
 					if (!$result_insert) {
@@ -657,7 +661,7 @@
 			
 			
 
-			$query = "SELECT * FROM achievements ORDER BY score DESC";
+			$query = "SELECT * FROM achievements WHERE role = 'user' ORDER BY score DESC ";
 			$result = mysqli_query($db, $query);
 
 		?>

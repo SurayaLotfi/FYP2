@@ -100,12 +100,12 @@ $limit = 3;
                     ORDER BY class.validity";
                     
                     
-                }elseif($content == "Due Date"){
+                }elseif($content == "Exceeded"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
                     WHERE class.department = '$department'
                     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                     AND username = '$username'
-                    ORDER BY class.due";
+                    AND content_record.due = 'true'";
 
                 }elseif($content == "Not Yet Started"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
@@ -250,12 +250,12 @@ $limit = 3;
                                 ORDER BY class.validity
                                 LIMIT $start_from, $limit";
                                 
-                            }elseif($content == "Due Date"){
+                            }elseif($content == "Exceeded"){
                                 $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
                                 WHERE class.department = '$department'
                                 AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                 AND username = '$username'
-                                ORDER BY class.due
+                                AND content_record.due = 'true'
                                 LIMIT $start_from, $limit";
             
                             }elseif($content == "Not Yet Started"){

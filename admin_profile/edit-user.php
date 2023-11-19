@@ -1,16 +1,21 @@
 <?php
 	session_start();
+    include "phpfiles/connect.php";
 	if($_SESSION['role'] == 'admin'){
         $username = $_SESSION['username'];
     }else{
         header("Location: ../logout.php");
     }
 
+    if(isset($_GET['user_id'])){
+        $user_id = $_GET['user_id'];
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from educhamp.themetrades.com/demo/admin/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:10:19 GMT -->
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/user-profile.php by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
 <head>
 
 	<!-- META ============================================= -->
@@ -58,25 +63,6 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
-
-	<!--Data Table-->
-	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-	<!--Initializing Data Table-->
-	<script>
-	
-	var $j = jQuery.noConflict();
-		$j(document).ready(function() {
-			// Use $j instead of $
-			$j('#dataTableid').DataTable({
-				// DataTables options
-			});
-		})
-	</script>
-
-	
 	
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
@@ -284,7 +270,7 @@
 					<li>
 						<a href="courses.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-book"></i></span>
-		                	<span class="ttr-label">Knowledge Base</span>
+		                	<span class="ttr-label">Courses</span>
 		                </a>
 		            </li>
 					<!-- <li>
@@ -292,8 +278,8 @@
 							<span class="ttr-icon"><i class="ti-email"></i></span>
 		                	<span class="ttr-label">Mailbox</span>
 		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
+		                </a> -->
+		                <!-- <ul>
 		                	<li>
 		                		<a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
 		                	</li>
@@ -304,8 +290,8 @@
 		                		<a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
 		                	</li>
 		                </ul>
-		            </li> -->
-					<!-- <li>
+		            </li>
+					<li>
 						<a href="#" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-calendar"></i></span>
 		                	<span class="ttr-label">Calendar</span>
@@ -325,18 +311,13 @@
 							<span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
 		                	<span class="ttr-label">Bookmarks</span>
 		                </a>
-		            </li> -->
-					<?php
-						include "./phpfiles/connect.php";
-						$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
-						$result = mysqli_query($db,$query);
-					?>
+		            </li>-->
 					<li>
 						<a href="k-request.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-comments"></i></span>
-		                	<span class="ttr-label">Knowledge Shared ( <?php echo mysqli_num_rows($result)?> )</span>
+		                	<span class="ttr-label">Knowledge Shared</span>
 		                </a>
-		            </li>
+		            </li> 
 					<li>
 						<a href="add-listing.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
@@ -377,68 +358,127 @@
 	<main class="ttr-wrapper">
 		<div class="container-fluid">
 			<div class="db-breadcrumb">
-				<h4 class="breadcrumb-title">Knowledge</h4>
+				<h4 class="breadcrumb-title">Add User</h4>
 				<ul class="db-breadcrumb-list">
 					<li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-					<li>Courses</li>
+					<li>Add User</li>
 				</ul>
 			</div>	
+            <?php
+                $query = "SELECT * FROM users WHERE id=$user_id";
+                $result = mysqli_query($db,$query);
+
+                $row = mysqli_fetch_assoc($result);
+                $department = $row['department'];
+            ?>
 			<div class="row">
 				<!-- Your Profile Views Chart -->
 				<div class="col-lg-12 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>Knowledge from Employees</h4>
+							<h4>Add User</h4>
 						</div>
 						<div class="widget-inner">
+							<form class="edit-profile m-b30" action="phpfiles/update-user.php" method="POST">
+								<div class="">
+									<div class="form-group row">
+										<div class="col-sm-10  ml-auto">
+											<h3>1. Personal Details</h3>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">Username</label>
+										<div class="col-sm-7">
+											<input class="form-control" name="username" type="text" placeholder="Enter username" value="<?php echo $row['username'] ?> " disabled>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">Full Name</label>
+										<div class="col-sm-7">
+											<input class="form-control" name="full_name" type="text" placeholder="Enter full name" value="<?php echo $row['full_name'] ?> ">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">Email</label>
+										<div class="col-sm-7">
+											<input class="form-control" name="email" type="text" placeholder="Enter email" value="<?php echo $row['email'] ?>">
+											<!-- \<span class="help">If you want your invoices addressed to a company. Leave blank to use your full name.</span> -->
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">Department</label>
+										<div class="col-sm-7">
+                                            <select class="form-control" id="department" name="department">
+                                                <option value="Training" <?php if ($department == 'Training') echo 'selected'?>>Training</option>
+                                                <option value="Engineering" <?php if ($department == 'Engineering') echo 'selected'?>>Engineering</option>
+                                                <option value="IT" <?php if ($department == 'IT') echo 'selected'?>>IT</option>
+                                                <option value="Business" <?php if ($department == 'Business') echo 'selected'?>>Business</option>
+                                                <option value="All" <?php if ($department == 'All') echo 'selected'?>>All</option>
+                                            </select>
+									</div>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label" for="content-type-select">Select Role</label>
+										<div class="col-sm-7">
+											<select class="form-control " id="role" name="role">
+												<option value="User" <?php if ($row['role'] == 'user') echo 'selected'?>>User</option>
+												<option value="Admin" <?php if ($row['role'] == 'admin') echo 'selected'?>>Admin</option>
+											</select>
+										</div>
+									</div>
 
-						<table border="1" id="dataTableid" class="display">
-							<thead>
-								<tr>
-									<th>No</th>
-									<th>Title</th>
-									<th>Username</th>
-									<th>Department</th>
-									<th>Message</th>
-									<th>Status</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody>
-							
-							<?php 
-							$i = 1;
-							include "./phpfiles/connect.php";
-							$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
-							$result = mysqli_query($db,$query);
-
-							if($result){
-								while($row = mysqli_fetch_assoc($result)){
-									$id = $row['knowledge_id'];								
-			
-						   ?>
-
-								<tr>
-									<td><?php echo $i ?></td>
-									<td><?php echo $row['title'] ?></td>
-									<td><?php echo $row['username'] ?></td>
-									<td><?php echo $row['department'] ?></td>
-									<td><?php echo $row['message'] ?></td>
-									<td><?php echo $row['status'] ?></td>
-								
+                                    <input type=hidden name="user_id" value="<?php echo $user_id?>">
+									<input type=hidden name="username" value="<?php echo $row['username']?>">
+								<div class="">
+									<div class="">
+										<div class="row">
+											<div class="col-sm-2">
+											</div>
+											<div class="col-sm-7">
+												
+												<button  type="submit" class="btn btn-info btn-rounded  "  name="edit" type="submit">Edit User</button> 
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+							<!-- <form class="edit-profile">
+								<div class="">
+									<div class="form-group row">
+										<div class="col-sm-10 ml-auto">
+											<h3>4. Password</h3>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">Current Password</label>
+										<div class="col-sm-7">
+											<input class="form-control" type="password" value="">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">New Password</label>
+										<div class="col-sm-7">
+											<input class="form-control" type="password" value="">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">Re Type Password</label>
+										<div class="col-sm-7">
+											<input class="form-control" type="password" value="">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-2">
+									</div>
+									<div class="col-sm-7">
+										<button type="reset" class="btn">Save changes</button>
+										<button type="reset" class="btn-secondry">Cancel</button>
+									</div>
+								</div>
 									
-									<td>
-									<a href="k-details.php?knowledge_id=<?php echo $id?>" class='btn'>Select</a>
-									</td>
-								</tr>
-							<?php
-							$i++;
-								}
-							}
-							?>
-							</tbody>
-							</table>
-							
+							</form> -->
 						</div>
 					</div>
 				</div>
@@ -466,58 +506,7 @@
 <script src="assets/vendors/chart/chart.min.js"></script>
 <script src="assets/js/admin.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
-
-
-
-<script>
-//   $(document).ready(function () {
-//     var table = $('#dataTableid').DataTable({
-//       "pagingType": "full_numbers",
-//       "lengthMenu": [
-//         [5, 10, 15, 50, -1],
-//         [5, 10, 15, 50, "All"]
-//       ],
-//       responsive: true,
-//       language: {
-//         search: "_INPUT_",
-//         searchPlaceholder: "Search",
-//       }
-//     });
-
-//     // Add custom filter dropdown for Content Type
-//     var filterDropdown = $('<select class="form-select form-control form-control-sm mb-3" aria-label="Content Type Filter"><option value="" selected disabled>Select Format</option><option value="">All</option><option value="pdf">PDF</option><option value="html">HTML</option><option value="video">Video</option><option value="image">Image</option></select>')
-//       .css('width', '150px')
-//       .css('margin-top','7px')
-//       .css('margin-left','10px')
-//       .css('margin-right','10px');
-
-
-//     // Add custom filter dropdown for Location
-//     var filterDropdown2 = $('<select class="form-select form-control form-control-sm mb-3" aria-label="Location"><option value="" selected disabled>Location</option><option value="">All</option><option value="knowledge_base">Knowledge Base</option><option value="classes">Class</option><option value="both">Both</option></select>')
-//       .css('width', '150px')
-//       .css('margin-top','7px')
-//       .css('margin-left','10px')
-//       .css('margin-right','10px');
-
-//     // Insert filter dropdowns next to the search input
-//     $('.dataTables_filter')
-//       .addClass('d-flex align-items-center')
-//       .append(filterDropdown)
-//       .append(filterDropdown2);
-
-//     filterDropdown.on('change', function () {
-//       var filterValue = $(this).val();
-//       table.column(2).search(filterValue).draw();
-//     });
-
-//     filterDropdown2.on('change', function () {
-//       var filterValue = $(this).val();
-//       table.column(2).search(filterValue).draw();
-//     });
-//   });
-
-</script>
 </body>
 
-<!-- Mirrored from educhamp.themetrades.com/demo/admin/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/user-profile.php by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->
 </html>

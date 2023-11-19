@@ -16,7 +16,7 @@
         if($result){
             echo "<script> 
             alert('Success');
-            window.location.href = '../user-profile.html';
+            window.location.href = '../manage-user.php';
              </script>";
         }else{
             echo "Query error: " . mysqli_error($db);

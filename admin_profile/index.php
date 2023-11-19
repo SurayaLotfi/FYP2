@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	include "phpfiles/connect.php";
 	if($_SESSION['role'] == 'admin'){
         $username = $_SESSION['username'];
     }else{
@@ -59,9 +60,14 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 	
+	  
+
+
+
 </head>
+
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
-	
+
 	<!-- header start -->
 	<header class="ttr-header">
 		<div class="ttr-header-wrapper">
@@ -306,14 +312,23 @@
 							<span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
 		                	<span class="ttr-label">Bookmarks</span>
 		                </a>
-		            </li>-->
+		            </li> -->
+
+
+
+					
+					<?php
+						include "./phpfiles/connect.php";
+						$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
+						$result = mysqli_query($db,$query);
+					?>
 					<li>
 						<a href="k-request.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-comments"></i></span>
-		                	<span class="ttr-label">Knowledge Shared</span>
+		                	<span class="ttr-label">Knowledge Shared ( <?php echo mysqli_num_rows($result)?> )</span>
 		                </a>
 		            </li>
-					<li> 
+					<li>
 						<a href="add-listing.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
 		                	<span class="ttr-label">Add Knowledge</span>
@@ -330,7 +345,7 @@
 		                		<a href="user-profile.php" class="ttr-material-button"><span class="ttr-label">Add User</span></a>
 		                	</li>
 		                	<li>
-		                		<a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
+		                		<a href="manage-user.php" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
 		                	</li>
 		                </ul>
 		            </li>
@@ -344,6 +359,7 @@
 				</ul>
 				<!-- sidebar menu end -->
 			</nav>
+			
 			<!-- sidebar menu end -->
 		</div>
 	</div>
@@ -359,30 +375,46 @@
 					<li>Dashboard</li>
 				</ul>
 			</div>	
+			<?php 
+				$query = "SELECT * FROM class";
+				$result = mysqli_query($db, $query);
+
+				$total_knowledge = mysqli_num_rows($result);
+
+				$query_users = "SELECT * FROM users";
+				$result_users = mysqli_query($db, $query_users);
+
+				$total_users = mysqli_num_rows($result_users);
+
+				$query_posted = "SELECT * FROM class WHERE admin = '$username'";
+				$result_posted = mysqli_query($db, $query_posted);
+
+				$total_posted = mysqli_num_rows($result_posted);
+
+				$query_shared = "SELECT * FROM class WHERE source != 'Admin'";
+				$result_shared = mysqli_query($db, $query_shared);
+
+				$total_shared = mysqli_num_rows($result_shared);
+			?>
 			<!-- Card -->
 			<div class="row">
 				<div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-12">
 					<div class="widget-card widget-bg1">					 
 						<div class="wc-item">
 							<h4 class="wc-title">
-								Total Frofit
+								Total Knowledge
 							</h4>
 							<span class="wc-des">
-								All Customs Value
+								Inside KMS4MAE
 							</span>
 							<span class="wc-stats">
-								$<span class="counter">18</span>M 
+								<span class="counter"><?php echo $total_knowledge?></span>
 							</span>		
-							<div class="progress wc-progress">
-								<div class="progress-bar" role="progressbar" style="width: 78%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+							<div class="">
+								<!-- <div class="progress-bar" role="progressbar" style="width: 78%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div> -->
 							</div>
 							<span class="wc-progress-bx">
-								<span class="wc-change">
-									Change
-								</span>
-								<span class="wc-number ml-auto">
-									78%
-								</span>
+								
 							</span>
 						</div>				      
 					</div>
@@ -391,15 +423,15 @@
 					<div class="widget-card widget-bg2">					 
 						<div class="wc-item">
 							<h4 class="wc-title">
-								 New Feedbacks
+								Total Employees
 							</h4>
 							<span class="wc-des">
-								Customer Review
+								of MABES
 							</span>
 							<span class="wc-stats counter">
-								120 
+								<?php echo $total_users ?>
 							</span>		
-							<div class="progress wc-progress">
+							<!-- <div class="progress wc-progress">
 								<div class="progress-bar" role="progressbar" style="width: 88%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 							<span class="wc-progress-bx">
@@ -409,7 +441,7 @@
 								<span class="wc-number ml-auto">
 									88%
 								</span>
-							</span>
+							</span> -->
 						</div>				      
 					</div>
 				</div>
@@ -417,15 +449,15 @@
 					<div class="widget-card widget-bg3">					 
 						<div class="wc-item">
 							<h4 class="wc-title">
-								New Orders 
+							Knowledge Shared  
 							</h4>
 							<span class="wc-des">
-								Fresh Order Amount 
+								by Employees
 							</span>
 							<span class="wc-stats counter">
-								772 
+							<?php echo $total_shared ?> 
 							</span>		
-							<div class="progress wc-progress">
+							<!--<div class="progress wc-progress">
 								<div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 							<span class="wc-progress-bx">
@@ -435,7 +467,7 @@
 								<span class="wc-number ml-auto">
 									65%
 								</span>
-							</span>
+							</span> -->
 						</div>				      
 					</div>
 				</div>
@@ -443,15 +475,16 @@
 					<div class="widget-card widget-bg4">					 
 						<div class="wc-item">
 							<h4 class="wc-title">
-								New Users 
+								Knowledge Posted
 							</h4>
 							<span class="wc-des">
-								Joined New User
+							by Admin: <?php echo $username?>
 							</span>
 							<span class="wc-stats counter">
-								350 
+							<?php echo $total_posted ?>
+							
 							</span>		
-							<div class="progress wc-progress">
+							<!-- <div class="progress wc-progress">
 								<div class="progress-bar" role="progressbar" style="width: 90%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 							<span class="wc-progress-bx">
@@ -461,7 +494,7 @@
 								<span class="wc-number ml-auto">
 									90%
 								</span>
-							</span>
+							</span> -->
 						</div>				      
 					</div>
 				</div>
@@ -469,218 +502,261 @@
 			<!-- Card END -->
 			<div class="row">
 				<!-- Your Profile Views Chart -->
-				<div class="col-lg-8 m-b30">
+				<!-- <div class="col-lg-8 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>Your Profile Views</h4>
+							<h4>Knowledge per Departm</h4>
 						</div>
 						<div class="widget-inner">
 							<canvas id="chart" width="100" height="45"></canvas>
 						</div>
 					</div>
-				</div>
+				</div> -->
 				<!-- Your Profile Views Chart END-->
+				
+				<div class="col-lg-8 m-b30">
+					<div class="widget-box">
+						<div class="wc-title">
+							<h4>Employees</h4>
+						</div>
+						<div class="widget-inner">
+						<table border="1" id="dataTableid" class="display">
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>Full Name</th>
+									<th>Username</th>
+									<th>Department</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+							
+							<?php 
+							$i = 1;
+							
+							$query = "SELECT * FROM users WHERE role='user'";
+							$result = mysqli_query($db,$query);
+
+							if($result){
+								while($row = mysqli_fetch_assoc($result)){
+									$id = $row['id'];		
+																			
+						   ?>
+
+							
+								<tr>
+									<td><?php echo $i ?></td>
+									<td><?php echo $row['full_name'] ?></td>
+									<td><?php echo $row['username'] ?></td>
+									<td><?php echo $row['department'] ?></td>
+									<td style="display: flex; justify-content: center;"><a href="../admin_view_profile.php?user_id=<?php echo $id?>" class='btn-secondry'>View Dashboard</a></td>
+								</tr>
+							<?php
+							$i++;
+								}
+							}
+							?>
+							</tbody>
+						</table>
+						</div>
+					</div>
+				</div>
+
 				<div class="col-lg-4 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>Notifications</h4>
+							<h4>Knowledge per Department</h4>
 						</div>
 						<div class="widget-inner">
-							<div class="noti-box-list">
-								<ul>
-									<li>
-										<span class="notification-icon dashbg-gray">
-											<i class="fa fa-check"></i>
-										</span>
-										<span class="notification-text">
-											<span>Sneha Jogi</span> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 02:14</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-yellow">
-											<i class="fa fa-shopping-cart"></i>
-										</span>
-										<span class="notification-text">
-											<a href="#">Your order is placed</a> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 7 Min</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-red">
-											<i class="fa fa-bullhorn"></i>
-										</span>
-										<span class="notification-text">
-											<span>Your item is shipped</span> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 2 May</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-green">
-											<i class="fa fa-comments-o"></i>
-										</span>
-										<span class="notification-text">
-											<a href="#">Sneha Jogi</a> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 14 July</span>
-										</span>
-									</li>
-									<li>
-										<span class="notification-icon dashbg-primary">
-											<i class="fa fa-file-word-o"></i>
-										</span>
-										<span class="notification-text">
-											<span>Sneha Jogi</span> sent you a message.
-										</span>
-										<span class="notification-time">
-											<a href="#" class="fa fa-close"></a>
-											<span> 15 Min</span>
-										</span>
-									</li>
-								</ul>
+							<!-- Chart -->
+							<div style="width: 300px; height: 400px;">
+								<canvas id="barChart"></canvas>
 							</div>
+				<?php
+					$query = "SELECT * FROM class";
+					$result = mysqli_query($db, $query);
+					$departmentCounts = array(
+						'Training' => 0,
+						'Engineering' => 0,
+						'IT' => 0
+						
+					);
+					
+					if ($result) {
+
+						while ($row = mysqli_fetch_array($result)) {
+							$department = $row["department"];
+					
+							// Increment the corresponding count based on the status
+							if ($department === 'Training') {
+								$departmentCounts['Training']++;
+							} elseif ($department === 'Engineering') {
+								$departmentCounts['Engineering']++;
+							} elseif ($department === 'IT') {
+								$departmentCounts['IT']++;
+							}
+						}
+					
+						
+					} else {
+						echo "Error in the query: " . mysqli_error($db);
+					}
+				?>
+				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+				<script>
+					//setup block
+					console.log("Hi!")
+					const departmentCounts = <?php echo json_encode($departmentCounts); ?>;
+					console.log(departmentCounts);
+
+					
+					const data = {
+						labels: ['Training', 'Engineering', 'IT'],
+						datasets: [{
+							label: 'Total Knowledge Posted per Dept',
+							data: [departmentCounts['Training'], departmentCounts['Engineering'], departmentCounts['IT']],
+							backgroundColor: ['rgba(100, 200, 100, 0.8)', 'rgba(135, 183, 200, 0.5)', 'rgba(220, 100, 80, 0.8)'], // Set colors for each segment
+							borderWidth: 1
+							
+								}]
+						};
+					//config block
+					const config = {
+							type: 'bar',
+							data, // data from setup block
+							options: {
+								scales: {
+									y: {
+										beginAtZero: true
+									}
+								},
+								responsive: true, // Enable responsiveness
+								maintainAspectRatio: false, // Allow chart to ignore aspect ratio
+								width: 100, // Set the width in pixels
+							}
+						};
+
+						//render block
+						const myChart = new Chart(
+							document.getElementById('barChart'),
+							config
+						);	
+					</script>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6 m-b30">
+				<div class="col-lg-12 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>New Users</h4>
+							<h4>Knowledge Posted by <?php echo $username?></h4>
 						</div>
 						<div class="widget-inner">
-							<div class="new-user-list">
-								<ul>
-									<li>
-										<span class="new-users-pic">
-											<img src="assets/images/testimonials/pic1.jpg" alt=""/>
-										</span>
-										<span class="new-users-text">
-											<a href="#" class="new-users-name">Anna Strong </a>
-											<span class="new-users-info">Visual Designer,Google Inc </span>
-										</span>
-										<span class="new-users-btn">
-											<a href="#" class="btn button-sm outline">Follow</a>
-										</span>
-									</li>
-									<li>
-										<span class="new-users-pic">
-											<img src="assets/images/testimonials/pic2.jpg" alt=""/>
-										</span>
-										<span class="new-users-text">
-											<a href="#" class="new-users-name"> Milano Esco </a>
-											<span class="new-users-info">Product Designer, Apple Inc </span>
-										</span>
-										<span class="new-users-btn">
-											<a href="#" class="btn button-sm outline">Follow</a>
-										</span>
-									</li>
-									<li>
-										<span class="new-users-pic">
-											<img src="assets/images/testimonials/pic1.jpg" alt=""/>
-										</span>
-										<span class="new-users-text">
-											<a href="#" class="new-users-name">Nick Bold  </a>
-											<span class="new-users-info">Web Developer, Facebook Inc </span>
-										</span>
-										<span class="new-users-btn">
-											<a href="#" class="btn button-sm outline">Follow</a>
-										</span>
-									</li>
-									<li>
-										<span class="new-users-pic">
-											<img src="assets/images/testimonials/pic2.jpg" alt=""/>
-										</span>
-										<span class="new-users-text">
-											<a href="#" class="new-users-name">Wiltor Delton </a>
-											<span class="new-users-info">Project Manager, Amazon Inc </span>
-										</span>
-										<span class="new-users-btn">
-											<a href="#" class="btn button-sm outline">Follow</a>
-										</span>
-									</li>
-									<li>
-										<span class="new-users-pic">
-											<img src="assets/images/testimonials/pic3.jpg" alt=""/>
-										</span>
-										<span class="new-users-text">
-											<a href="#" class="new-users-name">Nick Stone </a>
-											<span class="new-users-info">Project Manager, Amazon Inc  </span>
-										</span>
-										<span class="new-users-btn">
-											<a href="#" class="btn button-sm outline">Follow</a>
-										</span>
-									</li>
-								</ul>
-							</div>
+						<table border="1" id="dataTableid2" class="display">
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>Title</th>
+									<th>Format</th>
+									<th>Class ID</th>
+									<th>Department</th>
+									<th>Validity</th>
+									<th>Time added</th>
+									<th>Time to complete</th>
+									
+								</tr>
+							</thead>
+							<tbody>
+							
+							<?php 
+							$i = 1;
+							
+							$query = "SELECT * FROM class WHERE admin = '$username'";
+							$result = mysqli_query($db,$query);
+
+							if($result){
+								while($row = mysqli_fetch_assoc($result)){
+									$id = $row['id'];		
+																			
+						   ?>
+
+							
+								<tr>
+									<td><?php echo $i ?></td>
+									<td><?php echo $row['title'] ?></td>
+									<td><?php echo $row['format'] ?></td>
+									<td><?php echo $row['class_id'] ?></td>
+									<td><?php echo $row['department'] ?></td>
+									<td><?php echo $row['validity'] ?></td>
+									<td><?php echo $row['time_added'] ?></td>
+									<td><?php echo $row['minimum_time'] ?></td>
+									<!-- <td style="display: flex; justify-content: center;"><a href="../admin_view_profile.php?user_id=<?php echo $id?>" class='btn-secondry'>View Dashboard</a></td> -->
+								</tr>
+							<?php
+							$i++;
+								}
+							}
+							?>
+							</tbody>
+						</table>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6 m-b30">
+				<div class="col-lg-12 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>Orders</h4>
+							<h4>Knowledge Shared by Employees</h4>
 						</div>
 						<div class="widget-inner">
-							<div class="orders-list">
-								<ul>
-									<li>
-										<span class="orders-title">
-											<a href="#" class="orders-title-name">Anna Strong </a>
-											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
-										</span>
-										<span class="orders-btn">
-											<a href="#" class="btn button-sm red">Unpaid</a>
-										</span>
-									</li>
-									<li>
-										<span class="orders-title">
-											<a href="#" class="orders-title-name">Revenue</a>
-											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
-										</span>
-										<span class="orders-btn">
-											<a href="#" class="btn button-sm red">Unpaid</a>
-										</span>
-									</li>
-									<li>
-										<span class="orders-title">
-											<a href="#" class="orders-title-name">Anna Strong </a>
-											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
-										</span>
-										<span class="orders-btn">
-											<a href="#" class="btn button-sm green">Paid</a>
-										</span>
-									</li>
-									<li>
-										<span class="orders-title">
-											<a href="#" class="orders-title-name">Revenue</a>
-											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
-										</span>
-										<span class="orders-btn">
-											<a href="#" class="btn button-sm green">Paid</a>
-										</span>
-									</li>
-									<li>
-										<span class="orders-title">
-											<a href="#" class="orders-title-name">Anna Strong </a>
-											<span class="orders-info">Order #02357 | Date 12/08/2019</span>
-										</span>
-										<span class="orders-btn">
-											<a href="#" class="btn button-sm green">Paid</a>
-										</span>
-									</li>
-								</ul>
-							</div>
+						<table border="1" id="dataTableid3" class="display">
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>Title</th>
+									<th>Format</th>
+									<th>Class ID</th>
+									<th>Department</th>
+									<th>Validity</th>
+									<th>Time added</th>
+									<th>Posted By</th>
+									<th>Approved By</th>
+									
+								</tr>
+							</thead>
+							<tbody>
+							
+							<?php 
+							$i = 1;
+							
+							$query = "SELECT * FROM class WHERE source != 'Admin'";
+							$result = mysqli_query($db,$query);
+
+							if($result){
+								while($row = mysqli_fetch_assoc($result)){
+									$id = $row['id'];		
+																			
+						   ?>
+
+							
+								<tr>
+									<td><?php echo $i ?></td>
+									<td><?php echo $row['title'] ?></td>
+									<td><?php echo $row['format'] ?></td>
+									<td><?php echo $row['class_id'] ?></td>
+									<td><?php echo $row['department'] ?></td>
+									<td><?php echo $row['validity'] ?></td>
+									<td><?php echo $row['time_added'] ?></td>
+									<td><?php echo $row['source'] ?></td>
+									<td><?php echo $row['admin'] ?></td>
+									<!-- <td style="display: flex; justify-content: center;"><a href="../admin_view_profile.php?user_id=<?php echo $id?>" class='btn-secondry'>View Dashboard</a></td> -->
+								</tr>
+							<?php
+							$i++;
+								}
+							}
+							?>
+							</tbody>
+						</table>
 						</div>
 					</div>
 				</div>
@@ -696,11 +772,15 @@
 				</div>
 			</div>
 		</div>
+		
 	</main>
+	
 	<div class="ttr-overlay"></div>
+	
 
 <!-- External JavaScripts -->
 <script src="assets/js/jquery.min.js"></script>
+
 <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
 <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
@@ -713,12 +793,69 @@
 <script src="assets/vendors/masonry/filter.js"></script>
 <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
 <script src='assets/vendors/scroll/scrollbar.min.js'></script>
-<script src="assets/js/functions.js"></script>
+<!-- <script src="assets/js/functions.js"></script> -->
 <script src="assets/vendors/chart/chart.min.js"></script>
 <script src="assets/js/admin.js"></script>
 <script src='assets/vendors/calendar/moment.min.js'></script>
 <script src='assets/vendors/calendar/fullcalendar.js'></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
+						
+						<!-- jQuery -->
+						<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+						<!-- DataTables CSS and JS -->
+						<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+						<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+						
+
+				<script>
+							
+							var $j = jQuery.noConflict();
+							$j(document).ready(function() {
+								console.log("Document ready");
+							
+								var table = $j('#dataTableid').DataTable({
+									// DataTables options
+									"pagingType": "full_numbers",
+									"lengthMenu": [
+										[5, 10, 15, 50, -1],
+										[5, 10, 15, 50, "All"]
+									],
+								});
+							
+							});
+
+							var $j = jQuery.noConflict();
+							$j(document).ready(function() {
+								console.log("Document ready");
+							
+								var table = $j('#dataTableid2').DataTable({
+									// DataTables options
+									"pagingType": "full_numbers",
+									"lengthMenu": [
+										[5, 10, 15, 50, -1],
+										[5, 10, 15, 50, "All"]
+									],
+								});
+							
+							});
+
+							var $j = jQuery.noConflict();
+							$j(document).ready(function() {
+								console.log("Document ready");
+							
+								var table = $j('#dataTableid3').DataTable({
+									// DataTables options
+									"pagingType": "full_numbers",
+									"lengthMenu": [
+										[5, 10, 15, 50, -1],
+										[5, 10, 15, 50, "All"]
+									],
+								});
+							
+							});
+							
+								</script>
 <script>
   $(document).ready(function() {
 
@@ -798,6 +935,9 @@
   });
 
 </script>
+
+
+
 </body>
 
 <!-- Mirrored from educhamp.themetrades.com/demo/admin/index.php by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->

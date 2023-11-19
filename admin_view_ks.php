@@ -3,18 +3,21 @@
 	session_start();
 	include "connect.php";
 
-	if($_SESSION['role'] == 'user'){
+
 		
-        $id = $_SESSION["id"];
-        $full_name = $_SESSION["full_name"];
-        $username = $_SESSION["username"];
-        $department = $_SESSION["department"];
-        $email = $_SESSION["email"];
-        $query = "SELECT * from class where user_id = $id";
+    if(isset($_GET['user_id'])){
+        $id = $_GET["user_id"];
+        $query = "SELECT * FROM users WHERE id = $id";
         $result = mysqli_query($db,$query);
-	}else{
-		header("Location: logout.php");
-	}
+        $row = mysqli_fetch_assoc($result);
+
+        $full_name = $row["full_name"];
+        $username = $row["username"];
+        $department = $row["department"];
+        $email = $row["email"];
+
+    }
+
 	
 ?>
 
@@ -211,7 +214,7 @@
         <div class="page-banner ovbl-dark" style="background-image:url(assets/images/malaysia-airlines-bg.jpeg);">
             <div class="container">
                 <div class="page-banner-entry">
-                    <h1 class="text-white">History</h1>
+                    <h1 class="text-white">Knowledge Shared</h1>
 					
 				 </div>
             </div>
@@ -220,31 +223,26 @@
 		<div class="breadcrumb-row">
 			<div class="container">
 				<ul class="list-inline">
-					<li><a href="#">Home</a></li>
-					<li>Classess</li>
-					<li>History</li>
+					<li><a href="admin_profile/index.php">Admin</a></li>
+					<li><a href="admin_view_profile.php?user_id=<?php echo $id?>">Dashboard</a></li>
+					<li><a href="">Knowledge Shared</a></li>
 				</ul>
 			</div>
 		</div>
 		<!-- Breadcrumb row END -->
         <!-- inner page banner END -->
-	
+		<div class="content-block">
             <!-- About Us -->
-			<!-- <div class="section-area section-sp1"> -->
-                <div class="container-fluid"  style="padding: 50px;">
+			<div class="section-area section-sp1">
+                <div class="container">
                     
                 <table border="1" id="dataTableid" class="display">
 							<thead>
 								<tr>
 									<th>No</th>
 									<th>Title</th>
-									<th>Start Time</th>
-                                    <th>End Time</th>
-									<th>Duration</th>
-									<th>Class ID</th>
-									<th>Status</th>
-									
-                                    
+									<th>Status Request</th>
+                                    <th>Duration</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -253,43 +251,38 @@
 							<?php 
 							$i = 1;
 							include "phpfiles/connect.php";
-							$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-							WHERE class.department = '$department'
-							AND username = '$username'
-							AND content_record.status != 'Not yet started'
-							ORDER BY start_time DESC";
+							$query = "SELECT * FROM knowledge_sharing WHERE username = '$username'";
 							$result = mysqli_query($db,$query);
 
 							if($result){
 								while($row = mysqli_fetch_assoc($result)){
-									$id = $row['content_id'];								
+									$id = $row['knowledge_id'];	
+									$content = $row['content'];							
                                     
 						   ?>
 
 								<tr>
 									<td><?php echo $i ?></td>
 									<td><?php echo $row['title'] ?></td>
-									<td>
-										Date: <?php echo date("d/m/Y", strtotime($row['start_time'])); ?><br>
-										Time: <?php echo date("H:i:s", strtotime($row['start_time'])); ?>
-									</td>
-									<td>
-										<?php if($row['end_time']=='0000-00-00 00:00:00.000000'){
-											?>
-											Not yet completed
-										<?php
-										}else{?>
-										Date: <?php echo date("d/m/Y", strtotime($row['end_time'])); ?><br>
-										Time: <?php echo date("H:i:s", strtotime($row['end_time'])); 
-										}?>
-									</td>
-									<td><?php echo $row['duration'] ?></td>
-									<td><?php echo $row['class_code'] ?></td>
 									<td><?php echo $row['status'] ?></td>
+                                    <td><?php echo $row['minimum_time'] ?></td>
+									<td style="display: flex; justify-content: center;">
+									<!-- <a href="courses-details.php?course_id=<?php echo $id?>" class='btn'>View Content</a> -->
+									<?php
+										$folderPath = 'pdf/'. $content;
+										$folder = $folderPath . '/' . $content;
+										if (empty($folderPath)) {
+											// $htmlFile = reset($files); // Get the first element of the array
+
+											//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
+											echo 'Not Found';
+											
+										} else {
+											//$pdfFile = reset($pdf);
+											echo '<a href="' . $folder . '" target="_blank"  class="btn-secondry" id="startLink">View Content</a>';
+										}
+									?>
 									
-                                    
-									<td>
-									<a href="courses-details.php?course_id=<?php echo $id?>" class='btn'>View Content</a>
 									</td>
 								</tr>
 							<?php
@@ -300,7 +293,7 @@
 							</tbody>
 							</table>
 				</div>
-            <!-- </div> -->
+            </div>
         </div>
         <div class="content-block">
             

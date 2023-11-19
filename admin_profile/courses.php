@@ -334,7 +334,7 @@
 		                		<a href="user-profile.php" class="ttr-material-button"><span class="ttr-label">Add User</span></a>
 		                	</li>
 		                	<li>
-		                		<a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
+		                		<a href="manage-user.php" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
 		                	</li>
 		                </ul>
 		            </li>
@@ -373,7 +373,7 @@
 						<div class="widget-inner">
 
 						<table border="1" id="dataTableid" class="display">
-							<thead>
+							<thead class= "thead-dark">
 								<tr>
 									<th>No</th>
 									<th>Title</th>
@@ -381,6 +381,7 @@
 									<th>Class ID</th>
 									<th>Department</th>
 									<th>Source</th>
+									<th>Admin</th>
 									<th>Date Created</th>
 									<th>Action</th>
 								</tr>
@@ -406,6 +407,7 @@
 									<td><?php echo $row['class_id'] ?></td>
 									<td><?php echo $row['department'] ?></td>
 									<td><?php echo $row['source'] ?></td>
+									<td><?php echo $row['admin'] ?></td>
 									<td>
 										Date: <?php echo date("Y-m-d", strtotime($row['time_added'])); ?><br>
 										Time: <?php echo date("H:i:s", strtotime($row['time_added'])); ?>
@@ -422,7 +424,7 @@
 							}
 							?>
 							</tbody>
-							</table>
+						</table>
 							
 						</div>
 					</div>
@@ -447,7 +449,7 @@
 <script src="assets/vendors/masonry/filter.js"></script>
 <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
 <script src='assets/vendors/scroll/scrollbar.min.js'></script>
-<script src="assets/js/functions.js"></script>
+<!-- <script src="assets/js/functions.js"></script> -->
 <script src="assets/vendors/chart/chart.min.js"></script>
 <script src="assets/js/admin.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>

@@ -231,7 +231,7 @@
                                 <h5 class="widget-title style-1">Filter By</h5>
                                 <ul>
                                     <li class="select_format"><a href="fetch_courses.php?contents=Validity">Validity Date</a></li>
-                                    <li class="select_format"><a href="fetch_courses.php?contents=Due">Due Date</a></li>
+                                    <li class="select_format"><a href="fetch_courses.php?contents=Due">Exceeded</a></li>
 									<li class="select_format"><a href="fetch_courses.php?contents=NYS">Not Yet Started</a></li>
 									<li class="select_format"><a href="fetch_courses.php?contents=IP">In Progress</a></li>
 									<li class="select_format"><a href="fetch_courses.php?contents=reset">Reset</a></li>
@@ -691,7 +691,7 @@
 				
 			});
 
-			
+
 			function fetch_data2(page) {
 				// Check if selectedCategory is defined
 				if (selectedCategory !== undefined) {
