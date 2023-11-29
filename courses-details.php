@@ -316,6 +316,7 @@ include "connect.php";
 										//echo $folder;
 										$files = glob($folder . '/*.html');
 										$pdf = glob($folder . '/*.pdf');
+										$htm = glob($folder . '/*.htm');
 										
 										
 										if (!empty($files)) {
@@ -323,7 +324,10 @@ include "connect.php";
 								
 											echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
 											
-										} else {
+										} elseif(!empty($pdf)){
+											$pdfFile = reset($pdf);
+											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
+										}else{
 											$pdfFile = reset($pdf);
 											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
 										}										

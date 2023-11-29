@@ -1,8 +1,9 @@
-
 <?php 
-	session_start();
-	include "connect.php";
-
+// Check if the cookie exists
+session_start();
+include "connect.php";
+	
+	
 	if($_SESSION['role'] == 'user'){
 		
         $id = $_SESSION["id"];
@@ -15,13 +16,29 @@
 	}else{
 		header("Location: logout.php");
 	}
+
+    if(isset($_GET['knowledge_id'])){
+        $knowledge_id = $_GET['knowledge_id'];
+
+        $query = "SELECT * FROM knowledge_sharing JOIN ks_declined ON knowledge_sharing.knowledge_id = ks_declined.ks_id
+                    WHERE knowledge_id = $knowledge_id";
+        $result = mysqli_query($db, $query);
+        $row = mysqli_fetch_assoc($result);
+        $message = $row['message_admin'];
+        $title = $row['title'];
+        $post_to = $row['post_to'];
+        $content = $row['content'];
+        $validity = $row['validity'];
+        $minimum_time = $row['minimum_time'];
+        $previous_message = $row['message'];
+
+    }
+	
 	
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
-
 
 <head>
 
@@ -69,26 +86,22 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
-	<!--jQuery-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rizalcss@2.1.0/css/cdn.rizal.css" integrity="sha256-pqCXaySV+OMUcpVQ0FeFtvz9VLMeI08z53Ar2a7QP5o=" crossorigin="anonymous">
+	<script defer src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+	<script defer src="https://kit.fontawesome.com/1e8d61f212.js"></script> -->
 
-    	<!--Data Table-->
-	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+	<!--Javascript-->
+	<!DOCTYPE html>
+<html>
+<head>
+    <!-- Your other head content -->
 
-	<!--Initializing Data Table-->
-	<script>
-	
-	var $j = jQuery.noConflict();
-		$j(document).ready(function() {
-			// Use $j instead of $
-			$j('#dataTableid').DataTable({
-				// DataTables options
-			});
-		})
-	</script>
+
+</head>
+<body>
+    <!-- Your HTML content -->
+</body>
+</html>
 
 	
 </head>
@@ -103,8 +116,8 @@
 				<div class="row d-flex justify-content-between">
 					<div class="topbar-left">
 						<ul>
-							<!-- <li><a href="faq-1.html"><i class="fa fa-question-circle"></i>Ask a Question</a></li> -->
-							<li><a href="javascript:;"><i class="fa fa-envelope-o"></i>KMS4MAE</a></li>
+							<li><a href="faq-1.html"><i class="fa fa-question-circle"></i>Ask a Question</a></li>
+							<li><a href="javascript:;"><i class="fa fa-envelope-o"></i>Support@website.com</a></li>
 						</ul>
 					</div>
 					<div class="topbar-right">
@@ -131,7 +144,7 @@
                 <div class="container clearfix">
 					<!-- Header Logo ==== -->
 					<div class="menu-logo">
-						<a href="index.html"><img src="assets/images/Malaysia-Airlines-Logo.png" alt=""></a>
+						<a href="index.html"><img src="assets/images/logo.png" alt=""></a>
 					</div>
 					<!-- Mobile Nav Button ==== -->
                     <button class="navbar-toggler collapsed menuicon justify-content-end" type="button" data-toggle="collapse" data-target="#menuDropdown" aria-controls="menuDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -153,23 +166,22 @@
                     </div>
 					<!-- Search Box ==== -->
                     <div class="nav-search-bar">
-                        <!-- <form action="#">
-                            <input name="search" value="" type="text" class="form-control"  placeholder="Type to searc">
+                        <form action="#">
+                            <input name="search" value="" type="text" class="form-control" placeholder="Type to search">
                             <span><i class="ti-search"></i></span>
-                        </form> -->
-						
+                        </form>
 						<span id="search-remove"><i class="ti-close"></i></span>
                     </div>
 					<!-- Navigation Menu ==== -->
-					<div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
+                    <div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
 						<div class="menu-logo">
-							<a href="index.html"><img src="assets/images/logo.png" alt=""></a>
+							<a href="index.html"><img src="assets/images/Malaysia_Airlines_Logo.svg.png" alt=""></a>
 						</div>
                         <ul class="nav navbar-nav">	
-						<li><a href="javascript:;">Home<i class="fa fa-chevron-down"></i></a>
+						<li class="active"><a href="javascript:;">Home<i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									
-									<li><a href="home.php">Home</a></li>
+									<li><a href="index-2.html">Home</a></li>
 								</ul>
 							</li>
 							<li><a href="javascript:;">Library<i class="fa fa-chevron-down"></i></a>
@@ -178,13 +190,14 @@
 									<li><a href="index-2.html">Library</a></li>
 								</ul>
 							</li>
-				
-							<li class="active"><a href="javascript:;">Classes<i class="fa fa-chevron-down"></i></a>
+							<li class="add-mega-menu"><a href="javascript:;">Classes<i class="fa fa-chevron-down"></i></a>
+								
 									<ul class="sub-menu">
-										<li><a href="courses.php">Classes</a></li>
-										<li><a href="history.php">History</a></li>
-										<li><a href="inbox.php">Inbox</a></li>
-									</ul>	
+									
+									<li><a href="courses.php">Classes</a></li>
+									<li><a href="history.php">History</a></li>
+									<li><a href="inbox.php">Inbox</a></li>
+									</ul>								
 							</li>
 
 							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
@@ -208,105 +221,222 @@
     <!-- Content -->
     <div class="page-content bg-white">
         <!-- inner page banner -->
-        <div class="page-banner ovbl-dark" style="background-image:url(assets/images/malaysia-airlines-bg.jpeg);">
+        <!-- <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner3.jpg);">
             <div class="container">
                 <div class="page-banner-entry">
-                    <h1 class="text-white">Knowledge Shared</h1>
-					
+                    <h1 class="text-white">Knowledge Sharing</h1>
 				 </div>
             </div>
-        </div>
+        </div> -->
 		<!-- Breadcrumb row -->
 		<div class="breadcrumb-row">
 			<div class="container">
 				<ul class="list-inline">
-					<li><a href="home.php">Home</a></li>
-					<li><a href="profile.php">Dashboard</a></li>
-					<li><a href="knowledge_shared.php">Knowledge Shared</a></li>
+					<li><a href="#">Home</a></li>
+					<li>Declined Knowledge</li>
 				</ul>
 			</div>
 		</div>
 		<!-- Breadcrumb row END -->
-        <!-- inner page banner END -->
-		<div class="content-block">
-            <!-- About Us -->
-			<div class="section-area section-sp1">
-                <div class="container">
-                    
-                <table border="1" id="dataTableid" class="display">
-							<thead>
-								<tr>
-									<th>No</th>
-									<th>Title</th>
-									<th>Status Request</th>
-                                    <th>Duration</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody>
-							
-							<?php 
-							$i = 1;
-							include "phpfiles/connect.php";
-							$query = "SELECT * FROM knowledge_sharing WHERE username = '$username'";
-							$result = mysqli_query($db,$query);
+	
+        <!-- inner page banner -->
+        <div class="page-banner contact-page section-sp2">
+            <div class="container">
+                <div class="row">
+					<div class="col-lg-9 col-md-7">
+						<!-- <form  action="sharing.php" method="post"> -->
+							<div class="heading-bx">
+								<h2 class="title-head">Message from <span>Admin</span></h2>
+								<p><?php echo $message ?></p>
+								
+							</div>
+							<div class="row">
+								<!-- Your Profile Views Chart -->
+								<div class="col-lg-12 m-b30">
+									<div class="widget-box">
+										<div class="wc-title">
+											<h4>You are encouraged to revise and resubmit and this knowledge.</h4>
+										</div>
+										<div class="widget-inner">
+							<form class="edit-profile m-b30" action="k-resubmit.php" method="post" enctype="multipart/form-data">
+								<div class="row">
+									<div class="col-12">
+										<div class="ml-auto">
+											<h3>1. Resubmit Knowledge</h3>
+										</div>
+									</div>
+									<div class="form-group col-6">
+										<label class="col-form-label">Knowledge title</label>
+										<div>
+										<input class="form-control" type="text" id="title" name="title" value="<?php echo $title?>">
+										</div>
+									</div>
+									<div class="form-group col-6">
+										<label class="col-form-label">Estimated Validity</label>
+										<div>
+										<input class="form-control" type="date" id="validity" name="validity" value="<?php echo $validity?>">
+										</div>
+									</div>
+									<div class="form-group col-6">
+										<label class="col-form-label">Estimated time completion (Eg: 6 hours 30 minutes)</label>
+										<div>
+										<input class="form-control" type="text" id="minimum_time" name="minimum_time" value="<?php echo $minimum_time?>">
+										</div>
+									</div>
+									<div class="form-group col-6">
+										<label class="col-form-label" for="content-type-select">For which Department</label>
+										<select class="form-control" id="department" name="department">
+											<option value="Training" <?php if ($post_to == 'Training') echo 'selected'?>>Training</option>
+											<option value="Engineering" <?php if ($post_to == 'Engineering') echo 'selected'?>>Engineering</option>
+											<option value="IT" <?php if ($post_to == 'IT') echo 'selected'?>>IT</option>
+											<option value="Business" <?php if ($post_to == 'Business') echo 'selected'?>>Business</option>
+											<option value="All" <?php if ($post_to == 'All') echo 'selected'?>>All</option>
+										</select>
+									</div>
+									<div class="seperator"></div>
+									<div class="col-12 m-t20">
+										<div class="ml-auto m-b5">
+											<h3>2. Message</h3>
+										</div>
+									</div>
+									<div class="form-group col-12">
+										<label class="col-form-label" for="message">Message</label>
+										<div>
+										<textarea class="form-control" name="message" id="message"><?php echo $previous_message ?></textarea>
+										</div>
+									</div>
 
-							
-
-							if($result){
-								while($row = mysqli_fetch_assoc($result)){
-									$id = $row['knowledge_id'];	
-									$content = $row['content'];	
-									
-									$status = $row['status'];						
-                                    
-						   ?>
-
-								<tr>
-									<td><?php echo $i ?></td>
-									<td><?php echo $row['title'] ?></td>
-									<td><?php echo $row['status'] ?></td>
-                                    <td><?php echo $row['minimum_time'] ?></td>
-									<td style="display: flex; justify-content: center;">
-									<?php if($status == 'Declined'){
-										?><a href="declined_knowledge.php?knowledge_id=<?php echo $id?>" class='btn'>View Message</a><?php	
-									}else{?>
-									<!-- <a href="courses-details.php?course_id=<?php echo $id?>" class='btn'>View Content</a> -->
+									<div class="col-12 m-t20">
+										<div class="ml-auto m-b5">
+											<h3>3. Knowledge Upload</h3>
+										</div>
+									</div>
+                                    <div class="form-group col-6">
+										<label class="col-form-label" for="folder-select">Declined Knowledge</label>
+										<div class="d-flex">
+											<input class="form-control" type="text" id="content" name="content" value="<?php echo $content?>">
 									<?php
-										$folderPath = 'pdf/'. $content;
+										
+										//include "../pdf";
+										$folderPath = 'pdf/'. $content; // Replace with the actual folder path
+										
+										// Use glob to get a list of files with the .html extension in the folder
 										$folder = $folderPath . '/' . $content;
+										//echo $folder;
+										// $files = glob($folder . '/*.html');
+										// $pdf = glob($folder . '/*.pdf');
+										
+										
 										if (empty($folderPath)) {
 											// $htmlFile = reset($files); // Get the first element of the array
-
+								
 											//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
 											echo 'Not Found';
 											
 										} else {
 											//$pdfFile = reset($pdf);
-											echo '<a href="' . $folder . '" target="_blank"  class="btn-secondry" id="startLink">View Content</a>';
+											echo '<a href="' . $folder . '" target="_blank" class="btn ml-2">View</a>';
 										}
-									}?>
+										
+										
+									?>
+											<!-- <a href="knowledge_details.php?knowledge_id=<?php echo $id?>" class="btn ml-2">View</a> -->
+										</div>
+									</div>
+                                    <br>
+                                    <div class="form-group col-6">
+
+									</div>
+									<div class="form-group col-6">
+										<label class="col-form-label" for="folder-select">Upload new Knowledge (PDF Only)</label>
+										<input type="file" name="my_pdf">
+									</div>
+                                    <input type="hidden" name="knowledge_id" value="<?php echo $knowledge_id ?>">
+									<div class="col-12">
+									<button  type="submit" class="btn btn-info btn-rounded"  name="submit" type="submit">UPLOAD</button> 
 									
-									</td>
-								</tr>
-							<?php
-							$i++;
-								}
-							}
-							?>
-							</tbody>
-							</table>
+									</div>
+								</div>
+							</form>
+						</div>
+									</div>
+								</div>
+
+								<!-- <div class="col-lg-12">
+									<div class="form-group">
+										<div class="container">
+											<div class="row">
+												<div class="col"> -->
+										<!--PDF-->
+										<!-- <div class="card">
+										<h5 class="card-header info-color white-text text-center py-4">
+										<div class="col-12">
+										<strong>Upload PDF Form</strong>
+										</div>
+										</h5>
+										<div class="card-body  px-lg-5 pt-0">
+											<div class="container" style="display: flex; justify-content: center; align-items: center">
+											<div class="row" style="padding: 10px"><br><br>
+												<form action="sharing.php" method="post" enctype="multipart/form-data" > -->
+													<!--Document Title-->
+													<!-- <div class="form-group col-6">
+														<label for="Title">Title</label>
+														<input type="text" class="form-control" id="content_name" name="content_name" placeholder="Enter Title">
+													</div>
+													<div class="form-group col-6">
+														<label for="Name">Name</label>
+														
+														<input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
+													</div>
+													<div class="form-group">
+														<label for="Title">email</label>
+														<input type="text" class="form-control" id="email" name="email" placeholder="Enter Email">
+													</div>
+													<div class="form-group">
+														<label for="Title">phone</label>
+														<input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Numbers">
+													</div>
+													<div class="form-group">
+														<label for="Title">subject</label>
+														<input type="text" class="form-control" id="subject" name="subject" placeholder="Enter Title">
+													</div>
+													<div class="form-group">
+														<label for="Title">Message</label>
+														<input type="text" class="form-control" id="message" name="message" placeholder="Enter Title">
+													</div>
+													
+												<br>
+												<input type="file" name="my_pdf"> 
+												<button  type="submit" class="btn btn-info btn-rounded btn-block my-4 waves-effect z-depth-0"  name="submit" type="submit">UPLOAD</button> 
+												<br>
+												<footer style="font-size: 12px"><b>File Type:</b><font color="red"><i> .pdf only</i></font></footer>
+												</form>
+												
+											</div>
+											</div>  
+										</div>
+										</div>
+										</div>
+									</div>
+								</div> -->
+								<!-- <div class="col-lg-12">
+									<div class="form-group">
+										
+									</div>
+								</div>
+								<div class="col-lg-12">
+									<button name="submit" type="submit" value="submit" class="btn button-md">Send Your Knowledge</button>
+								</div> -->
+							</div>
+						<!-- </form> -->
+					</div>
 				</div>
             </div>
-        </div>
-        <div class="content-block">
-            
-        </div>
-		<!-- contact area END -->
-		
+		</div>
+        <!-- inner page banner END -->
     </div>
     <!-- Content END-->
-	<!-- Footer ==== -->
+    <!-- Footer ==== -->
     <footer>
         <div class="footer-top">
 			<div class="pt-exebar">
@@ -412,8 +542,41 @@
         </div>
     </footer>
     <!-- Footer END ==== -->
+    <!-- scroll top button -->
     <button class="back-to-top fa fa-chevron-up" ></button>
 </div>
+<script>
+    // Get a reference to the select element
+    const departmentSelect = document.getElementById("department");
+
+    // Add an event listener to detect changes in the selection
+    departmentSelect.addEventListener("change", function() {
+        // Get the selected option value
+        const selectedDepartment = departmentSelect.value;
+
+        // Perform an action based on the selected department
+        switch (selectedDepartment) {
+            case "training":
+                // Code to perform when Training is selected
+                break;
+            case "engineering":
+                // Code to perform when Engineering is selected
+                break;
+            case "it":
+                // Code to perform when IT is selected
+                break;
+            case "business":
+                // Code to perform when Business is selected
+                break;
+            case "all":
+                // Code to perform when All is selected
+                break;
+            default:
+                // Handle any other cases here
+        }
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- External JavaScripts -->
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
@@ -430,12 +593,29 @@
 <script src="assets/js/functions.js"></script>
 <script src="assets/js/contact.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
-<script src='filter.js'></script>
+<script src='../../www.google.com/recaptcha/api.js'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var minimumTimeInput = document.getElementById('minimum_time');
+        var form = document.querySelector('form');
 
+        form.addEventListener('submit', function (e) {
+            var enteredTime = minimumTimeInput.value.trim();
 
+            if (!isValidTimeFormat(enteredTime)) {
+                e.preventDefault(); // Prevent form submission
+                alert("Please enter the time in the format 'X hours Y minutes', e.g., '6 hours 30 minutes'");
+            }
+        });
 
-
-	
+        function isValidTimeFormat(timeString) {
+            // Regular expression to match the expected format, e.g., '6 hours 30 minutes'
+            var timePattern = /^\d+ hours \d+ minutes$/;
+            return timePattern.test(timeString);
+        }
+    });
+    </script>
 </body>
+
 
 </html>
