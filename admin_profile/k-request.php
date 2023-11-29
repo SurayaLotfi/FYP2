@@ -401,6 +401,7 @@
 									<th>Department</th>
 									<th>Message</th>
 									<th>Status</th>
+									<th>Approved By</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -409,7 +410,7 @@
 							<?php 
 							$i = 1;
 							include "./phpfiles/connect.php";
-							$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
+							$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY time_added DESC";
 							$result = mysqli_query($db,$query);
 
 							if($result){
@@ -425,6 +426,7 @@
 									<td><?php echo $row['department'] ?></td>
 									<td><?php echo $row['message'] ?></td>
 									<td><?php echo $row['status'] ?></td>
+									<td><?php echo $row['approved_by'] ?></td>
 								
 									
 									<td>

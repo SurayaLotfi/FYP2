@@ -69,7 +69,7 @@
         }
         
     echo "<script> 
-            alert('Success');
+            alert('Knowledge Approved!');
             window.location.href = '../k-request.php';
         </script>";
 

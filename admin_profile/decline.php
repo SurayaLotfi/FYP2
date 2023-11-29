@@ -375,7 +375,8 @@ if(isset($_GET['knowledge_id'])){
 				<h4 class="breadcrumb-title">Knowledge Sharing</h4>
 				<ul class="db-breadcrumb-list">
 					<li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-					<li>Add Knowledge</li>
+                    <li><a href="k-details.php?knowledge_id=<?php echo $knowledge_id?>">Knowledge Sharing</a></li>
+					<li>Reason for declining</li>
 				</ul>
 			</div>	
 			<div class="row">
@@ -383,50 +384,27 @@ if(isset($_GET['knowledge_id'])){
 				<div class="col-lg-12 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>Add listing</h4>
+							<h4>Reason For Declining</h4>
 						</div>
 						<?php
 							//$query = "SELECT * knowledge sharing WHERE "
 						?>
 						<div class="widget-inner">
-							<form class="edit-profile m-b30" action="./phpfiles/k-upload.php" method="post" enctype="multipart/form-data">
+							<form class="edit-profile m-b30" action="./phpfiles/k-decline.php" method="post" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
-											<h3>1. Basic info</h3>
+											<h3>Please provide the reasoning of declining this shared knowledge.</h3>
 										</div>
 									</div>
-									<div class="form-group col-6">
-										<label class="col-form-label">Knowledge title</label>
+							<br>
+                                    <div class="form-group col-12">
+										<label class="col-form-label" for="message">Message</label>
 										<div>
-										<input class="form-control" type="text" id="title" name="title" value="<?php echo $title?>">
+										<textarea class="form-control" name="message" id="message" required></textarea>
 										</div>
 									</div>
-									<div class="form-group col-6">
-										<label class="col-form-label">Creator</label>
-										<div>
-											<input type="hidden" name="creator" value="<?php echo $creator?>">
-										<input class="form-control" type="text" id="creator" name="creator" value="<?php echo $creator?>" disabled>
-										</div>
-									</div>
-									<div class="form-group col-6">
-										<label class="col-form-label">Validity</label>
-										<div>
-										<input class="form-control" type="date" id="validity" name="dateValid" value="<?php echo $validity?>">
-										</div>
-									</div>
-									<div class="form-group col-6">
-										<label class="col-form-label">Knowledge ID</label>
-										<div>
-										<input class="form-control" type="text" id="knowledge_id" name="knowledge_id" value="<?php echo $knowledge_id?>">
-										</div>
-									</div>
-									<div class="form-group col-6">
-										<label class="col-form-label">Estimated time completion (Eg: 6 hours 30 minutes)</label>
-										<div>
-										<input class="form-control" type="text" id="minimum_time" name="minimum_time" value="<?php echo $minimum_time?>">
-										</div>
-									</div>
+						
 									<!--Commenting in case dr suruh allow other than PDF to show-->
 									<!-- <div class="form-group col-6">
 										<label class="col-form-label">Format</label>
@@ -445,150 +423,19 @@ if(isset($_GET['knowledge_id'])){
 										</select>
 									</div> -->
 
-									<div class="form-group col-6">
-										<label class="col-form-label" for="content-type-select">For which Department</label>
-										<select class="form-control" id="department" name="department">
-											<option value="Training" <?php if ($post_to == 'Training') echo 'selected'?>>Training</option>
-											<option value="Engineering" <?php if ($post_to == 'Engineering') echo 'selected'?>>Engineering</option>
-											<option value="IT" <?php if ($post_to == 'IT') echo 'selected'?>>IT</option>
-											<option value="Business" <?php if ($post_to == 'Business') echo 'selected'?>>Business</option>
-											<option value="All" <?php if ($post_to == 'All') echo 'selected'?>>All</option>
-										</select>
-									</div>
-
-									<div class="seperator"></div>
-									<div class="col-12 m-t20">
-										<div class="ml-auto m-b5">
-											<h3>2. Knowledge Upload</h3>
-										</div>
-									</div>
-											<?php 
-												$query_decline = "SELECT * FROM ks_declined WHERE ks_id = $knowledge_id";
-												$result_decline = mysqli_query($db, $query_decline);
-												$row_decline = mysqli_fetch_assoc($result_decline);
-												
-												// if knowledge was once in ks_declined, display the previous declined knowledge
-
-												if(mysqli_num_rows($result_decline) > 0){ 
-													$declined_content = $row_decline['content_declined'];
-													?>
-												<div class="form-group col-6">
-												<label class="col-form-label" for="folder-select">Previously declined knowledge</label>
-												<div class="d-flex">
-													<input class="form-control" type="text" id="content" name="content" value="<?php echo $declined_content?>">
-												<?php
-													
-													//include "../pdf";
-													$folderPath = '../pdf/'. $declined_content; // Replace with the actual folder path
-													
-													// Use glob to get a list of files with the .html extension in the folder
-													$folder = $folderPath . '/' . $declined_content;
-													//echo $folder;
-													// $files = glob($folder . '/*.html');
-													// $pdf = glob($folder . '/*.pdf');
-													
-													
-													if (empty($folderPath)) {
-														// $htmlFile = reset($files); // Get the first element of the array
-											
-														//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
-														echo 'Not Found';
-														
-													} else {
-														//$pdfFile = reset($pdf);
-														echo '<a href="' . $folder . '" target="_blank" class="btn ml-2">View</a>';
-													}
-
-
-													?>
-													</div>
-												</div>
-												<div class="form-group col-6">
-															<label class="col-form-label" for="folder-select">Resubmitted Knowledge</label>
-															<div class="d-flex">
-																<input class="form-control" type="text" id="content" name="content" value="<?php echo $content?>">
-														<?php
-														
-														//include "../pdf";
-														$folderPath = '../pdf/'. $content; // Replace with the actual folder path
-														
-														// Use glob to get a list of files with the .html extension in the folder
-														$folder = $folderPath . '/' . $content;
-														//echo $folder;
-														// $files = glob($folder . '/*.html');
-														// $pdf = glob($folder . '/*.pdf');
-														
-														
-														if (empty($folderPath)) {
-															// $htmlFile = reset($files); // Get the first element of the array
-												
-															//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
-															echo 'Not Found';
-															
-														} else {
-															//$pdfFile = reset($pdf);
-															echo '<a href="' . $folder . '" target="_blank" class="btn ml-2">View</a>';
-														}
-														
-														
-													?>
-															<!-- <a href="knowledge_details.php?knowledge_id=<?php echo $id?>" class="btn ml-2">View</a> -->
-														</div>
-													</div>
-												<?php
-														
-													}else{
-
-														?> 
-														<div class="form-group col-6">
-															<label class="col-form-label" for="folder-select">Content</label>
-															<div class="d-flex">
-																<input class="form-control" type="text" id="content" name="content" value="<?php echo $content?>">
-														<?php
-														
-														//include "../pdf";
-														$folderPath = '../pdf/'. $content; // Replace with the actual folder path
-														
-														// Use glob to get a list of files with the .html extension in the folder
-														$folder = $folderPath . '/' . $content;
-														//echo $folder;
-														// $files = glob($folder . '/*.html');
-														// $pdf = glob($folder . '/*.pdf');
-														
-														
-														if (empty($folderPath)) {
-															// $htmlFile = reset($files); // Get the first element of the array
-												
-															//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
-															echo 'Not Found';
-															
-														} else {
-															//$pdfFile = reset($pdf);
-															echo '<a href="' . $folder . '" target="_blank" class="btn ml-2">View</a>';
-														}
-														
-														
-													?>
-															<!-- <a href="knowledge_details.php?knowledge_id=<?php echo $id?>" class="btn ml-2">View</a> -->
-														</div>
-													</div>
-															
-														<?php														
-													}
-												?>
-												
-										
-										
+								
 
 									</div>
-									<div class="col-12">
+									
 									
 									<input type="hidden" name="shareid" value="<?php echo $knowledge_id ?>">
+                                    <input type="hidden" name="content" value="<?php echo $content?>">
+                                    <?php echo $content?>
 									<input type="hidden" name="admin_approved" value="<?php echo $username ?>">
-    								<button type="submit" class="btn btn-info btn-rounded my-4" name="share">Approve</button>
-									<a href = 'decline.php?knowledge_id=<?php echo $knowledge_id ?>' class ="btn btn-info btn-rounded my-4">Decline</a> <!--Just tukar status, not delete-->
+    								<button type="submit" class="btn btn-info btn-rounded my-4" name="share">Decline</button>
+									<!-- <a href = 'phpfiles/delete.php?deleteid=<?php echo $content_id ?>' class ="btn btn-info btn-rounded my-4">Decline</a> Just tukar status, not delete -->
 									<!--<a href='submit.php?deleteid=<?php echo $id; ?>' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#confirmDeleteModal'>Delete</a>-->
-									</div>
+									
 								</div>
 							</form>
 						</div>

@@ -352,7 +352,7 @@ if(isset($_GET['course_id'])){
 		                		<a href="user-profile.php" class="ttr-material-button"><span class="ttr-label">User Profile</span></a>
 		                	</li>
 		                	<li>
-		                		<a href="teacher-profile.html" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
+		                		<a href="manage-user.php" class="ttr-material-button"><span class="ttr-label">Manage User</span></a>
 		                	</li>
 		                </ul>
 		            </li>
