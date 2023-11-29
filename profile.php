@@ -199,9 +199,10 @@
 							</li> -->
 							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
-									<li><a href="admin_profile/index.html">Dashboard</a></li>
-									<!-- <li><a href="admin/add-listing.html">Add Listing</a></li>
-									<li><a href="admin/bookmark.html">Bookmark</a></li>
+									<li><a href="profile.php">Dashboard</a></li>
+									<li><a href="knowledge_shared.php">Knowledge Shared Status</a></li>
+									<li><a href="k-exceeded.php">Exceeded Knowledge</a></li>
+									<!--<li><a href="admin/bookmark.html">Bookmark</a></li>
 									<li><a href="admin/courses.html">Courses</a></li>
 									<li><a href="admin/review.html">Review</a></li>
 									<li><a href="admin/teacher-profile.html">Teacher Profile</a></li>
@@ -376,10 +377,18 @@
 		//RETRIEVING TOTAL KNOWLEDGE SHARED
 				$query = "SELECT * FROM knowledge_sharing WHERE username = '$username' AND status = 'Accepted'";
 				$result = mysqli_query($db, $query);
+				$total_knowledge_accepted = mysqli_num_rows($result);
+
+				$query = "SELECT * FROM knowledge_sharing WHERE username = '$username'";
+				$result = mysqli_query($db, $query);
 
 				$total_knowledge_shared = mysqli_num_rows($result);
 
-				$on_time_query = "SELECT * FROM content_record WHERE username = '$username' AND due = 'true'";
+				$on_time_query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+				WHERE class.department = '$department'
+				AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+				AND username = '$username'
+				AND content_record.due = 'true'";
 				$result_on_time = mysqli_query($db, $on_time_query);
 				$total_exceed = mysqli_num_rows($result_on_time);
 			?>
@@ -401,10 +410,10 @@
 				<div class="column" style="width: 250px; margin: 10px; ">
 					<div class="card">
 						<div class="card-header text-center">
-							Total Knowledge Shared
+							Total Knowledge Shared 
 						</div>
 						<div class="card-body text-center">
-							<h3 class="card-title"><?php echo $total_knowledge_shared?></h3>
+							<h3 class="card-title"><?php echo $total_knowledge_shared ?></h3>
 							<a href="knowledge_shared.php" class='btn-secondry' style=" width: auto">View Knowledge</a>
 					</div>
 						</div>
@@ -629,7 +638,7 @@
 
 		<?php
 
-			$score = $total_knowledge_shared + $statusCounts['completed'] - $total_exceed;
+			$score = $total_knowledge_accepted  + $statusCounts['completed'] - $total_exceed;
 			$totalCompleted = $statusCounts['completed'];
 
 			$query = "SELECT * FROM achievements WHERE username = '$username'";
@@ -640,11 +649,11 @@
 				// Check if any rows were returned
 				if (mysqli_num_rows($result) > 0) {
 					// Username exists, update the score
-					$update_score = "UPDATE achievements SET score = $score WHERE username = '$username'";
+					$update_score = "UPDATE achievements  SET score = $score,  exceeded= $total_exceed, completed = $totalCompleted, knowledge_shared = $total_knowledge_accepted WHERE username = '$username'";
 					$result_score = mysqli_query($db, $update_score);
 				} else {
 					// Username does not exist, insert a new record
-					$insert_query = "INSERT INTO achievements (username, knowledge_shared, completed, exceeded, score) VALUES ('$username', $total_knowledge_shared, $totalCompleted, $total_exceed, $score)";
+					$insert_query = "INSERT INTO achievements (username, knowledge_shared, completed, exceeded, score) VALUES ('$username', $total_knowledge_accepted , $totalCompleted, $total_exceed, $score)";
 					$result_insert = mysqli_query($db, $insert_query);
 			
 					if (!$result_insert) {
@@ -666,7 +675,7 @@
 											<h3> Leaderboard</h3>
 										</div>
 										<div class="courses-filter">
-										<h6>Score are based on total completed knowledge, amount of knowledge shared and amount of exceeded tasks</h6>
+										<h6>Score are based on total completed knowledge, amount of successful knowledge shared and amount of exceeded tasks</h6>
 											<div class="row">
 											<table class="table">
 												<thead>
