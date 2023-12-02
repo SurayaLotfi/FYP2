@@ -45,11 +45,6 @@ $limit = 3;
                 <?php
                     // $due_date_threshold = date('Y-m-d');
                     // $limit = 3; 
-                    
-                    
-                
-                  
-                
 
                 if($content == "All"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
@@ -133,7 +128,7 @@ $limit = 3;
                 $total_pages = ceil($total_records/$limit);
 
                 //pagination code
-                    //button to update the number is page-item
+                //button to update the number is page-item
                     
                     ?> <ul class = "pagination"><?php
                 
@@ -284,8 +279,7 @@ $limit = 3;
                 
                 $result = mysqli_query($db, $query);
                 while($row = mysqli_fetch_assoc($result)){
-                            //retrieving data that we want
-                        
+                        //retrieving data that we want
                         
                         $validity = $row['validity'];
                         $due = $row['due'];

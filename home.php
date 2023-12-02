@@ -368,22 +368,44 @@ include "connect.php";
 								data-paddingbottom="[0,0,0,0]"
 								data-paddingleft="[0,0,0,0]"
 								style="z-index: 7; text-transform:capitalize; white-space: unset; color:#fff; font-family:rubik; font-size:18px; line-height:28px; font-weight:400;">
-								<?php 
-									$due_date_threshold = date('Y-m-d', strtotime('+10 days')); // Get the current date + 5 days in the same 'YYYY-MM-DD' format
-						
-									$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-									WHERE class.department = '$department'
-									AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
-									AND username = '$username'
-									AND validity <= '$due_date_threshold'
-									ORDER BY class.id DESC;";
+								<?php
+							//Near Deadline
+							$due_date_threshold = date('Y-m-d', strtotime('+10 days')); 
 
-									$result = mysqli_query($db, $query);
+								$query_deadline = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+								WHERE class.department = '$department'
+								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+								AND username = '$username'
+                                AND validity <= '$due_date_threshold'
+                                AND content_record.due = 'false'
+								ORDER BY class.id DESC";
 
-								?>
+								$result_deadline = mysqli_query($db, $query_deadline);
+								$total_deadline = mysqli_num_rows($result_deadline);
+							//exceeded knowledge
+								$query_exceed = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+								WHERE class.department = '$department'
+								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+								AND username = '$username'
+								AND validity <= '$due_date_threshold'
+								AND content_record.due = 'true'
+								ORDER BY class.id DESC";
+
+								$result_exceed = mysqli_query($db, $query_exceed);
+								$total_exceed = mysqli_num_rows($result_exceed);
+							
+							//knowledge that is successfully shared
+								$query_ks = "SELECT * FROM class
+                   				WHERE source = '$username'";
+
+								$result_ks = mysqli_query($db, $query_ks);
+								$total_ks = mysqli_num_rows($result_ks);
+
+								$total_inbox = $total_deadline + $total_exceed + $total_ks;
+							?>
 								
 								
-								You have <?php echo mysqli_num_rows($result) ?> notifications
+								You have <?php echo $total_inbox ?> notifications
 								
 								</div>
 							<!-- LAYER NR. 4 -->

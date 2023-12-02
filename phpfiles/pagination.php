@@ -43,9 +43,9 @@
                     $start_from = ($page - 1)*$limit; //getting the range
                     //getting the total pages for pagination display
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                                                WHERE class.department = '$department'
-                                                AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
-                                                AND username = '$username'";
+                            WHERE class.department = '$department'
+                            AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                            AND username = '$username'";
 
                     $result = mysqli_query($db, $query);
                     $total_records = mysqli_num_rows($result);
@@ -105,7 +105,6 @@
         $result = mysqli_query($db, $query_paged);
         while($row = mysqli_fetch_assoc($result)){
             //retrieving data that we want
-            
         
                     $validity = $row['validity'];
                     $due = $row['due'];

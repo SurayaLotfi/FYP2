@@ -217,25 +217,60 @@
                 <div class="container">
 					 <div class="row">
 						<div class="col-lg-3 col-md-4 col-sm-12 m-b30">
-							<div class="widget courses-search-bx placeani">
+							<!-- <div class="widget courses-search-bx placeani">
 								<div class="form-group">
 									<div class="input-group">
 										<label>Search Courses</label>
 										<input name="dzName" type="text" id="live-search" required class="form-control">
 									</div>
 								</div>
-							</div>
+							</div> -->
+							<?php
+							//Near Deadline
+							$due_date_threshold = date('Y-m-d', strtotime('+10 days')); 
+
+								$query_deadline = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+								WHERE class.department = '$department'
+								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+								AND username = '$username'
+                                AND validity <= '$due_date_threshold'
+                                AND content_record.due = 'false'
+								ORDER BY class.id DESC";
+
+								$result_deadline = mysqli_query($db, $query_deadline);
+								$total_deadline = mysqli_num_rows($result_deadline);
+							//exceeded knowledge
+								$query_exceed = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+								WHERE class.department = '$department'
+								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+								AND username = '$username'
+								AND validity <= '$due_date_threshold'
+								AND content_record.due = 'true'
+								ORDER BY class.id DESC";
+
+								$result_exceed = mysqli_query($db, $query_exceed);
+								$total_exceed = mysqli_num_rows($result_exceed);
+							
+							//knowledge that is successfully shared
+								$query_ks = "SELECT * FROM class
+                   				WHERE source = '$username'";
+
+								$result_ks = mysqli_query($db, $query_ks);
+								$total_ks = mysqli_num_rows($result_ks);
+
+								$total_inbox = $total_deadline + $total_exceed + $total_ks;
+							?>	
 							<div class="widget widget_archive">
-                                <h5 class="widget-title style-1">Filter By</h5>
+                                <h5 class="widget-title style-1">INBOX (<?php echo $total_inbox ?>)</h5>
                                 <ul>
-                                    <li class="select_format"><a href="fetch_courses.php?contents=Validity">Validity Date</a></li>
-                                    <li class="select_format"><a href="fetch_courses.php?contents=Due">Due Date</a></li>
-									<li class="select_format"><a href="fetch_courses.php?contents=NYS">Not Yet Started</a></li>
-									<li class="select_format"><a href="fetch_courses.php?contents=IP">In Progress</a></li>
-									<li class="select_format"><a href="fetch_courses.php?contents=reset">Reset</a></li>
+                                    <li class="select_format"><a href="fetch_courses.php?contents=Deadline">Near Deadline</a></li>
+                                    <li class="select_format"><a href="fetch_courses.php?contents=Exceeded">Exceeded Knowledge</a></li>
+									<li class="select_format"><a href="fetch_courses.php?contents=KS">Knowledge Shared</a></li>
+									<!--<li class="select_format"><a href="fetch_courses.php?contents=IP">In Progress</a></li>
+									<li class="select_format"><a href="fetch_courses.php?contents=reset">Reset</a></li> -->
                                 </ul>
 							</div>
-							<div class="widget widget_archive">
+							<!-- <div class="widget widget_archive">
 								<h5 class="widget-title style-1">Choose Format</h5>
 								<ul>
 									<li class="select_format"><a href="fetch_courses.php?contents=All">All</a></li>
@@ -245,8 +280,8 @@
 									<li class="select_format"><a href="fetch_courses.php?contents=Others">Others</a></li>	
 									
 								</ul>
-								</div>
-							<div class="widget recent-posts-entry widget-courses">
+								</div> -->
+							<!-- <div class="widget recent-posts-entry widget-courses">
                                 <h5 class="widget-title style-1">Recent Courses</h5>
                                 <div class="widget-post-bx">
                                     <div class="widget-post clearfix">
@@ -283,12 +318,12 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
-							<div class="widget widget_archive">
+							<!-- <div class="widget widget_archive">
                                 <h5 class="widget-title style-1">Create Content</h5>
 								<a href="contact-1.html" class="btn">Click Here</a>
-                            </div>
+                            </div> -->
 
 							
 						</div>
@@ -301,18 +336,59 @@
 							<?php 
 
 						$due_date_threshold = date('Y-m-d', strtotime('+10 days')); // Get the current date + 5 days in the same 'YYYY-MM-DD' format
-						
+						$limit = 3; 
+						$output = '';
+						$page = 1;
+
+						$start_from = ($page - 1)*$limit; //getting the range
+
 						$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
 						WHERE class.department = '$department'
 						AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
 						AND username = '$username'
 						AND validity <= '$due_date_threshold'
+						AND content_record.due = 'false'
 						ORDER BY class.id DESC;
 						";
-						
+
 						$result = mysqli_query($db, $query);
+						$total_records = mysqli_num_rows($result);
+						$total_pages = ceil($total_records/$limit);
+
+							//pagination code
+							//button to update the number is page-item
+							
+							?> <ul class = "pagination"><?php
+						
+							if($page > 1){ //if page is not at page 1, it was clicked
+								$previous = $page - 1;
+								?><li class="page-item" id="1"><span class="page-link">First Page</span></li>
+									<li class="page-item" id=<?php echo $previous ?> ><span class="page-link">Prev <i class="fa fa-arrow-left"></i></span></li>
+									
+								<?php    
+							}
+						
+							for($i=1; $i<=$total_pages; $i++){ //showing the index numbers
+								$active_class = "";
+								if($i == $page){
+									$active_class = "active";
+								}
+						
+								?><li class = "page-item <?php echo $active_class?>" id = <?php $i ?>><span class="page-link"><?php echo $i ?></span></li>
+								<?php
+							}
+						
+							if($page < $total_pages){ //first page
+								$page++;
+								?>
+								
+								<li class="page-item " id=<?php echo $page ?>><span class="page-link">Next <i class="fa fa-arrow-right"></i></span></li>
+								<li class="page-item " id=<?php echo $total_pages ?>><span class="page-link">Last Page</span></li> <!--if the page > total_pages, we reached the last page-->
+								<?php
+							} 
 
 							?>
+							</ul>
 							<h4> You have <?php echo mysqli_num_rows($result) ?> content that due is less than 10 days.<br></h4>
 							
 						</div>
@@ -557,28 +633,88 @@
 <script src='assets/vendors/switcher/switcher.js'></script>
 <script src='filter.js'></script>
 
-       <!--Dynamic Page-->
+<!--Dynamic Page-->
 	   <script>
-            $(document).ready(function() {
-                $('.select_format').click(function(e) {
-                e.preventDefault();
-                var category = $(this).text().trim();
+    $(document).ready(function() {
+		var selectedCategory;
 
-                $.ajax({
-                    url: 'fetch_inbox.php',
-                    method: 'GET',
-                    data: { contents: category },
-                    success: function(response) {
-                    // Update the content in the #posts-container div
-                    $('#posts-container').html(response);
-                    },
-                    error: function(xhr, status, error) {
-                    console.log(error);
-                    }
-                });
-                });
-            });
-            </script>
+			$('.select_format').click(function (e) {
+				e.preventDefault();
+
+				// Check if it's a .select_format element
+				
+					selectedCategory = $(this).text().trim();
+
+					// Perform the code for '.select_format' selection
+					$.ajax({
+						url: 'fetch_inbox.php',
+						method: 'GET',
+						data: {
+							contents: selectedCategory,
+						},
+						success: function (response) {
+							// Update the content in the #posts-container div
+							$('#posts-container').html(response);
+						},
+						error: function (xhr, status, error) {
+							console.log(error);
+						}
+					});
+				
+			});
+
+
+			function fetch_data2(page) {
+				// Check if selectedCategory is defined
+				if (selectedCategory !== undefined) {
+					$.ajax({
+						url: "fetch_inbox.php",
+						method: "GET",
+						data: {
+							page: page,
+							contents: selectedCategory
+						},
+						success: function (data) {
+							$("#posts-container").html(data);
+						}
+					});
+				}
+			}
+
+
+
+			fetch_data(1);
+
+			$(document).on("click", ".page-item", function () {
+				var page = $(this).attr("id");
+				fetch_data2(page);
+			});
+    });
+</script>
+
+		
+			<!-- Pagination -->
+			<script type="text/javascript">
+				function fetch_data(page) {
+					$.ajax({
+						url: "phpfiles/inbox_pagination.php",
+						method: "GET",
+						data: {
+							page: page
+						},
+						success: function (data) {
+							$("#posts-container").html(data);
+						}
+					});
+				}
+
+				fetch_data();
+
+				$(document).on("click", ".page-item", function () {
+					var page = $(this).attr("id");
+					fetch_data(page);
+				});
+			</script>
 
 		<!--Live Search-->
 		<script type="text/javascript">

@@ -362,7 +362,7 @@
 											} 
 											?>
 										
-											   </ul>
+											   
 											
 										
 										<!-- <ul class="pagination">

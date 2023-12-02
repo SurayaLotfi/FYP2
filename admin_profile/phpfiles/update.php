@@ -5,9 +5,9 @@
         $id = $_POST['updateid'];
 
         $title = $_POST['title'];
-        $class_code = $_POST['class_code'];
+        // $class_code = $_POST['class_code'];
         $validity = date('Y-m-d', strtotime($_POST['dateValid']));
-        $due = date('Y-m-d', strtotime($_POST['dateDue']));
+        // $due = date('Y-m-d', strtotime($_POST['dateDue']));
         $class_id = $_POST['class_id'];
         $format = $_POST['format'];
         $department = $_POST['department'];
@@ -20,7 +20,7 @@
     echo '<script>';
     echo 'var confirmed = confirm("Are you sure you want to update \"' . $title . '\" ?");';
     echo 'if (confirmed) {';
-        echo '   window.location.href = "update.php?confirm=1&id=' . $id . '&class_code='  .$class_code . '&class_id='  .$class_id . '&title='. $title .'&format='.$format.'&validity=' . $validity . '&due=' . $due . '&department=' . $department . '&content=' . $content . '&status=' . $status . '&minimum_time=' . $minimum_time . '";';
+        echo '   window.location.href = "update.php?confirm=1&id=' . $id .  '&class_id='  .$class_id . '&title='. $title .'&format='.$format.'&validity=' . $validity .  '&department=' . $department . '&content=' . $content . '&status=' . $status . '&minimum_time=' . $minimum_time . '";';
     echo '} else {';
     echo '   window.location.href = "../edit-course.php?course_id='. $id . '";'; // Redirect to EDIT-COURSE if deletion is canceled
     echo '}';
@@ -29,10 +29,10 @@
     }elseif(isset($_GET['confirm']) && $_GET['confirm']==1){
         $id = $_GET['id'];
         $title = $_GET['title'];
-        $class_code = $_GET['class_code'];
+        // $class_code = $_GET['class_code'];
         $class_id = $_GET['class_id'];
         $validity = $_GET['validity'];
-        $due = $_GET['due'];
+        // $due = $_GET['due'];
         $department = $_GET['department'];
         $content = $_GET['content'];
         $status = $_GET['status'];
@@ -40,10 +40,25 @@
         $format = $_GET['format'];
 
         //update database
-        $insert = $db->query("UPDATE class SET title='$title', format='$format', validity='$validity', due='$due', department='$department', content='$content', 
-                         minimum_time='$minimum_time', class_code = '$class_code', class_id ='$class_id' WHERE id='$id'");
+        // $insert = $db->query("UPDATE class SET title='$title', format='$format', validity='$validity', due='$due', department='$department', content='$content', 
+        //                  minimum_time='$minimum_time', class_code = '$class_code', class_id ='$class_id' WHERE id='$id'");
+                         //update database
+        // $insert = $db->query("UPDATE class SET title='$title', format='$format', validity='$validity', department='$department', content='$content', 
+        // minimum_time='$minimum_time', class_id ='$class_id' WHERE id='$id'");
+
+        // Update database using prepared statements
+        $update = $db->prepare("UPDATE class SET title=?, format=?, validity=?, department=?, content=?, minimum_time=?, class_id=? WHERE id=?");
+
+        // Bind parameters
+        $update->bind_param("sssssssi", $title, $format, $validity, $department, $content, $minimum_time, $class_id, $id);
+
+        // Execute the update
+        $update_result = $update->execute();
+
+        // Close the prepared statement
+        $update->close();
     
-        if($insert){
+        if($update){
             //find past rows that has the old department
             $search = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id 
             WHERE department != '$department'"; 
@@ -82,6 +97,6 @@
             echo "Query error: " . mysqli_error($db); // Display the error message
         }
     } else{
-        echo "Query error: " . mysqli_error($db); // Display the error message
+        echo "Query error: Cannot re-direct"; // Display the error message
     }
     ?>
