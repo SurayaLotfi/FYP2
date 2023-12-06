@@ -3,10 +3,10 @@
     include "connect.php";
     $department = $_SESSION['department'];
     $username = $_SESSION['username'];
-    $due_date_threshold = date('Y-m-d');
+    
     $limit = 3;
-    $output = '';
-	$page = 1;
+
+	
 
        //for main page, no filter applied
 
@@ -27,18 +27,18 @@
     </div>
     <div class="pagination-bx rounded-sm gray clearfix" id="get_pagination">
     <?php
-    
-    $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-    WHERE class.department = '$department'
-    AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
-    AND username = '$username'
-    AND validity <= '$due_date_threshold'
-    AND content_record.due = 'false'
-    ORDER BY class.id DESC";
+  
+  $due_date_threshold = date('Y-m-d', strtotime('+10 days')); 
+  $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                  WHERE class.department = '$department'
+                  AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                  AND username = '$username'
+                  AND validity <= '$due_date_threshold'
+                  AND content_record.due = 'false'
+                  ORDER BY class.id DESC";
 
-    $result = mysqli_query($db, $query);
+    $result= mysqli_query($db, $query);
     $total_records = mysqli_num_rows($result);
-    echo $total_records;
     $total_pages = ceil($total_records/$limit);
 
     ?>
@@ -124,7 +124,7 @@
                 $date_posted = date('d-m-Y', strtotime($date_posted));
                 
                 ?>
-
+<br>
         <div class="cours-bx" >
         <div class="action-box">
         <img src="" alt="">

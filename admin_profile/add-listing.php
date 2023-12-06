@@ -390,12 +390,12 @@
 										<input class="form-control" type="text" id="class_code" name="class_code">
 										</div>
 									</div> -->
-									<div class="form-group col-6">
+									<!-- <div class="form-group col-6">
 										<label class="col-form-label">Knowledge ID</label>
 										<div>
 										<input class="form-control" type="text" id="class_id" name="class_id">
 										</div>
-									</div>
+									</div> -->
 									<div class="form-group col-6">
 										<label class="col-form-label">Validity</label>
 										<div>
@@ -476,44 +476,6 @@
 											?>
 										</select>
 									</div>
-											
-
-									
-									
-									<!-- <div class="col-12">
-										<table id="item-add" style="width:100%;">
-											<tr class="list-item">
-												<td>
-													<div class="row">
-														<div class="col-md-4">
-															<label class="col-form-label">Course Name</label>
-															<div>
-																<input class="form-control" type="text" value="">
-															</div>
-														</div>
-														<div class="col-md-3">
-															<label class="col-form-label">Course Category</label>
-															<div>
-																<input class="form-control" type="text" value="">
-															</div>
-														</div>
-														<div class="col-md-3">
-															<label class="col-form-label">Course Category</label>
-															<div>
-																<input class="form-control" type="text" value="">
-															</div>
-														</div>
-														<div class="col-md-2">
-															<label class="col-form-label">Close</label>
-															<div class="form-group">
-																<a class="delete" href="#"><i class="fa fa-close"></i></a>
-															</div>
-														</div>
-													</div>
-												</td>
-											</tr>
-										</table>
-									</div> -->
 									<div class="col-12">
 									<button  type="submit" class="btn btn-info"  name="submit" type="submit">UPLOAD</button> 
 									

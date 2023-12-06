@@ -129,16 +129,18 @@
 									<li><a href="home.php">Home</a></li>
 								</ul>
 							</li>
+							
 							<li><a href="javascript:;">Library<i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									
-									<li><a href="index-2.html">Library</a></li>
+									<li><a href="ai.php">Library</a></li>
+									<li><a href="ai.php">Chatbot</a></li>
 								</ul>
 							</li>
 				
-							<li class="active"><a href="javascript:;">Classes<i class="fa fa-chevron-down"></i></a>
+							<li class="active"><a href="javascript:;">Knowledge Base<i class="fa fa-chevron-down"></i></a>
 									<ul class="sub-menu">
-										<li><a href="courses.php">Classes</a></li>
+										<li><a href="courses.php">Knowledge Base</a></li>
 										<li><a href="history.php">History</a></li>
 										<li><a href="inbox.php">Inbox</a></li>
 									</ul>	
@@ -147,6 +149,8 @@
 							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									<li><a href="profile.php">Dashboard</a></li>
+									<li><a href="knowledge_shared.php">Knowledge Shared Status</a></li>
+									<li><a href="k-exceeded.php">Exceeded Knowledge</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -172,7 +176,7 @@
 					<div class="row">
 						<div class="col-md-12 text-center text-white">
 							<h2>Welcome to Library</h2>
-							<h5>Learn and Gain Knowledge In More Depth</h5>
+							<h5>Learn and Gain Knowledge About the whole organization</h5>
 							<div class="cours-search">
 								<div class="input-group">
 									<input type="text" class="form-control" placeholder="What do you want to learn today?	">
@@ -265,7 +269,7 @@
 									</div>
 									<div class="price">
 										<h8>Created by</h8>
-										<h5>Izzat</h5>
+										<h5>Suraya</h5>
 									</div>
 								</div>
 							</div>

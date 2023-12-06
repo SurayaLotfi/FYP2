@@ -11,10 +11,10 @@
     if (isset($_POST['submit'])) {
  
         $title = $_POST['title'];
-        $class_code = $_POST['class_code'];
+        // $class_code = $_POST['class_code'];
         $validity = date('Y-m-d', strtotime($_POST['dateValid']));
-        $due = date('Y-m-d', strtotime($_POST['dateDue']));
-        $class_id = $_POST['class_id'];
+        // $due = date('Y-m-d', strtotime($_POST['dateDue']));
+        $class_id = $_POST['content'];
         $format = $_POST['format'];
         $department = $_POST['department'];
         $content = $_POST['content'];
@@ -27,8 +27,8 @@
         
                     
     //insert into database
-    $insert = $db->query("INSERT INTO class(title, format, class_code, validity, due, class_id, department,content, minimum_time, admin, source)
-    VALUES('$title', '$format', '$class_code', '$validity','$due','$class_id', '$department', '$content',  '$minimum_time', '$username', '$source')");
+    $insert = $db->query("INSERT INTO class(title, format,  validity,  class_id, department,content, minimum_time, admin, source)
+    VALUES('$title', '$format',  '$validity','$class_id', '$department', '$content',  '$minimum_time', '$username', '$source')");
     
 
 

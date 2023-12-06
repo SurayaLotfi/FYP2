@@ -31,14 +31,7 @@ $limit = 3;
                 ?>
 
             <div style="margin-left: 50px;">
-            <?php if($content == 'Reset'){?>
-                <h4> All Contents <br></h4>
-            <?php
-            }else{
-                ?><h4>Filtered by <?php echo $content?><br></h4> <?php
-            }
-            
-            ?>				
+           			
             
             
             <div class="pagination-bx rounded-sm gray clearfix" id="get_pagination">
@@ -92,6 +85,7 @@ $limit = 3;
                     WHERE class.department = '$department'
                     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                     AND username = '$username'
+                    AND content_record.due = 'false'
                     ORDER BY class.validity";
                     
                     
@@ -130,7 +124,17 @@ $limit = 3;
                 //pagination code
                 //button to update the number is page-item
                     
-                    ?> <ul class = "pagination"><?php
+                    ?> 
+                    <?php if($content == 'Reset'){?>
+                        <h4> All Contents ( <?php echo $total_records ?> )<br></h4>
+                    <?php
+                    }else{
+                        ?><h4>Filtered by <?php echo $content?> ( <?php echo $total_records?> )<br></h4> <?php
+                    }
+                    
+                    ?>	
+                    
+                    <ul class = "pagination"><?php
                 
                     if($page > 1){ //if page is not at page 1, it was clicked
                         $previous = $page - 1;
@@ -242,6 +246,7 @@ $limit = 3;
                                 WHERE class.department = '$department'
                                 AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                 AND username = '$username'
+                                AND content_record.due = 'false'
                                 ORDER BY class.validity
                                 LIMIT $start_from, $limit";
                                 

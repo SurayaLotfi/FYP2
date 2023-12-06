@@ -175,13 +175,13 @@
 							<li><a href="javascript:;">Library<i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									
-									<li><a href="index-2.html">Library</a></li>
+									<li><a href="ai.php">Library</a></li>
 								</ul>
 							</li>
 				
-							<li class="active"><a href="javascript:;">Classes<i class="fa fa-chevron-down"></i></a>
+							<li class="active"><a href="javascript:;">Knowledge Base<i class="fa fa-chevron-down"></i></a>
 									<ul class="sub-menu">
-										<li><a href="courses.php">Classes</a></li>
+										<li><a href="courses.php">Knowledge Base</a></li>
 										<li><a href="history.php">History</a></li>
 										<li><a href="inbox.php">Inbox</a></li>
 									</ul>	
@@ -190,6 +190,8 @@
 							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									<li><a href="profile.php">Dashboard</a></li>
+									<li><a href="knowledge_shared.php">Knowledge Shared Status</a></li>
+									<li><a href="k-exceeded.php">Exceeded Knowledge</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -244,6 +246,7 @@
 									<th>Start Time</th>
                                     <th>End Time</th>
                                     <th>Duration</th>
+									<th>Days Exceeded</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -258,9 +261,37 @@
 							AND content_record.due = 'true'";
 							$result = mysqli_query($db,$query);
 
+
 							if($result){
 								while($row = mysqli_fetch_assoc($result)){
-									$id = $row['content_id'];								
+									$id = $row['content_id'];	
+									
+									$class_id = $row['class_id'];
+									$validity = $row['validity'];
+									$due = $row['due'];
+										
+									$today = new DateTime();
+									$validity = new DateTime($validity);
+									//S$due = new DateTime($due);
+									
+							
+									// Calculate days left
+									if ($today <= $validity) { //if on time
+										$days_left = $today->diff($validity);
+										$exceed_due = "UPDATE content_record SET due = 'false' WHERE username = '$username' AND content_id = '$class_id'";
+										$result_due = mysqli_query($db, $exceed_due); 
+									} else { //if exceeded
+										$days_left = $validity->diff($today);
+										$exceed_due = "UPDATE content_record SET due = 'true' WHERE username = '$username' AND content_id = '$class_id'";
+										$result_due = mysqli_query($db, $exceed_due); 
+										
+									}
+
+									
+									$remainingDays_valid = $days_left->format('%a'); // Number of days remaining										
+									$remainingDays_due = $days_left->format('%a');
+									$date_posted = $row['time_added'];
+									$date_posted = date('d-m-Y', strtotime($date_posted));
                                     
 						   ?>
 
@@ -268,11 +299,12 @@
 									<td><?php echo $i ?></td>
 									<td><?php echo $row['title'] ?></td>
 									<td><?php echo $row['format'] ?></td>
-									<td><?php echo $row['class_code'] ?></td>
+									<td><?php echo $row['class_id'] ?></td>
 									<td><?php echo $row['status'] ?></td>
 									<td><?php echo $row['start_time'] ?></td>
 									<td><?php echo $row['end_time'] ?></td>
                                     <td><?php echo $row['duration'] ?></td>
+									<td style="color: red;"><?php echo $remainingDays_due ?> days</td>
 									<td>
 									<a href="courses-details.php?course_id=<?php echo $id?>" class='btn'>View Content</a>
 									</td>

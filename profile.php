@@ -141,52 +141,25 @@
 							<a href="index.html"><img src="assets/images/logo.png" alt=""></a>
 						</div>
                         <ul class="nav navbar-nav">	
+						<li class="active"><a href="javascript:;">Home<i class="fa fa-chevron-down"></i></a>
+								<ul class="sub-menu">
+									
+									<li><a href="home.php">Home</a></li>
+								</ul>
+							</li>
 							<li class="active"><a href="javascript:;">Library<i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									
 									<li><a href="ai.php">Library</a></li>
 								</ul>
 							</li>
-							<!-- <li><a href="javascript:;">Pages <i class="fa fa-chevron-down"></i></a>
-								<ul class="sub-menu">
-									<li><a href="javascript:;">About<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											
-											<li><a href="about-2.html">About 2</a></li>
-										</ul>
-									</li>
-									<li><a href="javascript:;">Event<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="event.html">Event</a></li>
-											<li><a href="events-details.html">Events Details</a></li>
-										</ul>
-									</li>
-									<li><a href="javascript:;">FAQ's<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="faq-1.html">FAQ's 1</a></li>
-											<li><a href="faq-2.html">FAQ's 2</a></li>
-										</ul>
-									</li>
-									<li><a href="javascript:;">Contact Us<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="contact-1.html">Contact Us 1</a></li>
-											<li><a href="contact-2.html">Contact Us 2</a></li>
-										</ul>
-									</li>
-									<li><a href="portfolio.html">Portfolio</a></li>
-									<li><a href="profile.html">Profile</a></li>
-									<li><a href="membership.html">Membership</a></li>
-									<li><a href="error-404.html">404 Page</a></li>
-								</ul>
-							</li> -->
-							<li class="add-mega-menu"><a href="javascript:;">Classes<i class="fa fa-chevron-down"></i></a>
-								
+							
+							<li class="active"><a href="javascript:;">Knowledge Base<i class="fa fa-chevron-down"></i></a>
 									<ul class="sub-menu">
-									
-									<li><a href="courses.php">Classes</a></li>
-									</ul>
-									
-								
+										<li><a href="courses.php">Knowledge Base</a></li>
+										<li><a href="history.php">History</a></li>
+										<li><a href="inbox.php">Inbox</a></li>
+									</ul>	
 							</li>
 							<!-- <li><a href="javascript:;">Blog <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
@@ -202,24 +175,6 @@
 									<li><a href="profile.php">Dashboard</a></li>
 									<li><a href="knowledge_shared.php">Knowledge Shared Status</a></li>
 									<li><a href="k-exceeded.php">Exceeded Knowledge</a></li>
-									<!--<li><a href="admin/bookmark.html">Bookmark</a></li>
-									<li><a href="admin/courses.html">Courses</a></li>
-									<li><a href="admin/review.html">Review</a></li>
-									<li><a href="admin/teacher-profile.html">Teacher Profile</a></li>
-									<li><a href="admin/user-profile.html">User Profile</a></li>
-									<li><a href="javascript:;">Calendar<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="admin/basic-calendar.html">Basic Calendar</a></li>
-											<li><a href="admin/list-view-calendar.html">List View Calendar</a></li>
-										</ul>
-									</li>
-									<li><a href="javascript:;">Mailbox<i class="fa fa-angle-right"></i></a>
-										<ul class="sub-menu">
-											<li><a href="admin/mailbox.html">Mailbox</a></li>
-											<li><a href="admin/mailbox-compose.html">Compose</a></li>
-											<li><a href="admin/mailbox-read.html">Mail Read</a></li>
-										</ul>
-									</li> -->
 								</ul>
 							</li>
 						</ul>

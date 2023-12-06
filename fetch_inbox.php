@@ -30,7 +30,8 @@ $limit = 3;
             </div>
             <div class="pagination-bx rounded-sm gray clearfix" id="get_pagination">
                 <?php
-                $due_date_threshold = date('Y-m-d', strtotime('+10 days')); 
+                
+                $due_date_threshold = date('Y-m-d', strtotime('+10 days'));
                 if($content == "Near Deadline"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
 								WHERE class.department = '$department'
@@ -143,7 +144,7 @@ $limit = 3;
                         ORDER BY class.id DESC
                         LIMIT $start_from, $limit";
     
-    
+                           
                     }elseif($content == "Exceeded Knowledge"){
                         $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
                         WHERE class.department = '$department'

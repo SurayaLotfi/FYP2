@@ -32,7 +32,7 @@
  
 
          <div style="margin-left: 50px;">
-                <h4> All Contents<br></h4>
+               
                 <div class="pagination-bx rounded-sm gray clearfix" id="get_pagination">
                 <?php
                     $due_date_threshold = date('Y-m-d');
@@ -54,7 +54,9 @@
                     //pagination code
                     //button to update the number is page-item
                     
-                    ?> <ul class = "pagination"><?php
+                    ?> 
+                     <h4> All Contents ( <?php echo $total_records?> )<br></h4>
+                    <ul class = "pagination"><?php
                 
                     if($page > 1){ //if page is not at page 1, it was clicked
                         $previous = $page - 1;
