@@ -401,7 +401,7 @@
 									<th>Department</th>
 									<th>Message</th>
 									<th>Status</th>
-									<th>Approved By</th>
+									
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -426,7 +426,7 @@
 									<td><?php echo $row['department'] ?></td>
 									<td><?php echo $row['message'] ?></td>
 									<td><?php echo $row['status'] ?></td>
-									<td><?php echo $row['approved_by'] ?></td>
+									
 								
 									
 									<td>

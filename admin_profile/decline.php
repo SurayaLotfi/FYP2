@@ -284,7 +284,7 @@ if(isset($_GET['knowledge_id'])){
 					<li>
 						<a href="courses.html" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-book"></i></span>
-		                	<span class="ttr-label">Contents</span>
+		                	<span class="ttr-label">Knowledge Base</span>
 		                </a>
 		            </li>
 					<!-- <li>
@@ -326,10 +326,15 @@ if(isset($_GET['knowledge_id'])){
 		                	<span class="ttr-label">Bookmarks</span>
 		                </a>
 		            </li>-->
+					<?php
+						include "./phpfiles/connect.php";
+						$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
+						$result = mysqli_query($db,$query);
+					?>
 					<li>
 						<a href="k-request.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-comments"></i></span>
-		                	<span class="ttr-label">Knowledge Shared</span>
+		                	<span class="ttr-label">Knowledge Shared ( <?php echo mysqli_num_rows($result)?> )</span>
 		                </a>
 		            </li>
 					<li>
@@ -430,7 +435,7 @@ if(isset($_GET['knowledge_id'])){
 									
 									<input type="hidden" name="shareid" value="<?php echo $knowledge_id ?>">
                                     <input type="hidden" name="content" value="<?php echo $content?>">
-                                    <?php echo $content?>
+                                    
 									<input type="hidden" name="admin_approved" value="<?php echo $username ?>">
     								<button type="submit" class="btn btn-info btn-rounded my-4" name="share">Decline</button>
 									<!-- <a href = 'phpfiles/delete.php?deleteid=<?php echo $content_id ?>' class ="btn btn-info btn-rounded my-4">Decline</a> Just tukar status, not delete -->

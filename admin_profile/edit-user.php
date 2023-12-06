@@ -270,7 +270,7 @@
 					<li>
 						<a href="courses.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-book"></i></span>
-		                	<span class="ttr-label">Courses</span>
+		                	<span class="ttr-label">Knowledge Base</span>
 		                </a>
 		            </li>
 					<!-- <li>
@@ -312,10 +312,15 @@
 		                	<span class="ttr-label">Bookmarks</span>
 		                </a>
 		            </li>-->
+					<?php
+						include "./phpfiles/connect.php";
+						$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
+						$result = mysqli_query($db,$query);
+					?>
 					<li>
 						<a href="k-request.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-comments"></i></span>
-		                	<span class="ttr-label">Knowledge Shared</span>
+		                	<span class="ttr-label">Knowledge Shared ( <?php echo mysqli_num_rows($result)?> )</span>
 		                </a>
 		            </li> 
 					<li>

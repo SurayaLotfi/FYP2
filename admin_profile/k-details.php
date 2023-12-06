@@ -25,6 +25,15 @@ if(isset($_GET['knowledge_id'])){
 }
 
 ?>
+<style>
+    .message-box {
+        border: 1px solid #ddd; /* You can adjust the border color and thickness */
+        padding: 10px; /* You can adjust the padding inside the box */
+        border-radius: 1px; /* You can adjust the border radius to round the corners */
+        margin-top: 5px; /* You can adjust the margin if needed */
+		font-size: 14px;
+    }
+</style>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -284,7 +293,7 @@ if(isset($_GET['knowledge_id'])){
 					<li>
 						<a href="courses.html" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-book"></i></span>
-		                	<span class="ttr-label">Contents</span>
+		                	<span class="ttr-label">Knowledge Base</span>
 		                </a>
 		            </li>
 					<!-- <li>
@@ -326,10 +335,15 @@ if(isset($_GET['knowledge_id'])){
 		                	<span class="ttr-label">Bookmarks</span>
 		                </a>
 		            </li>-->
+					<?php
+						include "./phpfiles/connect.php";
+						$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
+						$result = mysqli_query($db,$query);
+					?>
 					<li>
 						<a href="k-request.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-comments"></i></span>
-		                	<span class="ttr-label">Knowledge Shared</span>
+		                	<span class="ttr-label">Knowledge Shared ( <?php echo mysqli_num_rows($result)?> )</span>
 		                </a>
 		            </li>
 					<li>
@@ -459,7 +473,20 @@ if(isset($_GET['knowledge_id'])){
 									<div class="seperator"></div>
 									<div class="col-12 m-t20">
 										<div class="ml-auto m-b5">
-											<h3>2. Knowledge Upload</h3>
+											<h3>2. Message From Employee</h3>
+										</div>
+									</div>
+									<div class="form-group col-12">
+										<label class="col-form-label" for="message">Message</label>
+										<div class="message-box">
+											<?php echo $message ?>
+										</div>
+									</div>
+
+									<div class="seperator"></div>
+									<div class="col-12 m-t20">
+										<div class="ml-auto m-b5">
+											<h3>3. Knowledge Upload</h3>
 										</div>
 									</div>
 											<?php 

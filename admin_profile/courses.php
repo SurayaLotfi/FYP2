@@ -311,12 +311,17 @@
 		                	<span class="ttr-label">Bookmarks</span>
 		                </a>
 		            </li> -->
-					 <li>
+					<?php
+						include "./phpfiles/connect.php";
+						$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
+						$result = mysqli_query($db,$query);
+					?>
+					<li>
 						<a href="k-request.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-comments"></i></span>
-		                	<span class="ttr-label">Knowledge Shared</span>
+		                	<span class="ttr-label">Knowledge Shared ( <?php echo mysqli_num_rows($result)?> )</span>
 		                </a>
-		            </li> 
+		            </li>
 					<li>
 						<a href="add-listing.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-layout-accordion-list"></i></span>
