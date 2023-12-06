@@ -51,14 +51,6 @@ $limit = 3;
                     AND content_record.due = 'true'
                     ORDER BY class.id DESC";
                     
-                    $resulttemp = mysqli_query($db, $query);
-                    if(mysqli_num_rows($resulttemp) == 0){
-
-                        echo "
-                        <div class='cours-bx'>
-                        <h3>  No content yet. </h3>
-                        </div>";
-                    }
                 }elseif($content == "Knowledge Shared"){
                     $query = "SELECT * FROM class
                     WHERE source = '$username'";
@@ -155,14 +147,7 @@ $limit = 3;
                         ORDER BY class.id DESC
                         LIMIT $start_from, $limit";
                         
-                        $resulttemp = mysqli_query($db, $query);
-                        if(mysqli_num_rows($resulttemp) == 0){
-    
-                            echo "
-                            <div class='cours-bx'>
-                            <h3>  No content yet. </h3>
-                            </div>";
-                        }
+                      
                     }elseif($content == "Knowledge Shared"){
                         $query = "SELECT * FROM class 
                         WHERE source = '$username'

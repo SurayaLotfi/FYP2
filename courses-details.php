@@ -254,7 +254,7 @@ include "connect.php";
 										//echo $folder;
 										$files = glob($folder . '/*.html');
 										$pdf = glob($folder . '/*.pdf');
-										$htm = glob($folder . '/*.htm');
+										
 										
 										
 										if (!empty($files)) {

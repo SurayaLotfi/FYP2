@@ -219,7 +219,7 @@
 						<div class="col-lg-3 col-md-4 col-sm-12 m-b30">
 							<div class="profile-bx text-center">
 								<div class="user-profile-thumb">
-									<img src="assets/images/profile/pic1.jpg" alt=""/>
+									<img src="assets/images/pp.png" alt=""/>
 								</div>
 								<div class="profile-info">
 									<h4><?php echo $username ?></h4>
@@ -341,7 +341,6 @@
 
 				$on_time_query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
 				WHERE class.department = '$department'
-				AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
 				AND username = '$username'
 				AND content_record.due = 'true'";
 				$result_on_time = mysqli_query($db, $on_time_query);
@@ -621,7 +620,7 @@
 			
 			
 
-			$query = "SELECT * FROM achievements ORDER BY score DESC";
+			$query = "SELECT * FROM achievements WHERE role = 'user' ORDER BY score DESC";
 			$result = mysqli_query($db, $query);
 
 		?>
