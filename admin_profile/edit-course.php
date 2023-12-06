@@ -290,45 +290,7 @@ if(isset($_GET['course_id'])){
 		                	<span class="ttr-label">Contents</span>
 		                </a>
 		            </li>
-					<!-- <li>
-						<a href="#" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-email"></i></span>
-		                	<span class="ttr-label">Mailbox</span>
-		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
-		                	<li>
-		                		<a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
-		                	</li>
-		                	<li>
-		                		<a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
-		                	</li>
-							<li>
-		                		<a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
-		                	</li>
-		                </ul>
-		            </li> -->
-					<!-- <li>
-						<a href="#" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-calendar"></i></span>
-		                	<span class="ttr-label">Calendar</span>
-		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
-		                	<li>
-		                		<a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
-		                	</li>
-		                	<li>
-		                		<a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
-		                	</li>
-		                </ul>
-		            </li>
-					<li>
-						<a href="bookmark.html" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
-		                	<span class="ttr-label">Bookmarks</span>
-		                </a>
-		            </li>-->
+					
 					<li>
 						<a href="k-request.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-comments"></i></span>
@@ -421,9 +383,10 @@ if(isset($_GET['course_id'])){
 									<div class="form-group col-6">
 										<label class="col-form-label">Knowledge ID</label>
 										<div>
-										<input class="form-control" type="text" id="class_id" name="class_id" value="<?php echo $class_id?>">
+										<input class="form-control" type="text" id="class_id"  value="<?php echo $class_id?>" disabled>
 										</div>
 									</div>
+									<input type="hidden" id="class_id" name="class_id" value="<?php echo $class_id ?>">
 									<div class="form-group col-6">
 										<label class="col-form-label">Validity</label>
 										<div>
