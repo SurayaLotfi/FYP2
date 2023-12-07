@@ -1,5 +1,7 @@
 <?php
 include "connect.php";
+session_start();
+$username = $_SESSION['username'];
 
 // Check requirements on the server-side
 $content_id = $_POST['content_id'];
@@ -21,7 +23,7 @@ if (mysqli_num_rows($result) > 0) {
     $end_time = $end_time->format('Y-m-d H:i:s');
 
     // Retrieve the start time
-    $sql = "SELECT * FROM content_record WHERE content_id = '$content_id'";
+    $sql = "SELECT * FROM content_record WHERE content_id = '$content_id' AND username = '$username'";
     $result = mysqli_query($db, $sql);
     $row = mysqli_fetch_assoc($result);
     $start_time = $row['start_time'];

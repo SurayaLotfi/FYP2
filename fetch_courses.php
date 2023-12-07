@@ -94,19 +94,22 @@ $limit = 3;
                     WHERE class.department = '$department'
                     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                     AND username = '$username'
-                    AND content_record.due = 'true'";
+                    AND content_record.due = 'true'
+                    ORDER BY class.id DESC";
 
                 }elseif($content == "Not Yet Started"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
                     WHERE class.department = '$department'
                     AND content_record.status = 'Not yet started'
-                    AND username = '$username'";
+                    AND username = '$username'
+                    ORDER BY class.id DESC";
                     
                 }elseif($content == "In Progress"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
                     WHERE class.department = '$department'
                     AND content_record.status = 'In Progress'
-                    AND username = '$username'";
+                    AND username = '$username'
+                    ORDER BY class.id DESC";
                     
                 }else{
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
@@ -256,6 +259,7 @@ $limit = 3;
                                 AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                 AND username = '$username'
                                 AND content_record.due = 'true'
+                                ORDER BY class.id DESC
                                 LIMIT $start_from, $limit";
             
                             }elseif($content == "Not Yet Started"){
@@ -263,6 +267,7 @@ $limit = 3;
                                 WHERE class.department = '$department'
                                 AND content_record.status = 'Not yet started'
                                 AND username = '$username'
+                                ORDER BY class.id DESC
                                 LIMIT $start_from, $limit";
                                 
                             }elseif($content == "In Progress"){
@@ -270,6 +275,7 @@ $limit = 3;
                                 WHERE class.department = '$department'
                                 AND content_record.status = 'In Progress'
                                 AND username = '$username'
+                                ORDER BY class.id DESC
                                 LIMIT $start_from, $limit";
                                 
                             }else{

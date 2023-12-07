@@ -20,7 +20,7 @@ $content_id = $_POST['content_id'];
 $username = $_SESSION['username'];
 $status = "Completed";
 
-echo $content_id;
+//echo $content_id;
 // Convert UTC time to your local time zone (replace 'YourTimeZone' with the desired time zone)
 $local_timezone = new DateTimeZone('Asia/Kuala_Lumpur');
 $end_time = new DateTime($end_time_utc);

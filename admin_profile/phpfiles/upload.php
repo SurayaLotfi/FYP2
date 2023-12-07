@@ -21,7 +21,7 @@
         $status = 'Not yet started';
         $minimum_time = $_POST['minimum_time'];
         $username = $_SESSION['username'];
-        $source = 'admin';
+        $source = 'Admin';
         
     
         

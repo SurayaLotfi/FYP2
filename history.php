@@ -223,7 +223,7 @@
 			<div class="container">
 				<ul class="list-inline">
 					<li><a href="#">Home</a></li>
-					<li>Classess</li>
+					<li>Knowledge Base</li>
 					<li>History</li>
 				</ul>
 			</div>
@@ -285,8 +285,15 @@
 										Time: <?php echo date("H:i:s", strtotime($row['end_time'])); 
 										}?>
 									</td>
-									<td><?php echo $row['duration'] ?></td>
-									<td><?php echo $row['class_code'] ?></td>
+									<td><?php 
+										if($row['status'] == 'In Progress'){
+											echo 'Not yet completed';
+										}else{
+											echo $row['duration'];
+										}
+ 
+										?></td>
+									<td><?php echo $row['class_id'] ?></td>
 									<td><?php echo $row['status'] ?></td>
 									
                                     

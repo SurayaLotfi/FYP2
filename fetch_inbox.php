@@ -199,78 +199,130 @@ $limit = 3;
                         $remainingDays_due = $days_left->format('%a');
                         $date_posted = $row['time_added'];
                         $date_posted = date('d-m-Y', strtotime($date_posted));
+
+                        if($content == 'Knowledge Shared'){ ?>
+                        
+                                <div class="cours-bx" >
+                            <div class="action-box">
+                                <img src="" alt="">
+                                <?php
+                                    $knowledge = $row['content'];
+                                    $folderPath = 'pdf/'. $knowledge;
+                                    $folder = $folderPath . '/' . $knowledge;
+                                    if (empty($folderPath)) {
+                                        // $htmlFile = reset($files); // Get the first element of the array
+                            
+                                        //echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
+                                        echo 'Not Found';
+                                        
+                                    } else {
+                                        //$pdfFile = reset($pdf);
+                                        echo '<a href="' . $folder . '" target="_blank"  class="btn" >View Your Knowledge</a>';
+                                    }
+                                ?>
+                                    <!-- <a href="courses-details.php?course_id=<?php echo $row['class_id'];?>&ks=1" class="btn">View</a> -->
+                                </div>
+                                    <div class="info-bx text-center">
+                                            <h5><a href="#"><?php echo $row['title'] ?></a></h5>
+                                            <span><?php echo $row['class_id'] ?></span>
+                                    </div>
+                                    <div class="cours-more-info">
+                                            <div class="review">
+                                                <span>Format: <?php echo $row['format']?></span>
+                                                <br>
+                                                <span>Date Posted: <?php echo $date_posted?></span>
+                                                
+                                            </div>
+                                            <div class="price">
+                                                <h7 style="font-size: 12px;">Class ID<h7>
+                                                    <h5 style="font-size: 15px;"><?php echo $row['class_id'] ?></h5>
+                                                <h7 style="font-size: 12px;">Approved By<h7>
+                                                <h5 style="font-size: 12px;"> <?php
+                                                
+                                                    echo $row['admin'];
+                                                    
+                                                    ?>
+                                                </h5>
+                                            </div>
+                                </div>
+                            </div>
+                        
+                <br>
+                <br>
+                        <?php }else{
                         
                         ?>
     
-    <div class="cours-bx" >
-        <div class="action-box">
-            <img src="" alt="">
-                <a href="courses-details.php?course_id=<?php echo $row['class_id'] ?>" class="btn">Read More</a>
-            </div>
-                <div class="info-bx text-center">
-                        <h5><a href="#"><?php echo $row['title'] ?></a></h5>
-                        <span><?php echo $row['class_id'] ?></span>
-                </div>
-                <div class="cours-more-info">
-                        <div class="review">
-                            <?php if($today <= $validity){?>
-                            <span>Validity: <?php echo $remainingDays_valid?> days</span>
-                            
-                            <!-- <span>Due (Exceeded days): <?php echo $remainingDays_due?> days</span> -->
-                            <?php }else{?>
-                            <span style="color: red;">Validity: 0 days</span>
-                            <br>
-                            <span style="color: red;">Due (Exceeded Days): <?php echo $remainingDays_due?> days</span>
-                            <?php
-                            } ?>
-                            <br>
-                            <span>Format: <?php echo $row['format']?></span>
-                            <br>
-                            <span>Date Posted: <?php echo $date_posted?></span>
-                            
-                        </div>
-                        <div class="price">
-                            <h7 style="font-size: 12px;">Class ID<h7>
-                                <h5 style="font-size: 15px;"><?php echo $row['class_id'] ?></h5>
-                            <h7 style="font-size: 12px;">Status<h7>
-                            <h5 style="font-size: 12px;"> <?php
-                                if($content == "Knowledge Shared"){
-                                    $query_ks = "SELECT * FROM class 
-                                        JOIN content_record ON class.class_id = content_record.content_id
-                                        WHERE class.department = ? 
-                                        AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
-                                        AND username = ? 
-                                        AND validity <= ? 
-                                        ORDER BY class.id DESC";
+                            <div class="cours-bx" >
+                                <div class="action-box">
+                                    <img src="" alt="">
+                                        <a href="courses-details.php?course_id=<?php echo $row['class_id'] ?>" class="btn">Read More</a>
+                                    </div>
+                                        <div class="info-bx text-center">
+                                                <h5><a href="#"><?php echo $row['title'] ?></a></h5>
+                                                <span><?php echo $row['class_id'] ?></span>
+                                        </div>
+                                        <div class="cours-more-info">
+                                                <div class="review">
+                                                    <?php if($today <= $validity){?>
+                                                    <span>Validity: <?php echo $remainingDays_valid?> days</span>
+                                                    
+                                                    <!-- <span>Due (Exceeded days): <?php echo $remainingDays_due?> days</span> -->
+                                                    <?php }else{?>
+                                                    <span style="color: red;">Validity: 0 days</span>
+                                                    <br>
+                                                    <span style="color: red;">Due (Exceeded Days): <?php echo $remainingDays_due?> days</span>
+                                                    <?php
+                                                    } ?>
+                                                    <br>
+                                                    <span>Format: <?php echo $row['format']?></span>
+                                                    <br>
+                                                    <span>Date Posted: <?php echo $date_posted?></span>
+                                                    
+                                                </div>
+                                                <div class="price">
+                                                    <h7 style="font-size: 12px;">Class ID<h7>
+                                                        <h5 style="font-size: 15px;"><?php echo $row['class_id'] ?></h5>
+                                                    <h7 style="font-size: 12px;">Status<h7>
+                                                    <h5 style="font-size: 12px;"> <?php
+                                                        if($content == "Knowledge Shared"){
+                                                            $query_ks = "SELECT * FROM class 
+                                                                JOIN content_record ON class.class_id = content_record.content_id
+                                                                WHERE class.department = ? 
+                                                                AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                                                                AND username = ? 
+                                                                AND validity <= ? 
+                                                                ORDER BY class.id DESC";
 
-                                        $stmt = mysqli_prepare($db, $query_ks);
-                                        mysqli_stmt_bind_param($stmt, "sss", $department, $username, $due_date_threshold);
-                                        mysqli_stmt_execute($stmt);
-                                        $result_ks = mysqli_stmt_get_result($stmt);
+                                                                $stmt = mysqli_prepare($db, $query_ks);
+                                                                mysqli_stmt_bind_param($stmt, "sss", $department, $username, $due_date_threshold);
+                                                                mysqli_stmt_execute($stmt);
+                                                                $result_ks = mysqli_stmt_get_result($stmt);
 
-                                        if ($result_ks) {
-                                            if (mysqli_num_rows($result_ks) > 0) {
-                                                $row_ks = mysqli_fetch_assoc($result_ks);
-                                                echo $row_ks['status'];
-                                            } else {
-                                                echo "No results found.";
-                                            }
-                                        } else {
-                                            echo "Query failed: " . mysqli_error($db);
-                                        }
-                                        
-                                }else{
-                                echo $row['status'];
-                                }
-                                ?>
-                            </h5>
-                        </div>
-            </div>
-        </div>
-    
-                <br>
-                <br>
+                                                                if ($result_ks) {
+                                                                    if (mysqli_num_rows($result_ks) > 0) {
+                                                                        $row_ks = mysqli_fetch_assoc($result_ks);
+                                                                        echo $row_ks['status'];
+                                                                    } else {
+                                                                        echo "No results found.";
+                                                                    }
+                                                                } else {
+                                                                    echo "Query failed: " . mysqli_error($db);
+                                                                }
+                                                                
+                                                        }else{
+                                                        echo $row['status'];
+                                                        }
+                                                        ?>
+                                                    </h5>
+                                                </div>
+                                    </div>
+                                </div>
+                            
+                                        <br>
+                                        <br>
                 <?php
+                        }
                     }
                 
                 }

@@ -44,6 +44,8 @@ include "connect.php";
 		$remainingDays_due = $days_left->format('%a');
 		$date_posted = $row['time_added'];
 		$date_posted = date('d-m-Y', strtotime($date_posted));
+		$val = $row['validity'];
+		$deadline = date('d-m-Y', strtotime($val));
 	   
 	}
 ?>
@@ -73,7 +75,7 @@ include "connect.php";
 	<link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 	
 	<!-- PAGE TITLE HERE ============================================= -->
-	<title>EduChamp : Education HTML Template </title>
+	<title>KMS4MAE</title>
 	
 	<!-- MOBILE SPECIFIC ============================================= -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -95,9 +97,11 @@ include "connect.php";
 	<!-- STYLESHEETS ============================================= -->
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofFos+EQEL+5CI5tM1/48aih8eQZIWSJXl" crossorigin="anonymous">
 
 	<!--JQUERY-->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
 	
 </head>
 <body id="bg">
@@ -218,7 +222,7 @@ include "connect.php";
         <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner2.jpg);">
             <div class="container">
                 <div class="page-banner-entry">
-                    <h1 class="text-white">Class Details</h1>
+                    <h1 class="text-white">Knowledge Details</h1>
 				 </div>
             </div>
         </div>
@@ -227,7 +231,8 @@ include "connect.php";
 			<div class="container">
 				<ul class="list-inline">
 					<li><a href="#">Home</a></li>
-					<li>Courses Details</li>
+					<li><a href="#">Knowledge Base</a></li>
+					<li>Knowledge Details</li>
 				</ul>
 			</div>
 		</div>
@@ -258,29 +263,23 @@ include "connect.php";
 										
 										
 										if (!empty($files)) {
-											$htmlFile = reset($files); // Get the first element of the array
-								
-											echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
-											
-										} elseif(!empty($pdf)){
+											$htmlFile = reset($files);
+											echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink" onclick="openContentPage(\'' . $htmlFile . '\')">Go To Content</a>';
+										} elseif (!empty($pdf)) {
 											$pdfFile = reset($pdf);
-											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
-										}else{
-											$pdfFile = reset($pdf);
-											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
-										}										
-									}else{
-										$folderPath = 'pdf/'. $content;
-										$folder = $folderPath . '/' . $content;
-										if (empty($folderPath)) {
-											// $htmlFile = reset($files); // Get the first element of the array
-								
-											//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
-											echo 'Not Found';
-											
+											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink" onclick="openContentPage(\'' . $pdfFile . '\')">Go To Content</a>';
 										} else {
-											//$pdfFile = reset($pdf);
-											echo '<a href="' . $folder . '" target="_blank"  class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
+											$pdfFile = reset($pdf);
+											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink" onclick="openContentPage(\'' . $pdfFile . '\')">Go To Content</a>';
+										}
+									} else {
+										$folderPath = 'pdf/' . $content;
+										$folder = $folderPath . '/' . $content;
+									
+										if (empty($folderPath)) {
+											echo 'Not Found';
+										} else {
+											echo '<a href="' . $folder . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink" onclick="openContentPage(\'' . $folder . '\')">Go To Content</a>';
 										}
 									}
 									?>
@@ -318,7 +317,25 @@ include "connect.php";
 										</div>
 										<div class="teacher-name" style="text-align: center;">
 											<h5>Created By</h5>
-											<span>Ismahazli Bin Razali</span>
+											
+											<?php 
+											if($source == 'Admin'){
+												$query_creator = "SELECT * FROM class JOIN users ON class.admin = users.username WHERE class_id = '$content_id'";
+												$result_creator = mysqli_query($db, $query_creator);
+												$row = mysqli_fetch_assoc($result_creator);
+
+												?><span><?php echo $row['full_name'] ?></span> <?php
+											}else{
+												$query_creator = "SELECT * FROM class JOIN users ON class.source = users.username WHERE class_id = '$content_id'";
+												$result_creator = mysqli_query($db, $query_creator);
+												$row = mysqli_fetch_assoc($result_creator);
+
+												?><span><?php echo $row['full_name'] ?></span> <?php
+
+											}
+											
+											?>
+											
 										</div>
 									</div>
 								</div>
@@ -374,9 +391,12 @@ include "connect.php";
 											<!-- <li><i class="ti-book"></i> <span class="label">Lectures</span> <span class="value">8</span></li> -->
 											<!-- <li><i class="ti-help-alt"></i> <span class="label">Quizzes</span> <span class="value">1</span></li> -->
 											<li><i class="ti-time"></i> <span class="label">Duration</span> <span class="value"><?php echo $minimum_time?></span></li>
-											<li><i class="ti-stats-up"></i> <span class="label">Validity</span> <span class="value"><?php echo $remainingDays_valid?> days</span></li>
-											<li><i class="ti-smallcap"></i> <span class="label">Date Posted</span> <span class="value"><?php echo $date_posted ?></span></li>
-											<li><i class="ti-user"></i> <span class="label">Deadline</span> <span class="value"><?php echo $validity?></span></li>
+											<li><i class="ti-stats-up"></i> <span class="label">Validity</span> <span class="value"><?php echo $remainingDays_valid?> days left</span></li>
+											<li><i class="ti-calendar"></i> <span class="label">Date Posted</span> <span class="value"><?php echo $date_posted ?></span></li>
+											<li><i class="ti-announcement"></i> <span class="label">Deadline</span> <span class="value"><?php echo $deadline?></span></li>
+											
+											
+											
 											<!-- <li><i class="ti-check-box"></i> <span class="label">Assessments</span> <span class="value">Yes</span></li> -->
 										</ul>
 									</div>
@@ -785,7 +805,7 @@ include "connect.php";
 						type: "POST",
 						url: "phpfiles/check_requirements.php", // Your server-side script to check the requirements
 						data: {
-							end_time: new Date().toISOString(),
+							end_time: new Date().toISOString(), //retrieving current timestamp
 							content_id: '<?php echo $content_id; ?>'
 							
 						},
@@ -816,6 +836,19 @@ include "connect.php";
 
 			});
 		</script>
+
+<script>
+    function openContentPage(file) {
+        // Open the file in a new tab
+        window.open(file, '_blank');
+
+        // Reload the current page after a delay (adjust the delay as needed)
+        setTimeout(function () {
+            location.reload();
+        }, 1000); // Example delay: 1000 milliseconds (1 second)
+    }
+</script>
+
 </body>
 
 </html>

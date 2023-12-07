@@ -568,7 +568,7 @@ include "connect.php";
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="service-bx">
 								<div class="action-box">
-									<img src="assets/images/our-services/pic1.jpg" alt="">
+									<img src="assets/images/view-dashboard.jpg" alt="" style="height: 250px; width: 100%; object-fit: cover;">
 								</div>
 								<div class="info-bx text-center">
 									<div class="feature-box-sm radius bg-white">
@@ -582,13 +582,13 @@ include "connect.php";
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="service-bx">
 								<div class="action-box">
-									<img src="assets/images/our-services/pic2.jpg" alt="">
+									<img src="assets/images/training.png" alt="" style="height: 250px; width: 100%; object-fit: cover;">
 								</div>
 								<div class="info-bx text-center">
 									<div class="feature-box-sm radius bg-white">
 										<i class="fa fa-book text-primary"></i>
 									</div>
-									<h4><a href="#">Classes</a></h4>
+									<h4><a href="#">Knowledge Base</a></h4>
 									<a href="#" class="btn radius-xl">View More</a>
 								</div>
 							</div>
@@ -596,7 +596,7 @@ include "connect.php";
 						<div class="col-lg-4 col-md-4 col-sm-12">
 							<div class="service-bx m-b0">
 								<div class="action-box">
-									<img src="assets/images/our-services/pic3.jpg" alt="">
+									<img src="assets/images/library.jpg" alt="" style="height: 250px; width: 100%; object-fit: cover;">
 								</div>
 								<div class="info-bx text-center">
 									<div class="feature-box-sm radius bg-white">
@@ -607,6 +607,7 @@ include "connect.php";
 								</div>
 							</div>
 						</div>
+						
 					</div>
 				</div>
             </div>
@@ -918,9 +919,9 @@ include "connect.php";
 				</div>
 			</div> -->
 			<!-- Testimonials END -->
-			
+			<br>
 			<!-- Recent News -->
-			<div class="section-area section-sp2">
+			<!-- <div class="section-area section-sp2">
                 <div class="container">
 					<div class="row">
 						<div class="col-md-12 heading-bx left">
@@ -988,7 +989,7 @@ include "connect.php";
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- Recent News End -->
 			
         </div>
@@ -1002,7 +1003,7 @@ include "connect.php";
 				<div class="container">
 					<div class="d-flex align-items-stretch">
 						<div class="pt-logo mr-auto">
-							<a href="index.html"><img src="assets/images/Malaysia_Airlines_Logo.svg.png" alt=""/></a>
+							<a href="index.html"><img src="assets/images/Malaysia_Airlines_Logo.svg.png" alt="" style="height: 50px; ;"></a>
 						</div>
 						<div class="pt-social-link">
 							<ul class="list-inline m-a0">

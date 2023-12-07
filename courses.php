@@ -209,7 +209,7 @@
 				<ul class="list-inline">
 					<li><a href="#">Home</a></li>
 					<li>Knowledge Base</li>
-					<li>Inbox</li>
+					
 				</ul>
 			</div>
 		</div>

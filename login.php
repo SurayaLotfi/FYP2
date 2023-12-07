@@ -24,6 +24,7 @@ if(isset($_POST["submit"])){
             $_SESSION["username"] = $row["username"];
             $_SESSION["department"] = $row["department"];
             $_SESSION["email"] = $row["email"];
+			// $_SESSION["password"] = $row["password"];
             echo "<script> alert('Success!'); </script>";
             if($_SESSION["role"] == "admin")
                 header("Location: admin_profile/index.php"); //login successful, set the session id and navigate user to the homepage.
