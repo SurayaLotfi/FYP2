@@ -82,12 +82,12 @@
 					</div>
 					<div class="topbar-right">
 						<ul>
-							<li>
+							<!-- <li>
 								<select class="header-lang-bx">
 									<option data-icon="flag flag-uk">English UK</option>
 									<option data-icon="flag flag-us">English US</option>
 								</select>
-							</li>
+							</li> -->
 							<?php 
 								if(!empty($_SESSION["id"])){ //if a user is still in a session and wants to login, we won't allow them.
 									?><li><a href="logout.php">Logout</a></li><?php
@@ -147,10 +147,11 @@
 									<li><a href="home.php">Home</a></li>
 								</ul>
 							</li>
-							<li class="active"><a href="javascript:;">Library<i class="fa fa-chevron-down"></i></a>
+							<li><a href="javascript:;">Library<i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									
-									<li><a href="ai.php">Library</a></li>
+									<li><a href="library.php">Library</a></li>
+									<li><a href="ai.php">Chatbot</a></li>
 								</ul>
 							</li>
 							
@@ -292,7 +293,7 @@
 		<div class="profile-head">
 			<h3>My Progress</h3>
 			<div class="feature-filters style1 ml-auto">
-				<ul class="filters" data-toggle="buttons">
+				<!-- <ul class="filters" data-toggle="buttons">
 					<li data-filter="" class="btn active">
 						<input type="radio">
 						<a href="#"><span>All</span></a> 
@@ -305,7 +306,7 @@
 						<input type="radio">
 						<a href="#"><span>Pending</span></a> 
 					</li>
-				</ul>
+				</ul> -->
 			</div>
 		</div>
 
@@ -768,7 +769,7 @@
 				<div class="container">
 					<div class="d-flex align-items-stretch">
 						<div class="pt-logo mr-auto">
-							<a href="index.html"><img src="assets/images/Malaysia-Airlines-Logo.png" alt=""/></a>
+							<a href="index.html"><img src="" alt=""/></a>
 						</div>
 						<div class="pt-social-link">
 							<ul class="list-inline m-a0">
@@ -861,7 +862,7 @@
         <div class="footer-bottom">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 text-center"> <a target="_blank" href="https://www.templateshub.net">Templates Hub</a></div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 text-center"> <a target="_blank" href="https://www.templateshub.net">Wan Suraya U2005345</a></div>
                 </div>
             </div>
         </div>

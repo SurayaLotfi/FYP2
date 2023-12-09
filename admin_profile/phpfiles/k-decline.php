@@ -26,14 +26,14 @@
                 $insertDeclinedResult = mysqli_query($db, $insertDeclinedQuery);
             }
 
-            if(isset($updateDeclinedResult) && $updateDeclinedResult){
+            // if(isset($updateDeclinedResult) && $updateDeclinedResult){
                 echo "<script> 
                     alert('Knowledge has been declined.');
                     window.location.href = '../k-request.php';
                 </script>";
-            } else {
-                echo "problem: " . mysqli_error($db);
-            }
-        }
+            // } else {
+                // echo "problem: " . mysqli_error($db);
+            // }
+              }
     }
 ?>

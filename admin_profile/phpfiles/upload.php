@@ -8,8 +8,9 @@
     }
     
     //upload pdf
-    if (isset($_POST['submit'])) {
+    if (isset($_POST['submit'])){
  
+        
         $title = $_POST['title'];
         // $class_code = $_POST['class_code'];
         $validity = date('Y-m-d', strtotime($_POST['dateValid']));
@@ -22,18 +23,21 @@
         $minimum_time = $_POST['minimum_time'];
         $username = $_SESSION['username'];
         $source = 'Admin';
-        
-    
-        
-                    
-    //insert into database
+              
+        $check = "SELECT * FROM class WHERE class_id = '$class_id' AND department = '$department'";
+        $result_check = mysqli_query($db, $check);
+
+        if(mysqli_num_rows($result_check) > 0){
+            echo "<script> 
+            alert('Knowledge has been uploaded into the system.');
+            window.location.href = '../add-listing.php';
+            </script>";
+        }else{
+
+                //insert into database
     $insert = $db->query("INSERT INTO class(title, format,  validity,  class_id, department,content, minimum_time, admin, source)
     VALUES('$title', '$format',  '$validity','$class_id', '$department', '$content',  '$minimum_time', '$username', '$source')");
-    
-
-
-
-      
+   
     if($insert){
         //insert in user's record
         if($department == "All"){
@@ -70,6 +74,10 @@
         }else{
         echo "Query error: " . mysqli_error($db); // Display the error message
     }
+
+        }
+
+       
 
 
       

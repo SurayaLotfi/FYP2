@@ -21,9 +21,11 @@ if (isset($_POST['shareid'])) {
     $source = $_POST['creator'];
     $admin_approved = $_POST['admin_approved'];
 
+    //$knowledge_id = 'SK' . $knowledge_id;
+
     // Insert into database using prepared statements
     $insert = $db->prepare("INSERT INTO class (title, format, validity, class_id, department, content, minimum_time, admin, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $insert->bind_param("sssssssss", $title, $format, $validity, $knowledge_id, $department, $content, $minimum_time, $username, $source);
+    $insert->bind_param("sssssssss", $title, $format, $validity, $class_id, $department, $content, $minimum_time, $username, $source);
     $insert_result = $insert->execute();
     $insert->close();
 

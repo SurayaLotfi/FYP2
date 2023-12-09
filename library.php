@@ -64,12 +64,12 @@
 					</div>
 					<div class="topbar-right">
 						<ul>
-							<li>
+							<!-- <li>
 								<select class="header-lang-bx">
 									<option data-icon="flag flag-uk">English UK</option>
 									<option data-icon="flag flag-us">English US</option>
 								</select>
-							</li>
+							</li> -->
 							<li><a href="login.html">Login</a></li>
 							<li><a href="register.html">Register</a></li>
 						</ul>
@@ -82,7 +82,7 @@
                 <div class="container clearfix">
 					<!-- Header Logo ==== -->
 					<div class="menu-logo">
-						<a href="index.html"><img src="assets/images/logo.png" alt=""></a>
+						<a href="index.html"><img src="assets/images/Malaysia-Airlines-Logo.png" alt=""></a>
 					</div>
 					<!-- Mobile Nav Button ==== -->
                     <button class="navbar-toggler collapsed menuicon justify-content-end" type="button" data-toggle="collapse" data-target="#menuDropdown" aria-controls="menuDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -126,7 +126,7 @@
 							<li><a href="javascript:;">Library<i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									
-									<li><a href="ai.php">Library</a></li>
+									<li><a href="library.php">Library</a></li>
 									<li><a href="ai.php">Chatbot</a></li>
 								</ul>
 							</li>
@@ -471,7 +471,7 @@
         <div class="footer-bottom">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 text-center"><a target="_blank" href="https://www.templateshub.net">Templates Hub</a></div>
+					<div class="col-lg-12 col-md-12 col-sm-12 text-center"> <a target="_blank" href="https://www.templateshub.net">Wan Suraya U2005345</a></div>
                 </div>
             </div>
         </div>

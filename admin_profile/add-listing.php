@@ -462,7 +462,7 @@
 											error_reporting(E_ALL);
 											ini_set('display_errors', 1);
 
-											$directory = "C:\Users\ASUS\OneDrive\Documents\GitHub\KMS4MAE\EduChamp-Education-HTML-Template-Admin-Dashboard\admin\FTP Server\Files"; // Path to your local directory
+											$directory = "C:\Users\ASUS\OneDrive\Documents\GitHub\KMS4MAE\EduChamp-Education-HTML-Template-Admin-Dashboard\admin\FTP Server\Files"; // Path to your local directory where the FTP Server is located
 											$files = scandir($directory);
 											
 

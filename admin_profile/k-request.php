@@ -398,6 +398,7 @@
 									<th>Username</th>
 									<th>Department</th>
 									<th>Message</th>
+									<th>Time added </th>
 									<th>Status</th>
 									
 									<th>Action</th>
@@ -423,9 +424,11 @@
 									<td><?php echo $row['username'] ?></td>
 									<td><?php echo $row['department'] ?></td>
 									<td><?php echo $row['message'] ?></td>
+									
+									<td>Date: <?php echo date("d/m/Y", strtotime($row['time_added'])); ?><br>
+										Time: <?php echo date("H:i:s", strtotime($row['time_added'])); ?></td>
 									<td><?php echo $row['status'] ?></td>
 									
-								
 									
 									<td>
 									<a href="k-details.php?knowledge_id=<?php echo $id?>" class='btn'>Select</a>

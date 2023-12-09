@@ -743,7 +743,8 @@
 									<td><?php echo $row['class_id'] ?></td>
 									<td><?php echo $row['department'] ?></td>
 									<td><?php echo $row['validity'] ?></td>
-									<td><?php echo $row['time_added'] ?></td>
+									<td>Date: <?php echo date("d/m/Y", strtotime($row['time_added'])); ?><br>
+										Time: <?php echo date("H:i:s", strtotime($row['time_added'])); ?></td>
 									<td><?php echo $row['source'] ?></td>
 									<td><?php echo $row['admin'] ?></td>
 									<!-- <td style="display: flex; justify-content: center;"><a href="../admin_view_profile.php?user_id=<?php echo $id?>" class='btn-secondry'>View Dashboard</a></td> -->
@@ -758,7 +759,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-12 m-b30">
+				<!-- <div class="col-lg-12 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
 							<h4>Basic Calendar</h4>
@@ -767,7 +768,7 @@
 							<div id="calendar"></div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		
