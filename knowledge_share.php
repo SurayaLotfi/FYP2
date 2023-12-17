@@ -128,7 +128,7 @@ include "connect.php";
                 <div class="container clearfix">
 					<!-- Header Logo ==== -->
 					<div class="menu-logo">
-						<a href="index.html"><img src="assets/images/logo.png" alt=""></a>
+						<a href="index.html"><img src="assets/images/Malaysia-Airlines-Logo.png" alt=""></a>
 					</div>
 					<!-- Mobile Nav Button ==== -->
                     <button class="navbar-toggler collapsed menuicon justify-content-end" type="button" data-toggle="collapse" data-target="#menuDropdown" aria-controls="menuDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -258,7 +258,7 @@ include "connect.php";
 									<div class="form-group col-6">
 										<label class="col-form-label">Knowledge title</label>
 										<div>
-										<input class="form-control" type="text" id="title" name="title">
+										<input class="form-control" type="text" id="title" name="title" required>
 										</div>
 									</div>
 									<!-- <div class="form-group col-6">
@@ -276,7 +276,7 @@ include "connect.php";
 									<div class="form-group col-6">
 										<label class="col-form-label">Estimated Validity</label>
 										<div>
-										<input class="form-control" type="date" id="validity" name="validity">
+										<input class="form-control" type="date" id="validity" name="validity" required>
 										</div>
 									</div>
 									<!-- <div class="form-group col-6">
@@ -289,7 +289,7 @@ include "connect.php";
 									<div class="form-group col-6">
 										<label class="col-form-label">Estimated time completion (Eg: 6 hours 30 minutes)</label>
 										<div>
-										<input class="form-control" type="text" id="minimum_time" name="minimum_time">
+										<input class="form-control" type="text" id="minimum_time" name="minimum_time" required>
 										</div>
 									</div>
 									<!-- <div class="form-group col-6">
@@ -331,7 +331,7 @@ include "connect.php";
 									<div class="form-group col-12">
 										<label class="col-form-label" for="message">Message</label>
 										<div>
-										<textarea class="form-control" name="message" id="message"></textarea>
+										<textarea class="form-control" name="message" id="message" required></textarea>
 										</div>
 									</div>
 

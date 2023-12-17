@@ -8,6 +8,7 @@
 
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +18,7 @@
 	<!-- META ============================================= -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="keywords" content="" />
 	<meta name="author" content="" />
 	<meta name="robots" content="" />
@@ -59,8 +61,13 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+
+
 	
 </head>
+
+
+
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 	
 	<!-- header start -->
@@ -448,24 +455,40 @@
 											<textarea class="form-control"> </textarea>
 										</div>
 									</div> -->
+									<br>
 									<div class="seperator"></div>
 									<div class="col-12 m-t20">
 										<div class="ml-auto m-b5">
 											<h3>2. Knowledge Upload</h3>
 										</div>
 									</div>
+									<style>
+										/* Add your CSS styles here */
+										.content-select {
+											padding: 10px;
+											font-size: 16px;
+											border: 1px solid #ccc;
+											border-radius: 5px;
+										}
+
+										/* Optional: Style the options */
+										.content-select option {
+											background-color: #449461;
+											color: #333;
+										}
+									</style>
+
 									<div class="form-group col-6">
-										<label class="col-form-label" for="folder-select">Choose a Folder</label>
-										<select class="form-control" id="folder-select" name="content">
-											<?php
-											
+									<label class="col-form-label" for="folder-select">Choose Folder from Server</label>
+										<select  name="content" class="folder-select" id="content-select"> 
+										<option value="">Click Here</option>
+											<?php	
 											error_reporting(E_ALL);
 											ini_set('display_errors', 1);
 
 											$directory = "C:\Users\ASUS\OneDrive\Documents\GitHub\KMS4MAE\EduChamp-Education-HTML-Template-Admin-Dashboard\admin\FTP Server\Files"; // Path to your local directory where the FTP Server is located
 											$files = scandir($directory);
-											
-
+		
 											if ($files) {
 												// Loop through the directory and add each folder as an option
 												foreach ($files as $file) {
@@ -481,6 +504,9 @@
 											?>
 										</select>
 									</div>
+
+							
+									
 									<div class="col-12">
 									<button  type="submit" class="btn btn-info"  name="submit" type="submit">UPLOAD</button> 
 									
@@ -496,6 +522,8 @@
 	</main>
 	<div class="ttr-overlay"></div>
 
+
+
 <!-- External JavaScripts -->
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
@@ -510,10 +538,16 @@
 <script src="assets/vendors/masonry/filter.js"></script>
 <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
 <script src='assets/vendors/scroll/scrollbar.min.js'></script>
-<script src="assets/js/functions.js"></script>
+<!-- <script src="assets/js/functions.js"></script> -->
 <script src="assets/vendors/chart/chart.min.js"></script>
 <script src="assets/js/admin.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
+
+<!-- Bootstrap CSS -->
+<!-- <link href="library/bootstrap-5/bootstrap.min.css" rel="stylesheet" /> -->
+<script src="library/bootstrap-5/bootstrap.bundle.min.js"></script> 
+<script src="library/dselect.js"></script>
+
 <script>
 // Pricing add
 	function newMenuItem() {
@@ -532,6 +566,18 @@
 		});
 	}
 </script>
+
+<script>
+
+	var select_box_element = document.querySelector('#content-select');
+
+	dselect(select_box_element, {
+		search: true
+	});
+
+</script>
+
+
 </body>
 
 <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->

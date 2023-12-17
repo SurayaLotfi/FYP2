@@ -59,22 +59,7 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
-	<!--Data Table-->
-	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-	<!--Initializing Data Table-->
-	<script>
 	
-	var $j = jQuery.noConflict();
-		$j(document).ready(function() {
-			// Use $j instead of $
-			$j('#dataTableid').DataTable({
-				// DataTables options
-			});
-		})
-	</script>
 
 	
 	
@@ -285,45 +270,7 @@
 		                	<span class="ttr-label">Knowledge Base</span>
 		                </a>
 		            </li>
-					<!-- <li>
-						<a href="#" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-email"></i></span>
-		                	<span class="ttr-label">Mailbox</span>
-		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
-		                	<li>
-		                		<a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
-		                	</li>
-		                	<li>
-		                		<a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
-		                	</li>
-							<li>
-		                		<a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
-		                	</li>
-		                </ul>
-		            </li> -->
-					<!-- <li>
-						<a href="#" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-calendar"></i></span>
-		                	<span class="ttr-label">Calendar</span>
-		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
-		                	<li>
-		                		<a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
-		                	</li>
-		                	<li>
-		                		<a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
-		                	</li>
-		                </ul>
-		            </li> -->
-					<!-- <li>
-						<a href="bookmark.html" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
-		                	<span class="ttr-label">Bookmarks</span>
-		                </a>
-		            </li> -->
+
 					<?php
 						include "./phpfiles/connect.php";
 						$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
@@ -400,7 +347,7 @@
 									<th>Message</th>
 									<th>Time added </th>
 									<th>Status</th>
-									
+									<th>Type</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -428,7 +375,17 @@
 									<td>Date: <?php echo date("d/m/Y", strtotime($row['time_added'])); ?><br>
 										Time: <?php echo date("H:i:s", strtotime($row['time_added'])); ?></td>
 									<td><?php echo $row['status'] ?></td>
-									
+									<td>
+										<?php 
+											$query_type = "SELECT * FROM ks_declined WHERE ks_id = $id";
+											$result_type = mysqli_query($db, $query_type);
+
+											if(mysqli_num_rows($result_type) > 0){
+												echo 'Resubmitted';
+											}else{
+												echo 'New';
+											}
+										?></td>
 									
 									<td>
 									<a href="k-details.php?knowledge_id=<?php echo $id?>" class='btn'>Select</a>
@@ -465,61 +422,47 @@
 <script src="assets/vendors/masonry/filter.js"></script>
 <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
 <script src='assets/vendors/scroll/scrollbar.min.js'></script>
-<script src="assets/js/functions.js"></script>
+<!-- <script src="assets/js/functions.js"></script> -->
 <script src="assets/vendors/chart/chart.min.js"></script>
 <script src="assets/js/admin.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
 
 
+<!--Data Table-->
+	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-<script>
-//   $(document).ready(function () {
-//     var table = $('#dataTableid').DataTable({
-//       "pagingType": "full_numbers",
-//       "lengthMenu": [
-//         [5, 10, 15, 50, -1],
-//         [5, 10, 15, 50, "All"]
-//       ],
-//       responsive: true,
-//       language: {
-//         search: "_INPUT_",
-//         searchPlaceholder: "Search",
-//       }
-//     });
+	<!--Initializing Data Table-->
+	<script>
+var $j = jQuery.noConflict();
 
-//     // Add custom filter dropdown for Content Type
-//     var filterDropdown = $('<select class="form-select form-control form-control-sm mb-3" aria-label="Content Type Filter"><option value="" selected disabled>Select Format</option><option value="">All</option><option value="pdf">PDF</option><option value="html">HTML</option><option value="video">Video</option><option value="image">Image</option></select>')
-//       .css('width', '150px')
-//       .css('margin-top','7px')
-//       .css('margin-left','10px')
-//       .css('margin-right','10px');
+$j(document).ready(function() {
+    var table = $j('#dataTableid').DataTable({
+        // DataTables options
+    });
 
+    var filterDropdown = $(
+        '<select class="form-control mb-3" aria-label="Source"><option value="" selected disabled>Select Type</option><option value="">All</option><option value="New">New</option><option value="Resubmitted">Resubmitted</option></select>'
+    )
+        .css('width', '150px')
+        .css('margin-top', '7px')
+        .css('margin-left', '10px')
+        .css('margin-right', '10px');
 
-//     // Add custom filter dropdown for Location
-//     var filterDropdown2 = $('<select class="form-select form-control form-control-sm mb-3" aria-label="Location"><option value="" selected disabled>Location</option><option value="">All</option><option value="knowledge_base">Knowledge Base</option><option value="classes">Class</option><option value="both">Both</option></select>')
-//       .css('width', '150px')
-//       .css('margin-top','7px')
-//       .css('margin-left','10px')
-//       .css('margin-right','10px');
+    // Insert filter dropdown next to the search input
+    $('.dataTables_filter')
+        .addClass('d-flex align-items-center')
+        .append(filterDropdown);
 
-//     // Insert filter dropdowns next to the search input
-//     $('.dataTables_filter')
-//       .addClass('d-flex align-items-center')
-//       .append(filterDropdown)
-//       .append(filterDropdown2);
-
-//     filterDropdown.on('change', function () {
-//       var filterValue = $(this).val();
-//       table.column(2).search(filterValue).draw();
-//     });
-
-//     filterDropdown2.on('change', function () {
-//       var filterValue = $(this).val();
-//       table.column(2).search(filterValue).draw();
-//     });
-//   });
-
+    filterDropdown.on('change', function() {
+        var filterValue = $j(this).val();
+        table.column(7).search(filterValue).draw();
+    });
+});
 </script>
+
+
 </body>
 
 <!-- Mirrored from educhamp.themetrades.com/demo/admin/courses.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->

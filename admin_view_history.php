@@ -234,7 +234,7 @@
 			<!-- <div class="section-area section-sp1"> -->
                 <div class="container-fluid"  style="padding: 50px;">
                     
-                <table border="1" id="dataTableid" class="display">
+				<table border="1" id="dataTableid" class="display">
 							<thead>
 								<tr>
 									<th>No</th>
@@ -284,8 +284,15 @@
 										Time: <?php echo date("H:i:s", strtotime($row['end_time'])); 
 										}?>
 									</td>
-									<td><?php echo $row['duration'] ?></td>
-									<td><?php echo $row['class_code'] ?></td>
+									<td><?php 
+										if($row['status'] == 'In Progress'){
+											echo 'Not yet completed';
+										}else{
+											echo $row['duration'];
+										}
+ 
+										?></td>
+									<td><?php echo $row['class_id'] ?></td>
 									<td><?php echo $row['status'] ?></td>
 									
                                     

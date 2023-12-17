@@ -45,8 +45,8 @@ if (isset($_POST['submit']) && isset($_FILES['my_pdf'])) {
 
                 if ($stmt->execute()) {
                     echo '<script type="text/javascript">
-                        alert("Successful");
-                        window.location = "knowledge_share.php";
+                      
+                        window.location = "tq_ks.php";
                     </script>';
                 } else {
                     echo "
