@@ -160,6 +160,7 @@
 										<li><a href="courses.php">Knowledge Base</a></li>
 										<li><a href="history.php">History</a></li>
 										<li><a href="inbox.php">Inbox</a></li>
+										<li><a href="knowledge_share.php">Create Knowledge</a></li>
 									</ul>	
 							</li>
 							<!-- <li><a href="javascript:;">Blog <i class="fa fa-chevron-down"></i></a>
@@ -315,7 +316,8 @@
 		//RETRIEVING TOTAL TIME SPENT ON MODULES
 				include "phpfiles/convertTime.php";
 
-				$query = "SELECT * FROM content_record WHERE username = '$username'";
+				$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+                    WHERE  username = '$username'";
 				$result = mysqli_query($db, $query);
 				$total_time_spent = 0;
 				

@@ -65,6 +65,7 @@
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 	
 </head>
+
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 	
 	<!-- header start -->

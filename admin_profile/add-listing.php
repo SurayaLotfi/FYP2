@@ -62,6 +62,8 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
+	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
 	
 </head>
@@ -383,7 +385,7 @@
 							
 						?>
 						<div class="widget-inner">
-							<form class="edit-profile m-b30" action="./phpfiles/upload.php" method="post" enctype="multipart/form-data">
+							<form id="uploadForm" class="edit-profile m-b30" action="./phpfiles/upload.php" method="post" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
@@ -393,7 +395,7 @@
 									<div class="form-group col-6">
 										<label class="col-form-label">Knowledge title</label>
 										<div>
-										<input class="form-control" type="text" id="title" name="title">
+										<input class="form-control" type="text" id="title" name="title" required>
 										</div>
 									</div>
 									<!-- <div class="form-group col-6">
@@ -411,7 +413,7 @@
 									<div class="form-group col-6">
 										<label class="col-form-label">Validity</label>
 										<div>
-										<input class="form-control" type="date" id="validity" name="dateValid">
+										<input class="form-control" type="date" id="validity" name="dateValid" required>
 										</div>
 									</div>
 									<!-- <div class="form-group col-6">
@@ -421,15 +423,29 @@
 										</div>
 									</div> -->
 									
-									<div class="form-group col-6">
+									<!-- <div class="form-group col-6">
 										<label class="col-form-label">Estimated time completion (Eg: 6 hours 30 minutes)</label>
 										<div>
 										<input class="form-control" type="text" id="minimum_time" name="minimum_time">
 										</div>
+									</div> -->
+
+									<div class="form-group col-6">
+										<label class="col-form-label" for="content-type-select">Estimated time completion</label>
+										<select class="form-control" id="minimum_time" name="minimum_time" required>
+											<option value="30 minutes">30 minutes</option>
+											<option value="1 hours">1 hours</option>
+											<option value="1 hours 30 minutes">1 hours 30 minutes</option>
+											<option value="2 hours">2 hours</option>
+											<option value="2 hours 30 minutes">2 hours 30 minutes</option>
+											<option value="3 hours">3 hours</option>
+											<option value="3 hours 30 minutes">3 hours 30 minutes</option>
+										</select>
 									</div>
+
 									<div class="form-group col-6">
 										<label class="col-form-label" for="content-type-select">Knowledge Format</label>
-										<select class="form-control" id="format" name="format">
+										<select class="form-control" id="format" name="format" required>
 											<option value="Video">Video</option>
 											<option value="PDF">PDF</option>
 											<option value="Image">Image</option>
@@ -440,7 +456,7 @@
 
 									<div class="form-group col-6">
 										<label class="col-form-label" for="content-type-select">For which Department</label>
-										<select class="form-control" id="department" name="department">
+										<select class="form-control" id="department" name="department" required>
 											<option value="Training">Training</option>
 											<option value="Engineering">Engineering</option>
 											<option value="IT">IT</option>
@@ -508,7 +524,8 @@
 							
 									
 									<div class="col-12">
-									<button  type="submit" class="btn btn-info"  name="submit" type="submit">UPLOAD</button> 
+									<button type="submit" class="btn btn-info" id="uploadButton" >UPLOAD</button>
+
 									
 									</div>
 								</div>
@@ -576,6 +593,45 @@
 	});
 
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const uploadButton = document.getElementById("uploadButton");
+        const uploadForm = document.getElementById("uploadForm");
+
+        uploadButton.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            Swal.fire({
+                title: "Are you sure you want to upload this?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Yes, upload it!",
+                cancelButtonText: "No, cancel!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If the user clicks "Yes, upload it!", submit the form
+                    uploadForm.submit();
+                }
+            });
+        });
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
+
+        if (alertType === "knowledge_exists") {
+            Swal.fire("Knowledge has been uploaded into the system.");
+        } else if (alertType === "success") {
+            Swal.fire("Success", "Knowledge has been successfully uploaded.", "success");
+        }
+    });
+</script>
+
+
 
 
 </body>

@@ -6,10 +6,20 @@
     if ($db->connect_error) {
       die("Connection failed: " . $db->connect_error);
     }
+
+    ?>
+        <script>
+            console.log("hello");
+            </script>
+        <?php
     
     //upload pdf
-    if (isset($_POST['submit'])){
- 
+  
+        ?>
+        <script>
+            console.log("hello");
+            </script>
+        <?php
         
         $title = $_POST['title'];
         // $class_code = $_POST['class_code'];
@@ -23,18 +33,24 @@
         $minimum_time = $_POST['minimum_time'];
         $username = $_SESSION['username'];
         $source = 'Admin';
+        ?>
+
+    <?php
               
         $check = "SELECT * FROM class WHERE class_id = '$class_id' AND department = '$department'";
         $result_check = mysqli_query($db, $check);
 
         if(mysqli_num_rows($result_check) > 0){
-            echo "<script> 
-            alert('Knowledge has been uploaded into the system.');
-            window.location.href = '../add-listing.php';
-            </script>";
+            header("Location: ../add-listing.php?alert=knowledge_exists");
+            ?>
+            <script>
+                console.log("hello");
+                </script>
+            <?php
+            exit();
         }else{
 
-                //insert into database
+    //insert into database
     $insert = $db->query("INSERT INTO class(title, format,  validity,  class_id, department,content, minimum_time, admin, source)
     VALUES('$title', '$format',  '$validity','$class_id', '$department', '$content',  '$minimum_time', '$username', '$source')");
    
@@ -66,10 +82,7 @@
             }
         }
         
-    echo "<script> 
-            alert('Success');
-            window.location.href = '../add-listing.php';
-        </script>";
+        header("Location: ../add-listing.php?alert=success");
 
         }else{
         echo "Query error: " . mysqli_error($db); // Display the error message
@@ -80,10 +93,7 @@
        
 
 
-      
-    }else{
-        echo "Query error: " . mysqli_error($db); // Display the error message
-    }
+  
     
     ?>
 

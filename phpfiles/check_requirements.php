@@ -2,6 +2,7 @@
 include "connect.php";
 session_start();
 $username = $_SESSION['username'];
+$department = $_SESSION['department'];
 
 // Check requirements on the server-side
 $content_id = $_POST['content_id'];
@@ -11,7 +12,7 @@ $sql = "SELECT * FROM content_record WHERE content_id = '$content_id'";
 $result = mysqli_query($db, $sql);
 
 if (mysqli_num_rows($result) > 0) {
-    $sql = "SELECT * FROM class WHERE class_id = '$content_id'";
+    $sql = "SELECT * FROM class WHERE class_id = '$content_id' AND department = '$department'";
     $result = mysqli_query($db, $sql);
     $row = mysqli_fetch_assoc($result);
 

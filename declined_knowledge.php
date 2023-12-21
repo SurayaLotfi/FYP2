@@ -198,6 +198,7 @@ include "connect.php";
 									<li><a href="courses.php">Knowledge Base</a></li>
 									<li><a href="history.php">History</a></li>
 									<li><a href="inbox.php">Inbox</a></li>
+									<li><a href="knowledge_share.php">Create Knowledge</a></li>
 									</ul>								
 							</li>
 

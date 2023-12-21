@@ -1,3 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+</head>
+<body>
+    
+</body>
+</html>
+
 <?php
 
     include "connect.php";
@@ -15,6 +29,25 @@
         $status = 'Not yet started';
         $minimum_time = $_POST['minimum_time'];
 
+
+        ?>
+            <script>
+                Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                denyButtonText: `Don't save`
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire("Saved!", "", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+                });
+            </script>
+        <?php
     
             // JavaScript confirmation dialog
     echo '<script>';
@@ -38,13 +71,6 @@
         $status = $_GET['status'];
         $minimum_time = $_GET['minimum_time'];
         $format = $_GET['format'];
-
-        //update database
-        // $insert = $db->query("UPDATE class SET title='$title', format='$format', validity='$validity', due='$due', department='$department', content='$content', 
-        //                  minimum_time='$minimum_time', class_code = '$class_code', class_id ='$class_id' WHERE id='$id'");
-                         //update database
-        // $insert = $db->query("UPDATE class SET title='$title', format='$format', validity='$validity', department='$department', content='$content', 
-        // minimum_time='$minimum_time', class_id ='$class_id' WHERE id='$id'");
 
         // Update database using prepared statements
         $update = $db->prepare("UPDATE class SET title=?, format=?, validity=?, department=?, content=?, minimum_time=?, class_id=? WHERE id=?");

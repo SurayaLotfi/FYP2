@@ -69,9 +69,9 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
-	<!--jQuery-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
 
 
 
@@ -170,6 +170,7 @@
 										<li><a href="courses.php">Knowledge Base</a></li>
 										<li><a href="history.php">History</a></li>
 										<li><a href="inbox.php">Inbox</a></li>
+										<li><a href="knowledge_share.php">Create Knowledge</a></li>
 									</ul>	
 							</li>
 
@@ -413,7 +414,53 @@
     <button class="back-to-top fa fa-chevron-up" ></button>
 </div>
 <!-- External JavaScripts -->
+
 <script src="assets/js/jquery.min.js"></script>
+
+    <!--Data Table-->
+	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+		<!--Initializing Data Table-->
+		<script>
+	
+	var $j = jQuery.noConflict();
+		$j(document).ready(function() {
+			// Use $j instead of $
+			$j('#dataTableid').DataTable({
+				"pagingType": "full_numbers",
+	"lengthMenu": [
+		[5, 10, 15, 50, -1],
+		[5, 10, 15, 50, "All"]
+	],
+	responsive: true,
+	// language: {
+	// 	search: "_INPUT_",
+	// 	searchPlaceholder: "Search",
+	// }
+	});
+
+	// var filterDropdown = $(
+	// 	'<select class="form-control mb-3" aria-label="Source"><option value="" selected disabled>Select Status</option><option value="">All</option><option value="Completed">Completed</option><option value="In Progress">In Progress</option></select>'
+	// )
+	// 	.css('width', '150px')
+	// 	.css('margin-top', '7px')
+	// 	.css('margin-left', '10px')
+	// 	.css('margin-right', '10px');
+
+	// // Insert filter dropdown next to the search input
+	// $('.dataTables_filter')
+	// 	.addClass('d-flex align-items-center')
+	// 	.append(filterDropdown);
+
+	// filterDropdown.on('change', function() {
+	// 	var filterValue = $j(this).val();
+	// 	table.column(6).search(filterValue).draw();
+	// });
+})
+
+</script>
 <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
 <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
@@ -428,52 +475,9 @@
 <script src="assets/js/functions.js"></script>
 <script src="assets/js/contact.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
-<script src='filter.js'></script>
 
-    <!--Data Table-->
-	<!-- <script src="https://code.jquery.com/jquery-3.7.0.js"></script> -->
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-	<!--Initializing Data Table-->
-	<script>
-	
-			var $j = jQuery.noConflict();
-				$j(document).ready(function() {
-					// Use $j instead of $
-					$j('#dataTableid').DataTable({
-						"pagingType": "full_numbers",
-			"lengthMenu": [
-				[5, 10, 15, 50, -1],
-				[5, 10, 15, 50, "All"]
-			],
-			responsive: true,
-			language: {
-				search: "_INPUT_",
-				searchPlaceholder: "Search",
-			}
-			});
 
-			var filterDropdown = $(
-				'<select class="form-control mb-3" aria-label="Source"><option value="" selected disabled>Select Status</option><option value="">All</option><option value="Completed">Completed</option><option value="In Progress">In Progress</option></select>'
-			)
-				.css('width', '150px')
-				.css('margin-top', '7px')
-				.css('margin-left', '10px')
-				.css('margin-right', '10px');
-
-			// Insert filter dropdown next to the search input
-			$('.dataTables_filter')
-				.addClass('d-flex align-items-center')
-				.append(filterDropdown);
-
-			filterDropdown.on('change', function() {
-				var filterValue = $j(this).val();
-				table.column(6).search(filterValue).draw();
-			});
-		})
-
-	</script>
 
 
 

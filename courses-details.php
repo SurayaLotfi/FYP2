@@ -3,12 +3,13 @@ session_start();
 include "connect.php";
 
 	$username = $_SESSION['username'];
+	$department = $_SESSION['department'];
 	//get all wanted data
 	//getting class data
 	if(isset($_GET['course_id'])){
 		$course_id = $_GET['course_id'];
 		
-		$sql = "SELECT * FROM class WHERE class_id='$course_id'";
+		$sql = "SELECT * FROM class WHERE class_id='$course_id' AND department='$department'";
 		$result=mysqli_query($db, $sql);
 		$row = mysqli_fetch_assoc($result);
 		$content = $row["content"];
@@ -195,6 +196,7 @@ include "connect.php";
 									<li><a href="courses.php">Knowledge Base</a></li>
 									<li><a href="inbox.php">Inbox</a></li>
 									<li><a href="history.php">History</a></li>
+									<li><a href="knowledge_share.php">Create Knowledge</a></li>
 									</ul>	
 							</li>
 							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>

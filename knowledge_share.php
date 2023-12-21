@@ -183,6 +183,7 @@ include "connect.php";
 									<li><a href="courses.php">Knowledge Base</a></li>
 									<li><a href="history.php">History</a></li>
 									<li><a href="inbox.php">Inbox</a></li>
+									<li><a href="knowledge_share.php">Create Knowledge</a></li>
 									</ul>
 									
 								
@@ -279,6 +280,7 @@ include "connect.php";
 										<input class="form-control" type="date" id="validity" name="validity" required>
 										</div>
 									</div>
+
 									<!-- <div class="form-group col-6">
 										<label class="col-form-label">Due</label>
 										<div>
@@ -286,22 +288,26 @@ include "connect.php";
 										</div>
 									</div> -->
 									
-									<div class="form-group col-6">
+									<!-- <div class="form-group col-6">
 										<label class="col-form-label">Estimated time completion (Eg: 6 hours 30 minutes)</label>
 										<div>
 										<input class="form-control" type="text" id="minimum_time" name="minimum_time" required>
 										</div>
-									</div>
-									<!-- <div class="form-group col-6">
-										<label class="col-form-label" for="content-type-select">Knowledge Format</label>
-										<select class="form-control" id="format" name="format">
-											<option value="Video">Video</option>
-											<option value="PDF">PDF</option>
-											<option value="Image">Image</option>
-											<option value="Others">Others</option>
-						
-										</select>
 									</div> -->
+
+									<div class="form-group col-6">
+										<label class="col-form-label" for="content-type-select">Estimated time completion</label>
+										<select class="form-control" id="minimum_time" name="minimum_time">
+											<option value="30 minutes">30 minutes</option>
+											<option value="1 hours">1 hours</option>
+											<option value="1 hours 30 minutes">1 hours 30 minutes</option>
+											<option value="2 hours">2 hours</option>
+											<option value="2 hours 30 minutes">2 hours 30 minutes</option>
+											<option value="3 hours">3 hours</option>
+											<option value="3 hours 30 minutes">3 hours 30 minutes</option>
+										</select>
+									</div>
+
 
 									<div class="form-group col-6">
 										<label class="col-form-label" for="content-type-select">For which Department</label>
@@ -310,7 +316,6 @@ include "connect.php";
 											<option value="Engineering">Engineering</option>
 											<option value="IT">IT</option>
 											<option value="Business">Business</option>
-											<option value="All">All</option>
 										</select>
 									</div>
 									
@@ -353,72 +358,6 @@ include "connect.php";
 						</div>
 									</div>
 								</div>
-
-								<!-- <div class="col-lg-12">
-									<div class="form-group">
-										<div class="container">
-											<div class="row">
-												<div class="col"> -->
-										<!--PDF-->
-										<!-- <div class="card">
-										<h5 class="card-header info-color white-text text-center py-4">
-										<div class="col-12">
-										<strong>Upload PDF Form</strong>
-										</div>
-										</h5>
-										<div class="card-body  px-lg-5 pt-0">
-											<div class="container" style="display: flex; justify-content: center; align-items: center">
-											<div class="row" style="padding: 10px"><br><br>
-												<form action="sharing.php" method="post" enctype="multipart/form-data" > -->
-													<!--Document Title-->
-													<!-- <div class="form-group col-6">
-														<label for="Title">Title</label>
-														<input type="text" class="form-control" id="content_name" name="content_name" placeholder="Enter Title">
-													</div>
-													<div class="form-group col-6">
-														<label for="Name">Name</label>
-														
-														<input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
-													</div>
-													<div class="form-group">
-														<label for="Title">email</label>
-														<input type="text" class="form-control" id="email" name="email" placeholder="Enter Email">
-													</div>
-													<div class="form-group">
-														<label for="Title">phone</label>
-														<input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Numbers">
-													</div>
-													<div class="form-group">
-														<label for="Title">subject</label>
-														<input type="text" class="form-control" id="subject" name="subject" placeholder="Enter Title">
-													</div>
-													<div class="form-group">
-														<label for="Title">Message</label>
-														<input type="text" class="form-control" id="message" name="message" placeholder="Enter Title">
-													</div>
-													
-												<br>
-												<input type="file" name="my_pdf"> 
-												<button  type="submit" class="btn btn-info btn-rounded btn-block my-4 waves-effect z-depth-0"  name="submit" type="submit">UPLOAD</button> 
-												<br>
-												<footer style="font-size: 12px"><b>File Type:</b><font color="red"><i> .pdf only</i></font></footer>
-												</form>
-												
-											</div>
-											</div>  
-										</div>
-										</div>
-										</div>
-									</div>
-								</div> -->
-								<!-- <div class="col-lg-12">
-									<div class="form-group">
-										
-									</div>
-								</div>
-								<div class="col-lg-12">
-									<button name="submit" type="submit" value="submit" class="btn button-md">Send Your Knowledge</button>
-								</div> -->
 							</div>
 						<!-- </form> -->
 					</div>
