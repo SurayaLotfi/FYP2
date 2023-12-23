@@ -48,6 +48,45 @@
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 	
 </head>
+
+<style>
+	.notification-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+	
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 4px 6px;
+    font-size: 10px;
+	line-height: 1; /* Ensures the text is vertically centered */
+}
+
+.notification-popup {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.notification-icon:hover .notification-popup {
+    display: block;
+}
+
+.notification-icon i {
+            font-size: 20px; /* Adjust the size as needed */
+        }
+	</style>
 <body id="bg">
 <div class="page-wraper">
 <div id="loading-icon-bx"></div>
@@ -70,6 +109,7 @@
 									<option data-icon="flag flag-us">English US</option>
 								</select>
 							</li> -->
+							
 							<li><a href="login.html">Login</a></li>
 							<li><a href="register.html">Register</a></li>
 						</ul>
@@ -92,16 +132,21 @@
 					</button>
 					<!-- Author Nav ==== -->
                     <div class="secondary-menu">
-                        <div class="secondary-inner">
-                            <ul>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
-								<!-- Search Button ==== -->
-								<li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
-							</ul>
-						</div>
-                    </div>
+					<div class="secondary-inner">
+						<ul>
+							<li class="notification-icon">
+								<a href="javascript:;" class="btn-link">
+									<i class="fa fa-bell"></i>
+									<span class="notification-count">3</span>
+								</a>
+								<div class="notification-popup">
+									<!-- Your notification content goes here -->
+									<p>You have 3 new notifications!</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
 					<!-- Search Box ==== -->
                     <div class="nav-search-bar">
                         <form action="#">
@@ -278,6 +323,7 @@
 										</form>
 									</div>
 								</div>
+								
 
                                 <?php
 

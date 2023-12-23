@@ -251,7 +251,7 @@
 							<?php 
 							$i = 1;
 							include "phpfiles/connect.php";
-							$query = "SELECT * FROM knowledge_sharing WHERE username = '$username' ORDER BY knowledge_id DESC";
+							$query = "SELECT * FROM knowledge_sharing WHERE username = '$username' ORDER BY timestamp DESC";
 							$result = mysqli_query($db,$query);
 
 							

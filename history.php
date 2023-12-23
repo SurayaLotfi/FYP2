@@ -242,11 +242,11 @@
 							<?php 
 							$i = 1;
 							include "phpfiles/connect.php";
-							$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+							$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id 
 							WHERE class.department = '$department'
 							AND username = '$username'
 							AND content_record.status != 'Not yet started'
-							ORDER BY start_time DESC";
+							ORDER BY timestamp DESC";
 							$result = mysqli_query($db,$query);
 
 							if($result){

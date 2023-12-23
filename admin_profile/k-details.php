@@ -430,7 +430,7 @@ if(isset($_GET['knowledge_id'])){
 									<div class="form-group col-6">
 										<label class="col-form-label">Knowledge ID</label>
 										<div>
-										<input class="form-control" type="text" id="knowledge_id" name="knowledge_id" value="<?php echo $knowledge_id?>">
+										<input class="form-control" type="text" id="knowledge_id" name="knowledge_id" value="SK<?php echo $knowledge_id?>">
 										</div>
 									</div>
 									<div class="form-group col-6">

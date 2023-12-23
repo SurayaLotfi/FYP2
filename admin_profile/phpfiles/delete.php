@@ -3,6 +3,7 @@ include "connect.php";
 // include "./admin_profile/edit-course.php";
 if (isset($_GET['deleteid'])) {
     $id = $_GET['deleteid'];
+   
 
     $sql = "SELECT * FROM class WHERE id=$id";
     $result = mysqli_query($db, $sql);
@@ -22,6 +23,13 @@ if (isset($_GET['deleteid'])) {
 } elseif (isset($_GET['confirm']) && $_GET['confirm'] == 1) {
     $id = $_GET['id'];
 
+    
+    // $query_source = "SELECT * FROM class WHERE id=$id";
+    // $result_source = mysqli_query($db, $sql);
+    // $row = mysqli_fetch_assoc($result_source);
+    // $source = $row['source'];
+    
+    //delete knowledge that was shared by admin
     $sql = "DELETE FROM class WHERE id=$id";
     $result = mysqli_query($db, $sql);
 

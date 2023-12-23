@@ -20,6 +20,7 @@ if (isset($_POST['submit']) && isset($_FILES['my_pdf'])) {
     $status = "Pending";
     $department = $_SESSION['department'];
     $post_to = $_POST['department'];
+    
 
     if ($error === 0) {
         if ($pdf_size > 12500000) {
@@ -44,6 +45,22 @@ if (isset($_POST['submit']) && isset($_FILES['my_pdf'])) {
                 $stmt->bind_param("ssssssssss", $username, $title, $department, $post_to, $new_pdf_name, $validity, $minimum_time, $message, $content_format, $status);
 
                 if ($stmt->execute()) {
+
+                        // Get the last inserted ID
+                        $insertedId = $stmt->insert_id;
+                        
+                        // Generate 'SK' + the last inserted ID
+                        $skClassId = 'SK' . $insertedId;
+
+                        // Update the class_id column with the generated value
+                        $updateStmt = $db->prepare("UPDATE knowledge_sharing SET class_id = ? WHERE knowledge_id = ?");
+                        $updateStmt->bind_param("si", $skClassId, $insertedId);
+
+                        // Execute the update query
+                        $updateStmt->execute();
+
+                        // Close the update statement
+                        $updateStmt->close();
                     echo '<script type="text/javascript">
                       
                         window.location = "tq_ks.php";
