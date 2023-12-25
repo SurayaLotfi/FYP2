@@ -67,6 +67,7 @@
 	
 	<!-- STYLESHEETS ============================================= -->
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/notification.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
 
@@ -125,17 +126,139 @@
 						<span></span>
 					</button>
 					<!-- Author Nav ==== -->
-                    <div class="secondary-menu">
-                        <div class="secondary-inner">
-                            <ul>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
-								<!-- Search Button ==== -->
-								<li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
-							</ul>
+					<div class="secondary-menu">
+						<div class="secondary-inner">
+							<!-- <ul>
+								<li class="notification-icon">
+									<a href="javascript:;" class="btn-link">
+										<i class="fa fa-bell"></i>
+										<span class="notification-count">3</span>
+									</a>
+									
+									<div class="notification-popup">
+										
+										<ul class="notification-list">
+											<li><a href="inbox.php">You have a new message</a></li>
+											<li>Meeting at 2 PM</li>
+											<li>Task deadline approaching</li>
+										</ul>
+									</div>
+								</li>
+							</ul> -->
+							<?php
+							//Near Deadline
+							$due_date_threshold = date('Y-m-d', strtotime('+10 days')); 
+
+								$query_deadline = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+								WHERE class.department = '$department'
+								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+								AND username = '$username'
+                                AND validity <= '$due_date_threshold'
+                                AND content_record.due = 'false'
+								ORDER BY class.id DESC";
+
+								$result_deadline = mysqli_query($db, $query_deadline);
+								$total_deadline = mysqli_num_rows($result_deadline);
+							//exceeded knowledge
+								$query_exceed = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+								WHERE class.department = '$department'
+								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+								AND username = '$username'
+								AND validity <= '$due_date_threshold'
+								AND content_record.due = 'true'
+								ORDER BY class.id DESC";
+
+								$result_exceed = mysqli_query($db, $query_exceed);
+								$total_exceed = mysqli_num_rows($result_exceed);
+							
+							//knowledge that is successfully shared
+								$query_ks = "SELECT * FROM knowledge_sharing WHERE status = 'Accepted' AND username = '$username' AND viewed = 0";
+
+								$result_ks = mysqli_query($db, $query_ks);
+								$total_ks = mysqli_num_rows($result_ks);
+
+								
+
+							//knowledge that is declined
+								$query_declined = "SELECT * FROM knowledge_sharing WHERE status = 'Declined' AND username = '$username' AND viewed = 0";
+								$result_declined = mysqli_query($db, $query_declined);
+
+								$total_declined = mysqli_num_rows($result_declined);
+
+								$total_inbox = $total_deadline + $total_exceed + $total_ks + $total_declined;
+							?>
+
+							
+							
+							
+								<li class="notification-icon">
+									<a href="#" class="ttr-material-button ttr-submenu-toggle"><i class="fa fa-bell" aria-hidden="true" id="noti_number"></i><span class="notification-count"><?php echo $total_inbox?></span></a>
+									<div class="notification-popup ">
+									
+										<div class="ttr-notify-header" id="noti_number">
+											<span class="ttr-notify-text-top"><a href="inbox.php"><?php  echo $total_inbox ?> New Notifications</a></span>
+											<span class="ttr-notify-text"><a href="inbox.php"></a>View All</span>
+										</div>
+										<br>
+										<div class="noti-box-list" >
+											<ul>
+												<li id="deadline">
+													<span class="notification-icon dashbg-gray">
+														<i class="fa fa-calendar"></i>
+													</span>
+													<span class="notification-text" >
+
+														<a href="#" class="deadline">You have <?php echo $total_deadline ?></a> knowledge that is almost due
+													</span>
+													<span class="notification-time">
+														<a href="#" class="fa fa-close"></a>
+														<span> 02:14</span>
+													</span>
+												</li>
+												<li id="exceed">
+													<span class="notification-icon dashbg-gray">
+													<i class="fa fa-exclamation"></i>
+													</span>
+													<span class="notification-text">
+														<a href="#" class="exceed">You have <?php echo $total_exceed ?></a> exceeded knowledge.
+													</span>
+													<span class="notification-time">
+														<a href="#" class="fa fa-close"></a>
+														<span> 7 Min</span>
+													</span>
+												</li>
+												<li id="accepted">
+													<span class="notification-icon dashbg-gray">
+														<i class="fa fa-check"></i>
+													</span>
+													<span class="notification-text">
+														<a href="#" class="accepted">You have <?php echo $total_ks ?></a> new accepted knowledge.
+													</span>
+													<span class="notification-time">
+														<a href="#" class="fa fa-close"></a>
+														<span> 2 May</span>
+													</span>
+												</li>
+												<li id="declined">
+													<span class="notification-icon dashbg-gray">
+														<i class="fa fa-times"></i>
+													</span>
+													<span class="notification-text">
+														<a href="#" class="declined">You have <?php echo $total_declined ?></a> new declined knowledge.
+													</span>
+													<span class="notification-time">
+														<a href="#" class="fa fa-close"></a>
+														<span> 14 July</span>
+													</span>
+												</li>
+												
+									</ul>
+								</div>
+							</div>
+						</li>
+					
 						</div>
-                    </div>
+					</div>
 					<!-- Search Box ==== -->
                     <div class="nav-search-bar">
                         <!-- <form action="#">
@@ -475,7 +598,44 @@
 <script src="assets/js/functions.js"></script>
 <script src="assets/js/contact.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
+<!-- Live Notification -->
+<script type="text/javascript">
+			function loadDoc() {
 
+				setInterval(function(){
+
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							var response = JSON.parse(this.responseText);
+							var notificationCount = document.getElementById("noti_number");
+							var deadline = document.getElementById("deadline");
+							var exceed = document.getElementById("exceed");
+							var accepted = document.getElementById("accepted");
+							var declined = document.getElementById("declined");
+                    		
+							// notificationCount.innerHTML = this.responseText;
+							// Optionally update the static "5" with the echoed value
+							document.querySelector('.notification-count').innerHTML = response.total_inbox;
+							document.querySelector('.ttr-notify-text-top').innerHTML = response.new_noti;
+							document.querySelector('#deadline .deadline').innerHTML = response.notifications['deadline'].text;
+							document.querySelector('.exceed').innerHTML = response.notifications['exceed'].text;
+							document.querySelector('#accepted .accepted').innerHTML = response.notifications['accepted'].text;
+							document.querySelector('#declined .declined').innerHTML = response.notifications['declined'].text;
+						
+							
+						}
+					};
+					xhttp.open("GET", "phpfiles/notification.php", true);
+					xhttp.send();
+					
+				},1000);
+				console.log("loadDoc function called");
+				
+			}
+
+			loadDoc();
+		</script>
 
 
 
