@@ -337,10 +337,10 @@
 					<div class="row">
 						<!-- left part start -->
 						<div class="col-lg-8 col-xl-8 col-md-7">
-							<!-- blog grid -->
-                            
-							<div id="masonry" class="ttr-blog-grid-3 row">
-
+							<!-- blog grid -->    
+						<div id="masonry">
+							<div id="posts-container" class="ttr-blog-g row">
+							
                             <?php
                             //RETRIEVING KNOWLEDGE FROM DATABASE
                             include "phpfiles/connect.php";
@@ -355,7 +355,7 @@
                                     $dateTime = new DateTime($dbTime_added);
                                     $formattedDate = $dateTime->format("M d Y");
                             ?>
-
+							
 								<div class="post action-card col-xl-6 col-lg-6 col-md-12 col-xs-12 m-b40">
 									<div class="recent-news">
 										<div class="action-box">	
@@ -374,11 +374,15 @@
 										</div>
 									</div>
 								</div>
+							
 
                                 <?php
                                 }
                                 ?>
-								<div class="post action-card col-xl-6 col-lg-6 col-md-12 col-xs-12 m-b40">
+								</div>
+								</div>
+							
+								<!-- <div class="post action-card col-xl-6 col-lg-6 col-md-12 col-xs-12 m-b40">
 									<div class="recent-news">
 										<div class="action-box">
 											<img src="assets/images/blog/latest-blog/pic2.jpg" alt="">
@@ -396,12 +400,12 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 								
-							</div>
+							
 							<!-- blog grid END -->
 							<!-- Pagination -->
-							<div class="pagination-bx rounded-sm gray clearfix">
+							<!-- <div class="pagination-bx rounded-sm gray clearfix">
 								<ul class="pagination">
 									<li class="previous"><a href="#"><i class="ti-arrow-left"></i> Prev</a></li>
 									<li class="active"><a href="#">1</a></li>
@@ -409,7 +413,7 @@
 									<li><a href="#">3</a></li>
 									<li class="next"><a href="#">Next <i class="ti-arrow-right"></i></a></li>
 								</ul>
-							</div>
+							</div> -->
 							<!-- Pagination END -->
 						</div>
 						<!-- left part END -->
@@ -421,15 +425,27 @@
 									<div class="search-bx style-1">
 										<form role="search" method="post">
 											<div class="input-group">
-												<input name="text" class="form-control" placeholder="Enter your keywords..." type="text">
-												<span class="input-group-btn">
+												<input name="text"   type="text" class="form-control" id="live-search" placeholder="Enter your keywords...">
+												<!-- <span class="input-group-btn">
 													<button type="submit" class="fa fa-search text-primary"></button>
-												</span> 
+												</span>  -->
 											</div>
 										</form>
 									</div>
 								</div>
-								
+
+								<div class="widget">
+									<div class="input-group">
+										<label class="col-form-label" id="department-dropdown" for="content-type-select">Filter by Department</label>
+											<select class="form-control" id="department" name="department">
+												<option value="All">All</option>
+												<option value="Training">Training</option>
+												<option value="Engineering">Engineering</option>
+												<option value="IT">IT</option>
+												<option value="Business">Business</option>
+											</select>
+									</div>
+								</div>
 
                                 <?php
 
@@ -688,6 +704,45 @@
 
 			loadDoc();
 		</script>
+
+		<script type="text/javascript">
+
+			$(document).ready(function(){
+				console.log("function called")
+				$("#live-search, #department").on('input change', function(){
+					console.log("Event triggered!");
+					var searchText = $("#live-search").val();
+					var dropdownValue = $("#department").val(); // Assuming your dropdown has the id "dropdown-menu"
+
+					console.log("Search Text: " + searchText);
+					console.log("Dropdown Value: " + dropdownValue);
+
+					if (searchText !== "" || dropdownValue !== "") {
+						console.log("Event triggered!");
+						// Perform the search when either the text input or dropdown is not empty
+						$.ajax({
+							url: "phpfiles/library_server.php",
+							method: "POST",
+							data: { searchText: searchText, dropdownValue: dropdownValue },
+							success: function(data) {
+								$("#posts-container").html(data);
+							}
+						});
+					} else {
+						// Load the full list when both the text input and dropdown are empty
+						$.ajax({
+							url: "phpfiles/library_server.php", // Adjust the URL to fetch the full list
+							method: "POST", // Use GET or POST, depending on your server-side code
+							data: { searchText: searchText, dropdownValue: dropdownValue },
+							success: function(data) {
+								$("#posts-container").html(data);
+							}
+						});
+					}
+				});
+			});
+		</script>
 </body>
+
 
 </html>
