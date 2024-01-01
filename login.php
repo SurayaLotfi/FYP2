@@ -24,6 +24,8 @@ if(isset($_POST["submit"])){
             $_SESSION["username"] = $row["username"];
             $_SESSION["department"] = $row["department"];
             $_SESSION["email"] = $row["email"];
+			//send notification email
+			include "email.php";
 			// $_SESSION["password"] = $row["password"];
             echo "<script> alert('Success!'); </script>";
             if($_SESSION["role"] == "admin")

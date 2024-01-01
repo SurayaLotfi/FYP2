@@ -340,10 +340,14 @@
 		</div>
 		<!-- Breadcrumb row END -->
         <!-- inner page banner END -->
-	
-            <!-- About Us -->
-			<!-- <div class="section-area section-sp1"> -->
-                <div class="container-fluid"  style="padding: 50px;">
+		<!-- About Us -->
+		<!-- <div class="section-area section-sp1"> -->
+			
+        <div class="container-fluid"  style="padding: 50px;">
+
+			<form action="export_pdf.php" method="POST" class="mb-2">
+				<input type="submit" name="submit" class="btn" value="Generate Report"/>
+			</form>
                     
                 <table border="1" id="dataTableid" class="display">
 							<thead>
@@ -418,7 +422,10 @@
 							?>
 							</tbody>
 							</table>
+							
 				</div>
+
+				
             <!-- </div> -->
         </div>
         <div class="content-block">
@@ -599,43 +606,63 @@
 <script src="assets/js/contact.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
 <!-- Live Notification -->
+<!-- Live Notification -->
 <script type="text/javascript">
-			function loadDoc() {
+    function loadDoc() {
+        var previousTotalInbox = 0; // Variable to store the previous total inbox value
 
-				setInterval(function(){
+        // Fetch the initial value of total_inbox
+        var initialXhttp = new XMLHttpRequest();
+        initialXhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var initialResponse = JSON.parse(this.responseText);
+                previousTotalInbox = initialResponse.total_inbox;
+				console.log(previousTotalInbox);
+            }
+        };
+        initialXhttp.open("GET", "phpfiles/notification.php", false);
+        initialXhttp.send();
 
-					var xhttp = new XMLHttpRequest();
-					xhttp.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							var response = JSON.parse(this.responseText);
-							var notificationCount = document.getElementById("noti_number");
-							var deadline = document.getElementById("deadline");
-							var exceed = document.getElementById("exceed");
-							var accepted = document.getElementById("accepted");
-							var declined = document.getElementById("declined");
-                    		
-							// notificationCount.innerHTML = this.responseText;
-							// Optionally update the static "5" with the echoed value
-							document.querySelector('.notification-count').innerHTML = response.total_inbox;
-							document.querySelector('.ttr-notify-text-top').innerHTML = response.new_noti;
-							document.querySelector('#deadline .deadline').innerHTML = response.notifications['deadline'].text;
-							document.querySelector('.exceed').innerHTML = response.notifications['exceed'].text;
-							document.querySelector('#accepted .accepted').innerHTML = response.notifications['accepted'].text;
-							document.querySelector('#declined .declined').innerHTML = response.notifications['declined'].text;
-						
-							
-						}
-					};
-					xhttp.open("GET", "phpfiles/notification.php", true);
-					xhttp.send();
-					
-				},1000);
-				console.log("loadDoc function called");
-				
-			}
+        setInterval(function () {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText);
 
-			loadDoc();
-		</script>
+                    // Check if the total inbox value has changed
+                    if (previousTotalInbox !== response.total_inbox) {
+                        // Update the previous value
+                        previousTotalInbox = response.total_inbox;
+
+                        // Update the DOM elements
+                        var notificationCount = document.getElementById("noti_number");
+                        var deadline = document.getElementById("deadline");
+                        var exceed = document.getElementById("exceed");
+                        var accepted = document.getElementById("accepted");
+                        var declined = document.getElementById("declined");
+
+                        document.querySelector('.notification-count').innerHTML = response.total_inbox;
+                        document.querySelector('.ttr-notify-text-top').innerHTML = response.new_noti;
+                        document.querySelector('#deadline .deadline').innerHTML = response.notifications['deadline'].text;
+                        document.querySelector('.exceed').innerHTML = response.notifications['exceed'].text;
+                        document.querySelector('#accepted .accepted').innerHTML = response.notifications['accepted'].text;
+                        document.querySelector('#declined .declined').innerHTML = response.notifications['declined'].text;
+
+                        // Add AJAX request to send email
+                        var emailRequest = new XMLHttpRequest();
+                        emailRequest.open("GET", "email.php", true);
+                        emailRequest.send();
+                    }
+                }
+            };
+            xhttp.open("GET", "phpfiles/notification.php", true);
+            xhttp.send();
+        }, 1000);
+        console.log("loadDoc function called");
+    }
+
+    loadDoc();
+</script>
 
 
 

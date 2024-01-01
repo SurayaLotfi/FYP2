@@ -1,6 +1,7 @@
 <?php
 	session_start();
 	include "connect.php";
+   // include "./email.php";
 
 	if($_SESSION['role'] == 'user'){
 		
@@ -14,6 +15,9 @@
 	}else{
 		header("Location: logout.php");
 	}
+
+// Check if the email has already been sent for the current set of notifications
+// if (!isset($_SESSION['email_sent']) || $_SESSION['email_sent'] === false) {
     //Near Deadline
     $due_date_threshold = date('Y-m-d', strtotime('+10 days')); 
 
@@ -77,6 +81,16 @@
     $total_inbox = $total_deadline + $total_exceed + $total_ks + $total_declined;
     $new_noti = $total_inbox . ' New Notifications';
     //echo $total_inbox;
+    // echo "running";
+     // New notification detected, send email
+    //  if ($response['new_noti'] > 0) {
+    //     include "../emailphp";.
+    //  }
+
+
+
+    // }
+  
 
     // Combine all notifications in a format suitable for JSON encoding
     $response = array('total_inbox' => $total_inbox, 'notifications' => $notifications, 'new_noti'=> $new_noti);

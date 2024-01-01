@@ -17,18 +17,15 @@ include "connect.php";
 
 $due_date_threshold = date('Y-m-d', strtotime('+2 days')); // Get the current date + 2 days in the same 'YYYY-MM-DD' format
 //echo $due_date_threshold;
-$subject = "Due is in 2 days";
-$message = "You have multiple classes where the due is near. Check your inbox in KMS4MAE to finish the classes before it is due.";
+$subject = "New Notification";
+$message = "You have new notifications. Check your inbox in KMS4MAE for details.";
 
 //selecting the content's of this user punya department that is near the due date
 //find due dates that are within 2 days from now
-$query = "SELECT * FROM class WHERE department = '$department' AND due <= '$due_date_threshold'"; 
-$result = mysqli_query($db, $query);
+// $query = "SELECT * FROM class WHERE department = '$department' AND due <= '$due_date_threshold'"; 
+// $result = mysqli_query($db, $query);
 
-    
-if(mysqli_num_rows($result)>0){
-   
-    while($row = mysqli_fetch_assoc($result)){
+    // while($row = mysqli_fetch_assoc($result)){
         // echo $row['title'];
         // echo $email;
 
@@ -37,7 +34,7 @@ if(mysqli_num_rows($result)>0){
             $mail -> Host = 'smtp.gmail.com';
             $mail -> SMTPAuth = true;
             $mail -> Username = 'kms4mabes@gmail.com';
-            $mail -> Password = 'pqpr eplz dyzn qffn';
+            $mail -> Password = 'fvsx gmwr jbso eqnd';
             $mail -> Port = 465;
             $mail -> SMTPSecure = 'ssl';
             $mail -> isHTML(true);
@@ -45,22 +42,24 @@ if(mysqli_num_rows($result)>0){
             $mail -> addAddress($email);
             $mail -> Subject = $subject;
             $mail -> Body = $message;
-            $mail -> send();
+           
+            try {
+                $mail->send();
+                // Email sent successfully
+                // You can add additional logic or logging here if needed
     
-            
-            // echo "
-            //     <script>
-            //     alert('You have emails and notifications!');
-               
+                // Set the email_sent flag to true
+                // $_SESSION['email_sent'] = true;
     
-            //     </script>
-            // ";
-            
+            } catch (Exception $e) {
+                // An error occurred while sending the email
+                // Handle the error as needed (e.g., log it, display an error message)
+                error_log('Email could not be sent. Mailer Error: ' . $mail->ErrorInfo);
+                
+            }
+    
         
-    }
-}else{
-    echo "No due dates";
-}
+    // }
 
 
 ?>

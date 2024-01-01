@@ -98,8 +98,8 @@
 								</select>
 							</li> -->
 							
-							<li><a href="login.html">Login</a></li>
-							<li><a href="register.html">Register</a></li>
+							<li><a href="logout.php">Logout</a></li>
+							<li><a href="profile.php"><?php echo $username?></a></li>
 						</ul>
 					</div>
 				</div>
@@ -344,10 +344,10 @@
                             <?php
                             //RETRIEVING KNOWLEDGE FROM DATABASE
                             include "phpfiles/connect.php";
-                                $query = "SELECT * FROM class";
+                                $query = "SELECT * FROM class ORDER BY id";
                                 $result = mysqli_query($db, $query);
 
-                                $row = mysqli_fetch_row($result);
+                               
 
                                 while($row = mysqli_fetch_assoc($result)){
 
@@ -362,14 +362,14 @@
 										</div>
 										<div class="info-bx">
 											<ul class="media-post">
-												<li><a href="#"><i class="fa fa-calendar"></i><?php echo $formattedDate?></a></li>
-												<li><a href="#"><i class="fa fa-user"></i>By <?php echo $row['source']?></a></li>
+												<li><a href="library_view.php?course_id=<?php echo $row['class_id']?>"><i class="fa fa-calendar"></i><?php echo $formattedDate?></a></li>
+												<li><a href="library_view.php?course_id=<?php echo $row['class_id']?>"><i class="fa fa-user"></i>By <?php echo $row['source']?></a></li>
 											</ul>
 											<h5 class="post-title"><a href="blog-details.html"><?php echo $row['title']?></a></h5>
 											<p>Knowing that, you’ve optimised your pages countless amount of times, written tons.</p>
 											<div class="post-extra">
-												<a href="#" class="btn-link">VIEW</a>
-                                                <a href="#" class="comments-bx"><i class="fa fa-building" aria-hidden="true"></i><?php echo $row['department']?></a>	
+												<a href="library_view.php?course_id=<?php echo $row['class_id']?>" class="btn-link">VIEW</a>
+                                                <a href="library_view.php?course_id=<?php echo $row['class_id']?>" class="comments-bx"><i class="fa fa-building" aria-hidden="true"></i><?php echo $row['department']?></a>	
 											</div>
 										</div>
 									</div>
@@ -421,7 +421,7 @@
 						<div class="col-lg-4 col-xl-4 col-md-5 sticky-top">
 							<aside class="side-bar sticky-top">
 								<div class="widget">
-									<h6 class="widget-title">Search</h6>
+									<h6 class="widget-title">Search Title</h6>
 									<div class="search-bx style-1">
 										<form role="search" method="post">
 											<div class="input-group">
@@ -507,7 +507,7 @@
 										<li><div><a href="#"><img src="assets/images/gallery/pic4.jpg" alt=""></a></div></li>
 									</ul>
 								</div> -->
-								<div class="widget widget_tag_cloud">
+								<!-- <div class="widget widget_tag_cloud">
 									<h6 class="widget-title">Tags</h6>
 									<div class="tagcloud"> 
 										<a href="#">Design</a> 
@@ -529,7 +529,7 @@
 										<a href="#">Development</a> 
 										<a href="#">Joomla</a> 
 									</div>
-								</div>
+								</div> -->
 							</aside>
 						</div>
 						<!-- Side bar END -->
@@ -668,42 +668,62 @@
 
 <!-- Live Notification -->
 <script type="text/javascript">
-			function loadDoc() {
+    function loadDoc() {
+        var previousTotalInbox = 0; // Variable to store the previous total inbox value
 
-				setInterval(function(){
+        // Fetch the initial value of total_inbox
+        var initialXhttp = new XMLHttpRequest();
+        initialXhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var initialResponse = JSON.parse(this.responseText);
+                previousTotalInbox = initialResponse.total_inbox;
+				console.log(previousTotalInbox);
+            }
+        };
+        initialXhttp.open("GET", "phpfiles/notification.php", false);
+        initialXhttp.send();
 
-					var xhttp = new XMLHttpRequest();
-					xhttp.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							var response = JSON.parse(this.responseText);
-							var notificationCount = document.getElementById("noti_number");
-							var deadline = document.getElementById("deadline");
-							var exceed = document.getElementById("exceed");
-							var accepted = document.getElementById("accepted");
-							var declined = document.getElementById("declined");
-                    		
-							// notificationCount.innerHTML = this.responseText;
-							// Optionally update the static "5" with the echoed value
-							document.querySelector('.notification-count').innerHTML = response.total_inbox;
-							document.querySelector('.ttr-notify-text-top').innerHTML = response.new_noti;
-							document.querySelector('#deadline .deadline').innerHTML = response.notifications['deadline'].text;
-							document.querySelector('.exceed').innerHTML = response.notifications['exceed'].text;
-							document.querySelector('#accepted .accepted').innerHTML = response.notifications['accepted'].text;
-							document.querySelector('#declined .declined').innerHTML = response.notifications['declined'].text;
-						
-							
-						}
-					};
-					xhttp.open("GET", "phpfiles/notification.php", true);
-					xhttp.send();
-					
-				},1000);
-				console.log("loadDoc function called");
-				
-			}
+        setInterval(function () {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText);
 
-			loadDoc();
-		</script>
+                    // Check if the total inbox value has changed
+                    if (previousTotalInbox !== response.total_inbox) {
+                        // Update the previous value
+                        previousTotalInbox = response.total_inbox;
+
+                        // Update the DOM elements
+                        var notificationCount = document.getElementById("noti_number");
+                        var deadline = document.getElementById("deadline");
+                        var exceed = document.getElementById("exceed");
+                        var accepted = document.getElementById("accepted");
+                        var declined = document.getElementById("declined");
+
+                        document.querySelector('.notification-count').innerHTML = response.total_inbox;
+                        document.querySelector('.ttr-notify-text-top').innerHTML = response.new_noti;
+                        document.querySelector('#deadline .deadline').innerHTML = response.notifications['deadline'].text;
+                        document.querySelector('.exceed').innerHTML = response.notifications['exceed'].text;
+                        document.querySelector('#accepted .accepted').innerHTML = response.notifications['accepted'].text;
+                        document.querySelector('#declined .declined').innerHTML = response.notifications['declined'].text;
+
+                        // Add AJAX request to send email
+                        var emailRequest = new XMLHttpRequest();
+                        emailRequest.open("GET", "email.php", true);
+                        emailRequest.send();
+                    }
+                }
+            };
+            xhttp.open("GET", "phpfiles/notification.php", true);
+            xhttp.send();
+        }, 1000);
+        console.log("loadDoc function called");
+    }
+
+    loadDoc();
+</script>
+
 
 		<script type="text/javascript">
 

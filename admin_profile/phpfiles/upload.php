@@ -33,6 +33,7 @@
         $minimum_time = $_POST['minimum_time'];
         $username = $_SESSION['username'];
         $source = 'Admin';
+        $due = 'false';
         ?>
 
     <?php
@@ -66,7 +67,7 @@
                 $result2 = mysqli_query($db, $query2);
                 $row = mysqli_fetch_assoc($result2); //tak guna ?? lol
                 
-                $insert_query = $db->query("INSERT INTO content_record (username, status, content_id) VALUES ('$username', '$status', '$class_id')");
+                $insert_query = $db->query("INSERT INTO content_record (username, status, due, content_id) VALUES ('$username', '$status', '$due', '$class_id')");
                 }
         }else{
         $query = "SELECT * FROM users WHERE department = '$department'";
@@ -78,7 +79,7 @@
             $result2 = mysqli_query($db, $query2);
             $row = mysqli_fetch_assoc($result2);
             
-            $insert_query = $db->query("INSERT INTO content_record (username, status, content_id) VALUES ('$username', '$status', '$class_id')");
+            $insert_query = $db->query("INSERT INTO content_record (username, status, due, content_id) VALUES ('$username', '$status', '$due', '$class_id')");
             }
         }
         
