@@ -86,6 +86,10 @@ if(isset($_GET['knowledge_id'])){
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+
+	<!-- Sweet Alert -->
+	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 	
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
@@ -401,7 +405,7 @@ if(isset($_GET['knowledge_id'])){
 							//$query = "SELECT * knowledge sharing WHERE "
 						?>
 						<div class="widget-inner">
-							<form class="edit-profile m-b30" action="./phpfiles/k-upload.php" method="post" enctype="multipart/form-data">
+							<form id="uploadForm" class="edit-profile m-b30" action="./phpfiles/k-upload.php" method="post" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
@@ -610,7 +614,7 @@ if(isset($_GET['knowledge_id'])){
 									
 									<input type="hidden" name="shareid" value="<?php echo $knowledge_id ?>">
 									<input type="hidden" name="admin_approved" value="<?php echo $username ?>">
-    								<button type="submit" class="btn btn-info btn-rounded my-4" name="share">Approve</button>
+    								<button type="submit" class="btn btn-info btn-rounded my-4" name="share" id="uploadButton">Approve</button>
 									<a href = 'decline.php?knowledge_id=<?php echo $knowledge_id ?>' class ="btn btn-info btn-rounded my-4">Decline</a> <!--Just tukar status, not delete-->
 									<!--<a href='submit.php?deleteid=<?php echo $id; ?>' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#confirmDeleteModal'>Delete</a>-->
 									</div>
@@ -661,6 +665,44 @@ if(isset($_GET['knowledge_id'])){
 		});
 	}
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const uploadButton = document.getElementById("uploadButton");
+        const uploadForm = document.getElementById("uploadForm");
+
+        uploadButton.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            Swal.fire({
+                title: "Are you sure you want to approve this knowledge?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Yes, upload it!",
+                cancelButtonText: "No, cancel!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If the user clicks "Yes, upload it!", submit the form
+                    uploadForm.submit();
+                }
+            });
+        });
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
+
+        if (alertType === "knowledge_exists") {
+            Swal.fire("Knowledge Already Exist");
+        } else if (alertType === "success") {
+            Swal.fire("Success", "Knowledge has been successfully approved and uploaded into the system.", "success");
+        }
+    });
+</script>
+
 </body>
 
 <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->

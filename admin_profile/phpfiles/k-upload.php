@@ -46,10 +46,8 @@ if (isset($_POST['shareid'])) {
             $insert_query = $db->query("INSERT INTO content_record (username, status, content_id) VALUES ('$username', '$status', '$class_id')");
         }
 
-        echo "<script> 
-                alert('Knowledge Approved!');
-                window.location.href = '../k-request.php';
-            </script>";
+        header("Location: ../add-listing.php?alert=success");
+        
     } else {
         echo "Query error: Unable to upload to db because: " . $db->error; // Display the error message
     }

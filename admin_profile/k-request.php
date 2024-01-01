@@ -59,9 +59,8 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
-	
-
-	
+	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>	
 	
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
@@ -460,6 +459,49 @@ $j(document).ready(function() {
         table.column(7).search(filterValue).draw();
     });
 });
+</script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const deleteButton = document.getElementById("deleteButton");
+		const deleteForm = document.getElementById("deleteForm");
+		const messageTextarea = document.getElementById("message");
+
+		deleteButton.addEventListener("click", function (event) {
+			event.preventDefault(); // Prevent the default form submission behavior
+
+			if (messageTextarea.checkValidity()) {
+				Swal.fire({
+					title: "Are you sure you want to delete this?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonText: "Yes, delete it!",
+					cancelButtonText: "No, cancel!",
+				}).then((result) => {
+					if (result.isConfirmed) {
+						// If the user clicks "Yes, upload it!", submit the form
+						deleteForm.submit();
+					}
+				});
+			} else {
+				// If the textarea is empty, show a custom error message or take other actions
+				Swal.fire("Please provide a message before declining.");
+			}
+		});
+	});
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
+
+        if (alertType === "knowledge_exists") {
+            Swal.fire("Knowledge Already Exist");
+        } else if (alertType === "success") {
+            Swal.fire("Success", "Knowledge has been declined.", "success");
+        }
+    });
 </script>
 
 

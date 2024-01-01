@@ -278,45 +278,7 @@
 		                	<span class="ttr-label">Knowledge Base</span>
 		                </a>
 		            </li>
-					<!-- <li>
-						<a href="#" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-email"></i></span>
-		                	<span class="ttr-label">Mailbox</span>
-		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
-		                	<li>
-		                		<a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
-		                	</li>
-		                	<li>
-		                		<a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
-		                	</li>
-							<li>
-		                		<a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
-		                	</li>
-		                </ul>
-		            </li> -->
-					<!-- <li>
-						<a href="#" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-calendar"></i></span>
-		                	<span class="ttr-label">Calendar</span>
-		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
-		                	<li>
-		                		<a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
-		                	</li>
-		                	<li>
-		                		<a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
-		                	</li>
-		                </ul>
-		            </li> -->
-					<!-- <li>
-						<a href="bookmark.html" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
-		                	<span class="ttr-label">Bookmarks</span>
-		                </a>
-		            </li>-->
+					
 					<?php
 						include "./phpfiles/connect.php";
 						$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
@@ -398,37 +360,12 @@
 										<input class="form-control" type="text" id="title" name="title" required>
 										</div>
 									</div>
-									<!-- <div class="form-group col-6">
-										<label class="col-form-label">Knowledge Code</label>
-										<div>
-										<input class="form-control" type="text" id="class_code" name="class_code">
-										</div>
-									</div> -->
-									<!-- <div class="form-group col-6">
-										<label class="col-form-label">Knowledge ID</label>
-										<div>
-										<input class="form-control" type="text" id="class_id" name="class_id">
-										</div>
-									</div> -->
 									<div class="form-group col-6">
 										<label class="col-form-label">Validity</label>
 										<div>
 										<input class="form-control" type="date" id="validity" name="dateValid" required>
 										</div>
 									</div>
-									<!-- <div class="form-group col-6">
-										<label class="col-form-label">Due</label>
-										<div>
-										<input class="form-control" type="date" id="due" name="dateDue">
-										</div>
-									</div> -->
-									
-									<!-- <div class="form-group col-6">
-										<label class="col-form-label">Estimated time completion (Eg: 6 hours 30 minutes)</label>
-										<div>
-										<input class="form-control" type="text" id="minimum_time" name="minimum_time">
-										</div>
-									</div> -->
 
 									<div class="form-group col-6">
 										<label class="col-form-label" for="content-type-select">Estimated time completion</label>
@@ -624,7 +561,7 @@
         const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
 
         if (alertType === "knowledge_exists") {
-            Swal.fire("Knowledge has been uploaded into the system.");
+            Swal.fire("Knowledge Already Exist");
         } else if (alertType === "success") {
             Swal.fire("Success", "Knowledge has been successfully uploaded.", "success");
         }

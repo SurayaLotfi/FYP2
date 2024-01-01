@@ -78,6 +78,9 @@ if(isset($_GET['knowledge_id'])){
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 	
+	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 	
@@ -285,45 +288,7 @@ if(isset($_GET['knowledge_id'])){
 		                	<span class="ttr-label">Knowledge Base</span>
 		                </a>
 		            </li>
-					<!-- <li>
-						<a href="#" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-email"></i></span>
-		                	<span class="ttr-label">Mailbox</span>
-		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
-		                	<li>
-		                		<a href="mailbox.html" class="ttr-material-button"><span class="ttr-label">Mail Box</span></a>
-		                	</li>
-		                	<li>
-		                		<a href="mailbox-compose.html" class="ttr-material-button"><span class="ttr-label">Compose</span></a>
-		                	</li>
-							<li>
-		                		<a href="mailbox-read.html" class="ttr-material-button"><span class="ttr-label">Mail Read</span></a>
-		                	</li>
-		                </ul>
-		            </li> -->
-					<!-- <li>
-						<a href="#" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-calendar"></i></span>
-		                	<span class="ttr-label">Calendar</span>
-		                	<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
-		                </a>
-		                <ul>
-		                	<li>
-		                		<a href="basic-calendar.html" class="ttr-material-button"><span class="ttr-label">Basic Calendar</span></a>
-		                	</li>
-		                	<li>
-		                		<a href="list-view-calendar.html" class="ttr-material-button"><span class="ttr-label">List View</span></a>
-		                	</li>
-		                </ul>
-		            </li>
-					<li>
-						<a href="bookmark.html" class="ttr-material-button">
-							<span class="ttr-icon"><i class="ti-bookmark-alt"></i></span>
-		                	<span class="ttr-label">Bookmarks</span>
-		                </a>
-		            </li>-->
+					
 					<?php
 						include "./phpfiles/connect.php";
 						$query = "SELECT * FROM knowledge_sharing WHERE status = 'Pending' ORDER BY knowledge_id";
@@ -393,7 +358,7 @@ if(isset($_GET['knowledge_id'])){
 							//$query = "SELECT * knowledge sharing WHERE "
 						?>
 						<div class="widget-inner">
-							<form class="edit-profile m-b30" action="./phpfiles/k-decline.php" method="post" enctype="multipart/form-data">
+							<form id="deleteForm" class="edit-profile m-b30" action="./phpfiles/k-decline.php" method="post" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
@@ -425,17 +390,13 @@ if(isset($_GET['knowledge_id'])){
 						
 										</select>
 									</div> -->
-
-								
-
 									</div>
-									
 									
 									<input type="hidden" name="shareid" value="<?php echo $knowledge_id ?>">
                                     <input type="hidden" name="content" value="<?php echo $content?>">
                                     
 									<input type="hidden" name="admin_approved" value="<?php echo $username ?>">
-    								<button type="submit" class="btn btn-info btn-rounded my-4" name="share">Decline</button>
+    								<button type="submit" class="btn btn-info btn-rounded my-4" id="deleteButton" name="share">Decline</button>
 									<!-- <a href = 'phpfiles/delete.php?deleteid=<?php echo $content_id ?>' class ="btn btn-info btn-rounded my-4">Decline</a> Just tukar status, not delete -->
 									<!--<a href='submit.php?deleteid=<?php echo $id; ?>' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#confirmDeleteModal'>Delete</a>-->
 									
@@ -486,6 +447,51 @@ if(isset($_GET['knowledge_id'])){
 		});
 	}
 </script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const deleteButton = document.getElementById("deleteButton");
+		const deleteForm = document.getElementById("deleteForm");
+		const messageTextarea = document.getElementById("message");
+
+		deleteButton.addEventListener("click", function (event) {
+			event.preventDefault(); // Prevent the default form submission behavior
+
+			if (messageTextarea.checkValidity()) {
+				Swal.fire({
+					title: "Are you sure you want to delete this?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonText: "Yes, delete it!",
+					cancelButtonText: "No, cancel!",
+				}).then((result) => {
+					if (result.isConfirmed) {
+						// If the user clicks "Yes, upload it!", submit the form
+						deleteForm.submit();
+					}
+				});
+			} else {
+				// If the textarea is empty, show a custom error message or take other actions
+				Swal.fire("Please provide a message before declining.");
+			}
+		});
+	});
+
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
+
+        if (alertType === "knowledge_exists") {
+            Swal.fire("Knowledge Already Exist");
+        } else if (alertType === "success") {
+            Swal.fire("Success", "Knowledge has been declined uploaded.", "success");
+        }
+    });
+</script>
+
 </body>
 
 <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->

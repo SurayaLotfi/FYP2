@@ -70,16 +70,16 @@
                 $insert_query = $db->query("INSERT INTO content_record (username, status, due, content_id) VALUES ('$username', '$status', '$due', '$class_id')");
                 }
         }else{
-        $query = "SELECT * FROM users WHERE department = '$department'";
-        $result = mysqli_query($db, $query);
-    
-        while($row = mysqli_fetch_assoc($result)){
-            $username = $row['username'];
-            $query2 = "SELECT * FROM class WHERE department = '$department' ";
-            $result2 = mysqli_query($db, $query2);
-            $row = mysqli_fetch_assoc($result2);
-            
-            $insert_query = $db->query("INSERT INTO content_record (username, status, due, content_id) VALUES ('$username', '$status', '$due', '$class_id')");
+            $query = "SELECT * FROM users WHERE department = '$department'";
+            $result = mysqli_query($db, $query);
+        
+            while($row = mysqli_fetch_assoc($result)){
+                $username = $row['username'];
+                $query2 = "SELECT * FROM class WHERE department = '$department' ";
+                $result2 = mysqli_query($db, $query2);
+                $row = mysqli_fetch_assoc($result2);
+                
+                $insert_query = $db->query("INSERT INTO content_record (username, status, due, content_id) VALUES ('$username', '$status', '$due', '$class_id')");
             }
         }
         
@@ -87,9 +87,9 @@
 
         }else{
         echo "Query error: " . mysqli_error($db); // Display the error message
-    }
-
         }
+
+            }
 
        
 

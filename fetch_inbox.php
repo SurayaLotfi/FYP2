@@ -68,6 +68,7 @@ $limit = 3;
                 }elseif($content == "Declined Knowledge Shared"){
                     $query = "SELECT * FROM knowledge_sharing 
                     WHERE status = 'Declined' 
+                    AND username = '$username'
                     AND viewed = 0";
 
                     // $resulttemp = mysqli_query($db, $query);
@@ -186,7 +187,8 @@ $limit = 3;
                         
                     }elseif($content == "Declined Knowledge Shared"){
                         $query = "SELECT * FROM knowledge_sharing
-                        WHERE status = 'Declined' 
+                        WHERE status = 'Declined'
+                        AND username = '$username' 
                         AND viewed = 0
                         ORDER BY time_added DESC
                         LIMIT $start_from, $limit";
