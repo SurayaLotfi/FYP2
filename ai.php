@@ -292,7 +292,7 @@
     </header>
     <!-- Header Top END ==== -->
     <!-- Content -->
-	<iframe src="http://127.0.0.1:8001/" width="2000" height="800"></iframe>
+	<iframe src="http://127.0.0.1:8001/" width="1530" height="800"></iframe>
     <div class="page-content bg-white">
         <!-- Main Slider -->
         <div class="section-area section-sp1 ovpr-dark bg-fix online-cours" style="background-image:url(assets/images/malaysia-airlines-bg.jpeg);">
