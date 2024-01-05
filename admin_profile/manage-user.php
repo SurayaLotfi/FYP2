@@ -59,6 +59,8 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+
+
 	
     	<!-- jQuery -->
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -458,8 +460,8 @@ $j(document).ready(function() {
 									<td><?php echo $row['department'] ?></td>
 									<td 
                                         <div style="display: flex; justify-content: center">
-                                            <a href="edit-user.php?user_id=<?php echo $id?>" class='btn-secondry' style="margin-right: 10px;">Edit</a>
-                                            <a href="phpfiles/delete-user.php?user_id=<?php echo $id?>" class='btn'>Delete</a>
+                                            <a href="edit-user.php?user_id=<?php echo $id?>" class='btn-secondry' style="margin-right: 10px;">Manage</a>
+                                            <!-- <a href="phpfiles/delete-user.php?user_id=<?php echo $id?>" class='btn'>Delete</a> -->
                                         </div>
                                     </td>
                                     
@@ -516,6 +518,23 @@ $j(document).ready(function() {
 	</main>
 	<div class="ttr-overlay"></div>
 
+			<!--Sweet Alert-->
+			<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
+
+        if (alertType === "deletesuccess") {
+            Swal.fire("Success", "Knowledge has been deleted.", "success");
+        } else if (alertType === "editsuccess") {
+            Swal.fire("Success", "Knowledge has been updated.", "success");
+        }
+    });
+</script>
+
 <!-- External JavaScripts -->
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
@@ -534,6 +553,9 @@ $j(document).ready(function() {
 <script src="assets/vendors/chart/chart.min.js"></script>
 <script src="assets/js/admin.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
+
+
+
 </body>
 
 <!-- Mirrored from educhamp.themetrades.com/demo/admin/user-profile.php by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->

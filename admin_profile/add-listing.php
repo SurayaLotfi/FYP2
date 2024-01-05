@@ -62,6 +62,8 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
+
+	<!--Sweet Alert-->
 	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
@@ -548,21 +550,46 @@
         uploadButton.addEventListener("click", function (event) {
             event.preventDefault(); // Prevent the default form submission behavior
 
-            Swal.fire({
-                title: "Are you sure you want to upload this?",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonText: "Yes, upload it!",
-                cancelButtonText: "No, cancel!",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // If the user clicks "Yes, upload it!", submit the form
-                    uploadForm.submit();
-                }
-            });
+            // Validate all fields before allowing the upload
+            if (validateForm()) {
+                Swal.fire({
+                    title: "Are you sure you want to upload this?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, upload it!",
+                    cancelButtonText: "No, cancel!",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // If the user clicks "Yes, upload it!", submit the form
+                        uploadForm.submit();
+                    }
+                });
+            } else {
+                // Show an alert or perform any other action if validation fails
+                Swal.fire({
+                    title: "Please fill in all fields before uploading.",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+            }
         });
+
+        function validateForm() {
+            // Add validation logic for each field
+            const title = document.getElementById("title").value;
+            const dateValid = document.getElementById("validity").value;
+            const minimumTime = document.getElementById("minimum_time").value;
+
+            // Add additional validation checks if needed
+            if (title.trim() === "" || dateValid === "" || minimumTime.trim() === "") {
+                return false; // Validation failed
+            }
+
+            return true; // Validation passed
+        }
     });
 </script>
+
 
 
 <script>

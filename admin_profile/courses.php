@@ -59,7 +59,9 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
-
+	<!--Sweet Alert-->
+	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
 	
 	
@@ -512,6 +514,19 @@ $j(document).ready(function() {
 });
 
 	</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
+
+        if (alertType === "deletesuccess") {
+            Swal.fire("Success", "Knowledge has been deleted.", "success");
+        } else if (alertType === "editsuccess") {
+            Swal.fire("Success", "Knowledge has been updated.", "success");
+        }
+    });
+</script>
+
 
 <script>
 	

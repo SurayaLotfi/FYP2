@@ -63,6 +63,10 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+
+	<!--Sweet Alert-->
+	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 	
 </head>
 
@@ -362,10 +366,11 @@
 	<main class="ttr-wrapper">
 		<div class="container-fluid">
 			<div class="db-breadcrumb">
-				<h4 class="breadcrumb-title">Add User</h4>
+				<h4 class="breadcrumb-title">Edit User</h4>
 				<ul class="db-breadcrumb-list">
 					<li><a href="#"><i class="fa fa-home"></i>Home</a></li>
-					<li>Add User</li>
+					<li><a href="manage-user.php">Manage Users</a></li>
+					<li>Edit User</li>
 				</ul>
 			</div>	
             <?php
@@ -380,10 +385,10 @@
 				<div class="col-lg-12 m-b30">
 					<div class="widget-box">
 						<div class="wc-title">
-							<h4>Add User</h4>
+							<h4>Edit User</h4>
 						</div>
 						<div class="widget-inner">
-							<form class="edit-profile m-b30" action="phpfiles/update-user.php" method="POST">
+							<form id="uploadForm" class="edit-profile m-b30" action="phpfiles/update-user.php" method="POST">
 								<div class="">
 									<div class="form-group row">
 										<div class="col-sm-10  ml-auto">
@@ -441,7 +446,8 @@
 											</div>
 											<div class="col-sm-7">
 												
-												<button  type="submit" class="btn btn-info btn-rounded  "  name="edit" type="submit">Edit User</button> 
+												<button  type="submit" class="btn btn-info btn-rounded  "  id = "updateButton" name="edit" type="submit">Edit User</button> 
+												<button id="deleteButton" class="btn-secondry" name="delete" data-content-id="<?php echo $user_id ?>">Delete User</button>
 											</div>
 										</div>
 									</div>
@@ -510,6 +516,65 @@
 <script src="assets/vendors/chart/chart.min.js"></script>
 <script src="assets/js/admin.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const updateButton = document.getElementById("updateButton");
+        const deleteButton = document.getElementById("deleteButton");
+        const uploadForm = document.getElementById("uploadForm");
+
+        if (updateButton) {
+            updateButton.addEventListener("click", function (event) {
+                handleAction(event, "update");
+            });
+        }
+
+        if (deleteButton) {
+            deleteButton.addEventListener("click", function (event) {
+                handleAction(event, "delete");
+            });
+        }
+
+        function handleAction(event, action) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            let title, confirmButtonText;
+
+            if (action === "update") {
+                title = "Are you sure you want to update?";
+                confirmButtonText = "Yes, update it!";
+            } else if (action === "delete") {
+                title = "Are you sure you want to delete?";
+                confirmButtonText = "Yes, delete it!";
+            } else {
+                // Handle other actions if needed
+                return;
+            }
+
+            Swal.fire({
+                title: title,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: confirmButtonText,
+                cancelButtonText: "No, cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If the user clicks "Yes", take appropriate action
+                    if (action === "update") {
+                        // If the update button was clicked, submit the form
+                        uploadForm.submit();
+                    } else if (action === "delete") {
+                        // If the delete button was clicked, handle the deletion logic here
+                        // You can use AJAX to send a request to the server to delete the record
+                        // For simplicity, I'm redirecting to a delete.php URL with the record ID
+                        const contentId = deleteButton.dataset.contentId;
+                        window.location.href = 'phpfiles/delete-user.php?user_id=' + contentId;
+                    }
+                }
+            });
+        }
+    });
+</script>
 </body>
 
 <!-- Mirrored from educhamp.themetrades.com/demo/admin/user-profile.php by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:35 GMT -->

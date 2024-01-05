@@ -80,6 +80,10 @@ if(isset($_GET['course_id'])){
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+
+	<!--Sweet Alert-->
+	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 	
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
@@ -357,7 +361,7 @@ if(isset($_GET['course_id'])){
 							$query = "SELECT * class WHERE "
 						?>
 						<div class="widget-inner">
-							<form class="edit-profile m-b30" action="./phpfiles/update.php" method="post" enctype="multipart/form-data">
+							<form id="uploadForm" class="edit-profile m-b30" action="./phpfiles/update.php" method="post" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
@@ -471,8 +475,8 @@ if(isset($_GET['course_id'])){
 									<div class="col-12">
 									
 									<input type="hidden" name="updateid" value="<?php echo $content_id ?>">
-    								<button type="submit" class="btn btn-info btn-rounded my-4" name="update">Update</button>
-									<a href = 'phpfiles/delete.php?deleteid=<?php echo $content_id ?>' class ="btn btn-info btn-rounded my-4">Delete</a>
+    								<button type="submit" id="updateButton" class="btn btn-info btn-rounded my-4" name="update">Update</button>
+									<button id="deleteButton" class="btn-secondry" name="delete" data-content-id="<?php echo $content_id ?>">Delete</button>
 									<!--<a href='submit.php?deleteid=<?php echo $id; ?>' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#confirmDeleteModal'>Delete</a>-->
 									</div>
 								</div>
@@ -522,6 +526,68 @@ if(isset($_GET['course_id'])){
 		});
 	}
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const updateButton = document.getElementById("updateButton");
+        const deleteButton = document.getElementById("deleteButton");
+        const uploadForm = document.getElementById("uploadForm");
+
+        if (updateButton) {
+            updateButton.addEventListener("click", function (event) {
+                handleAction(event, "update");
+            });
+        }
+
+        if (deleteButton) {
+            deleteButton.addEventListener("click", function (event) {
+                handleAction(event, "delete");
+            });
+        }
+
+        function handleAction(event, action) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            let title, confirmButtonText;
+
+            if (action === "update") {
+                title = "Are you sure you want to update?";
+                confirmButtonText = "Yes, update it!";
+            } else if (action === "delete") {
+                title = "Are you sure you want to delete?";
+                confirmButtonText = "Yes, delete it!";
+            } else {
+                // Handle other actions if needed
+                return;
+            }
+
+            Swal.fire({
+                title: title,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: confirmButtonText,
+                cancelButtonText: "No, cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If the user clicks "Yes", take appropriate action
+                    if (action === "update") {
+                        // If the update button was clicked, submit the form
+                        uploadForm.submit();
+                    } else if (action === "delete") {
+                        // If the delete button was clicked, handle the deletion logic here
+                        // You can use AJAX to send a request to the server to delete the record
+                        // For simplicity, I'm redirecting to a delete.php URL with the record ID
+                        const contentId = deleteButton.dataset.contentId;
+                        window.location.href = 'phpfiles/delete.php?deleteid=' + contentId;
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+
+
 </body>
 
 <!-- Mirrored from educhamp.themetrades.com/demo/admin/add-listing.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:09:05 GMT -->

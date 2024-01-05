@@ -568,7 +568,7 @@
 						</div>
 						<div class="widget-inner">
 							<!-- Chart -->
-							<div style="width: 300px; height: 400px;">
+							<div style="width: 300px; height: 500px;">
 								<canvas id="barChart"></canvas>
 							</div>
 				<?php
@@ -580,7 +580,7 @@
 						'IT' => 0,
 						'Maintenance' => 0,
 						'Security' => 0,
-						'SCM' => 0					
+						'Business' => 0					
 					);
 					
 					if ($result) {
@@ -647,6 +647,7 @@
 								responsive: true, // Enable responsiveness
 								maintainAspectRatio: false, // Allow chart to ignore aspect ratio
 								width: 100, // Set the width in pixels
+								
 							}
 						};
 

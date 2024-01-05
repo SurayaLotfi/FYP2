@@ -15,9 +15,8 @@
 <?php
 
     include "connect.php";
-    if (isset($_POST['update'])) {
+    // if (isset($_POST['update'])) {
         $id = $_POST['updateid'];
-
         $title = $_POST['title'];
         // $class_code = $_POST['class_code'];
         $validity = date('Y-m-d', strtotime($_POST['dateValid']));
@@ -29,48 +28,29 @@
         $status = 'Not yet started';
         $minimum_time = $_POST['minimum_time'];
 
-
-        ?>
-            <script>
-                Swal.fire({
-                title: "Do you want to save the changes?",
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: "Save",
-                denyButtonText: `Don't save`
-                }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    Swal.fire("Saved!", "", "success");
-                } else if (result.isDenied) {
-                    Swal.fire("Changes are not saved", "", "info");
-                }
-                });
-            </script>
-        <?php
     
-            // JavaScript confirmation dialog
-    echo '<script>';
-    echo 'var confirmed = confirm("Are you sure you want to update \"' . $title . '\" ?");';
-    echo 'if (confirmed) {';
-        echo '   window.location.href = "update.php?confirm=1&id=' . $id .  '&class_id='  .$class_id . '&title='. urlencode($title) .'&format='.$format.'&validity=' . $validity .  '&department=' . $department . '&content=' . $content . '&status=' . $status . '&minimum_time=' . $minimum_time . '";';
-    echo '} else {';
-    echo '   window.location.href = "../edit-course.php?course_id='. $id . '";'; // Redirect to EDIT-COURSE if deletion is canceled
-    echo '}';
-    echo '</script>';
+    //         // JavaScript confirmation dialog
+    // echo '<script>';
+    // echo 'var confirmed = confirm("Are you sure you want to update \"' . $title . '\" ?");';
+    // echo 'if (confirmed) {';
+    //     echo '   window.location.href = "update.php?confirm=1&id=' . $id .  '&class_id='  .$class_id . '&title='. urlencode($title) .'&format='.$format.'&validity=' . $validity .  '&department=' . $department . '&content=' . $content . '&status=' . $status . '&minimum_time=' . $minimum_time . '";';
+    // echo '} else {';
+    // echo '   window.location.href = "../edit-course.php?course_id='. $id . '";'; // Redirect to EDIT-COURSE if deletion is canceled
+    // echo '}';
+    // echo '</script>';
     
-    }elseif(isset($_GET['confirm']) && $_GET['confirm']==1){
-        $id = $_GET['id'];
-        $title = $_GET['title'];
-        // $class_code = $_GET['class_code'];
-        $class_id = $_GET['class_id'];
-        $validity = $_GET['validity'];
-        // $due = $_GET['due'];
-        $department = $_GET['department'];
-        $content = $_GET['content'];
-        $status = $_GET['status'];
-        $minimum_time = $_GET['minimum_time'];
-        $format = $_GET['format'];
+    // }elseif(isset($_GET['confirm']) && $_GET['confirm']==1){
+        // $id = $_GET['id'];
+        // $title = $_GET['title'];
+        // // $class_code = $_GET['class_code'];
+        // $class_id = $_GET['class_id'];
+        // $validity = $_GET['validity'];
+        // // $due = $_GET['due'];
+        // $department = $_GET['department'];
+        // $content = $_GET['content'];
+        // $status = $_GET['status'];
+        // $minimum_time = $_GET['minimum_time'];
+        // $format = $_GET['format'];
 
         // Update database using prepared statements
         $update = $db->prepare("UPDATE class SET title=?, format=?, validity=?, department=?, content=?, minimum_time=?, class_id=? WHERE id=?");
@@ -110,19 +90,12 @@
                     $update = $db->query("UPDATE content_record SET content_id VALUES '$class_id'");
                 }
 
-                   
-        
-          
-
-            echo '<script>';
-            echo 'alert("Updated successfully");';
-            echo 'window.location.href = "../courses.php";'; // Redirect after the alert
-            echo '</script>';
+                header("Location: ../courses.php?alert=editsuccess");
 
             }else{
             echo "Query error: " . mysqli_error($db); // Display the error message
         }
-    } else{
-        echo "Query error: Cannot re-direct"; // Display the error message
-    }
+    // } else{
+    //     echo "Query error: Cannot re-direct"; // Display the error message
+    // }
     ?>
