@@ -420,9 +420,12 @@ if(isset($_GET['course_id'])){
 											<option value="Engineering" <?php if ($department == 'Engineering') echo 'selected'?>>Engineering</option>
 											<option value="IT" <?php if ($department == 'IT') echo 'selected'?>>IT</option>
 											<option value="Business" <?php if ($department == 'Business') echo 'selected'?>>Business</option>
+											<option value="Maintenance" <?php if ($department == 'Maintenance') echo 'selected'?>>Maintenance</option>
+											<option value="Security" <?php if ($department == 'Security') echo 'selected'?>>Security</option>
 											<option value="All" <?php if ($department == 'All') echo 'selected'?>>All</option>
 										</select>
 									</div>
+									
 									<div class="seperator"></div>
 									<div class="col-12 m-t20">
 										<div class="ml-auto m-b5">

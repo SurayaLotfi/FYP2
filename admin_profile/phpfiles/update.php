@@ -53,7 +53,7 @@
     echo '<script>';
     echo 'var confirmed = confirm("Are you sure you want to update \"' . $title . '\" ?");';
     echo 'if (confirmed) {';
-        echo '   window.location.href = "update.php?confirm=1&id=' . $id .  '&class_id='  .$class_id . '&title='. $title .'&format='.$format.'&validity=' . $validity .  '&department=' . $department . '&content=' . $content . '&status=' . $status . '&minimum_time=' . $minimum_time . '";';
+        echo '   window.location.href = "update.php?confirm=1&id=' . $id .  '&class_id='  .$class_id . '&title='. urlencode($title) .'&format='.$format.'&validity=' . $validity .  '&department=' . $department . '&content=' . $content . '&status=' . $status . '&minimum_time=' . $minimum_time . '";';
     echo '} else {';
     echo '   window.location.href = "../edit-course.php?course_id='. $id . '";'; // Redirect to EDIT-COURSE if deletion is canceled
     echo '}';
