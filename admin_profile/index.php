@@ -577,8 +577,10 @@
 					$departmentCounts = array(
 						'Training' => 0,
 						'Engineering' => 0,
-						'IT' => 0
-						
+						'IT' => 0,
+						'Maintenance' => 0,
+						'Security' => 0,
+						'SCM' => 0					
 					);
 					
 					if ($result) {
@@ -593,6 +595,12 @@
 								$departmentCounts['Engineering']++;
 							} elseif ($department === 'IT') {
 								$departmentCounts['IT']++;
+							}elseif ($department === 'Maintenance') {
+								$departmentCounts['Maintenance']++;
+							}elseif ($department === 'Security') {
+								$departmentCounts['Security']++;
+							}elseif ($department === 'Business') {
+								$departmentCounts['Business']++;
 							}
 						}
 					
@@ -610,11 +618,18 @@
 
 					
 					const data = {
-						labels: ['Training', 'Engineering', 'IT'],
+						labels: ['Training', 'Engineering', 'IT', 'Maintenance', 'Security', 'Business'],
 						datasets: [{
 							label: 'Total Knowledge Posted per Dept',
-							data: [departmentCounts['Training'], departmentCounts['Engineering'], departmentCounts['IT']],
-							backgroundColor: ['rgba(100, 200, 100, 0.8)', 'rgba(135, 183, 200, 0.5)', 'rgba(220, 100, 80, 0.8)'], // Set colors for each segment
+							data: [departmentCounts['Training'], departmentCounts['Engineering'], departmentCounts['IT'], departmentCounts['Maintenance'],departmentCounts['Security'],departmentCounts['Business']],
+							backgroundColor: [
+										'rgba(100, 200, 100, 0.8)',
+										'rgba(135, 183, 200, 0.5)',
+										'rgba(220, 100, 80, 0.8)',
+										'rgba(255, 165, 0, 0.7)',  // Add a new color (e.g., orange)
+										'rgba(60, 179, 113, 0.6)', // Add a new color (e.g., medium sea green)
+										'rgba(255, 99, 71, 0.8)'   // Add a new color (e.g., tomato)
+										], // Set colors for each segment
 							borderWidth: 1
 							
 								}]

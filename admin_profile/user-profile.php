@@ -406,8 +406,8 @@
 										<label class="col-sm-2 col-form-label" for="content-type-select">Select Role</label>
 										<div class="col-sm-7">
 											<select class="form-control " id="role" name="role">
-												<option value="User">User</option>
-												<option value="Admin">Admin</option>
+												<option value="user">User</option>
+												<option value="admin">Admin</option>
 											</select>
 										</div>
 									</div>

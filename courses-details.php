@@ -345,7 +345,7 @@ include "connect.php";
     <!-- Content -->
     <div class="page-content bg-white">
         <!-- inner page banner -->
-        <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner2.jpg);">
+        <div class="page-banner ovbl-dark" style="background-image:url(assets/images/malaysia-airlines-bg.jpeg);">
             <div class="container">
                 <div class="page-banner-entry">
                     <h1 class="text-white">Knowledge Details</h1>

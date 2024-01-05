@@ -368,6 +368,13 @@
 									</div>
 
 									<div class="form-group col-6">
+										<label class="col-form-label">Estimated time completion (Eg: 6 hours 30 minutes)</label>
+										<div>
+										<input class="form-control" type="text" id="minimum_time" name="minimum_time" required>
+										</div>
+									</div>
+<!-- 
+									<div class="form-group col-6">
 										<label class="col-form-label" for="content-type-select">Estimated time completion</label>
 										<select class="form-control" id="minimum_time" name="minimum_time" required>
 											<option value="30 minutes">30 minutes</option>
@@ -378,7 +385,7 @@
 											<option value="3 hours">3 hours</option>
 											<option value="3 hours 30 minutes">3 hours 30 minutes</option>
 										</select>
-									</div>
+									</div> -->
 
 									<div class="form-group col-6">
 										<label class="col-form-label" for="content-type-select">Knowledge Format</label>
@@ -398,6 +405,8 @@
 											<option value="Engineering">Engineering</option>
 											<option value="IT">IT</option>
 											<option value="Business">Business</option>
+											<option value="Maintenance">Maintenance</option>
+											<option value="Security">Security</option>
 											<option value="All">All</option>
 										</select>
 									</div>

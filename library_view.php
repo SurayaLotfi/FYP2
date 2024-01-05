@@ -9,7 +9,7 @@ include "connect.php";
 	if(isset($_GET['course_id'])){
 		$course_id = $_GET['course_id'];
 		
-		$sql = "SELECT * FROM class WHERE class_id='$course_id' AND department='$department'";
+		$sql = "SELECT * FROM class WHERE class_id='$course_id'";
 		$result=mysqli_query($db, $sql);
 		$row = mysqli_fetch_assoc($result);
 		$content = $row["content"];
@@ -20,7 +20,7 @@ include "connect.php";
 		$validity = $row['validity'];
 		$due = $row['due'];
 		$content_id = $row['class_id'];
-		$department = $row['department'];
+		$this_department = $row['department'];
 		$minimum_time = $row['minimum_time'];
 		$source = $row['source'];
 		$validity = $row['validity'];
@@ -47,6 +47,17 @@ include "connect.php";
 		$date_posted = date('d-m-Y', strtotime($date_posted));
 		$val = $row['validity'];
 		$deadline = date('d-m-Y', strtotime($val));
+
+		
+		// Assuming $date_posted and $deadline are in the format 'd-m-Y'
+		$date_posted_obj = DateTime::createFromFormat('d-m-Y', $date_posted);
+		$deadline_obj = DateTime::createFromFormat('d-m-Y', $deadline);
+
+		// Calculate the difference
+		$interval = $date_posted_obj->diff($deadline_obj);
+
+		// Access the difference in days
+		$days_difference = $interval->days;
 	   
 	}
 ?>
@@ -154,6 +165,7 @@ include "connect.php";
 						<span></span>
 					</button>
 					<!-- Author Nav ==== -->
+					
 					<div class="secondary-menu">
 						<div class="secondary-inner">
 							<!-- <ul>
@@ -287,6 +299,7 @@ include "connect.php";
 					
 						</div>
 					</div>
+					
 					<!-- Search Box ==== -->
                     <div class="nav-search-bar">
                         <form action="#">
@@ -345,7 +358,7 @@ include "connect.php";
     <!-- Content -->
     <div class="page-content bg-white">
         <!-- inner page banner -->
-        <div class="page-banner ovbl-dark" style="background-image:url(assets/images/banner/banner2.jpg);">
+        <div class="page-banner ovbl-dark" style="background-image:url(assets/images/malaysia-airlines-bg.jpeg);">
             <div class="container">
                 <div class="page-banner-entry">
                     <h1 class="text-white">Knowledge Details</h1>
@@ -356,8 +369,8 @@ include "connect.php";
 		<div class="breadcrumb-row">
 			<div class="container">
 				<ul class="list-inline">
-					<li><a href="#">Home</a></li>
-					<li><a href="#">Knowledge Base</a></li>
+					<li><a href="home.php">Home</a></li>
+					<li><a href="library.php">Library</a></li>
 					<li>Knowledge Details</li>
 				</ul>
 			</div>
@@ -414,24 +427,30 @@ include "connect.php";
 								
 							<?php
 								//check status.. if completed, then the link shall show "completed" and cannot be clicked
-								$sql = "SELECT * FROM content_record WHERE content_id = '$content_id' AND username = '$username';
-								";
+								// $sql = "SELECT * FROM content_record WHERE content_id = '$content_id' AND username = '$username';
+								// ";
 
-								$result = mysqli_query($db, $sql);
+								// $result = mysqli_query($db, $sql);
 
-								if($result){
-									$row = mysqli_fetch_assoc($result);
-									$status = $row['status'];
+								// if($result){
+								// 	$row = mysqli_fetch_assoc($result);
+								// 	$status = $row['status'];
 									
 									
-									if($status == 'In Progress'){
-										?><a href="" class="btn radius-xl text-uppercase" id="stopLink">Finish</a><?php 
-									}elseif($status == 'Completed'){
-										?><div class="btn radius-xl text-uppercase" disabled>Completed</div><?php
-									}else{
-										?><a href="" class="btn radius-xl text-uppercase" id="stopLink">Finish</a><?php 
-									}
-								}else{}
+									// if($status == 'In Progress'){
+										?>
+											<!-- <a href="" class="btn radius-xl text-uppercase" id="stopLink">Finish</a> -->
+										<?php 
+									// }elseif($status == 'Completed'){
+										?>
+											<!-- <div class="btn radius-xl text-uppercase" disabled>Completed</div> -->
+										<?php
+									// }else{
+										?>
+											<!-- <a href="" class="btn radius-xl text-uppercase" id="stopLink">Finish</a> -->
+										<?php 
+									// }
+								// }else{}
 							?>
 								
 									<!--the link should be filled with a variable, php will store the path-->
@@ -511,50 +530,51 @@ include "connect.php";
 								
 								
 								<div class="row">
-									<div class="col-md-12 col-lg-4">
+									<div class="col-md-12 col-lg-12">
 									<h5 class="m-b5">Overview</h5>
 										<ul class="course-features">
 											<!-- <li><i class="ti-book"></i> <span class="label">Lectures</span> <span class="value">8</span></li> -->
-											<!-- <li><i class="ti-help-alt"></i> <span class="label">Quizzes</span> <span class="value">1</span></li> -->
+											<li><i class="fa fa-building"></i> <span class="label">Department</span> <span class="value"><?php echo $this_department?></span></li>
 											<li><i class="ti-time"></i> <span class="label">Duration</span> <span class="value"><?php echo $minimum_time?></span></li>
-											<li><i class="ti-stats-up"></i> <span class="label">Validity</span> <span class="value"><?php echo $remainingDays_valid?> days left</span></li>
+											<!-- <li><i class="ti-stats-up"></i> <span class="label">Validity</span> <span class="value"><?php echo $remainingDays_valid?> days left</span></li> -->
 											<li><i class="ti-calendar"></i> <span class="label">Date Posted</span> <span class="value"><?php echo $date_posted ?></span></li>
 											<li><i class="ti-announcement"></i> <span class="label">Deadline</span> <span class="value"><?php echo $deadline?></span></li>
+											<li><i class="ti-book"></i> <span class="label">Days given to complete</span> <span class="value"><?php echo $days_difference?> days</span></li>
 											
 											
 											
 											<!-- <li><i class="ti-check-box"></i> <span class="label">Assessments</span> <span class="value">Yes</span></li> -->
 										</ul>
 									</div>
-									<div class="col-md-12 col-lg-8">
-									<h5 class="m-b5">Your Progress</h5>
+									<!-- <div class="col-md-12 col-lg-8"> -->
+									<!-- <h5 class="m-b5">Your Progress</h5> -->
 									<?php
-										$sql = "SELECT DATE_FORMAT(start_time, '%Y-%m-%d %H:%i:%s') AS formatted_start_time, DATE_FORMAT(end_time, '%Y-%m-%d %H:%i:%s') AS formatted_end_time FROM content_record WHERE content_id = '$content_id' AND username = '$username'";
-										$result = mysqli_query($db, $sql);
+										// $sql = "SELECT DATE_FORMAT(start_time, '%Y-%m-%d %H:%i:%s') AS formatted_start_time, DATE_FORMAT(end_time, '%Y-%m-%d %H:%i:%s') AS formatted_end_time FROM content_record WHERE content_id = '$content_id' AND username = '$username'";
+										// $result = mysqli_query($db, $sql);
 
-										if (mysqli_num_rows($result) > 0) {
-											$row = mysqli_fetch_assoc($result);
-											$formattedStartTime = $row['formatted_start_time'];
-											$formattedEndTime = $row['formatted_end_time'];
+										// if (mysqli_num_rows($result) > 0) {
+										// 	$row = mysqli_fetch_assoc($result);
+										// 	$formattedStartTime = $row['formatted_start_time'];
+										// 	$formattedEndTime = $row['formatted_end_time'];
 
-											echo "<p>Time start: $formattedStartTime</p>";
+										// 	echo "<p>Time start: $formattedStartTime</p>";
 
-											if ($formattedEndTime != '0000-00-00 00:00:00') {
-												echo "<p>Time end: $formattedEndTime</p>";
-												$query = "SELECT * FROM content_record WHERE content_id = '$content_id' AND username = '$username'";
-												$res = mysqli_query($db, $query);
-												$rows = mysqli_fetch_assoc($res);
-												$duration =  $rows['duration'];
-												echo "<p>Duration: $duration </p>";
-											} else {
-												echo "<p>Time end: Not yet started</p>";
-											}
+										// 	if ($formattedEndTime != '0000-00-00 00:00:00') {
+										// 		echo "<p>Time end: $formattedEndTime</p>";
+										// 		$query = "SELECT * FROM content_record WHERE content_id = '$content_id' AND username = '$username'";
+										// 		$res = mysqli_query($db, $query);
+										// 		$rows = mysqli_fetch_assoc($res);
+										// 		$duration =  $rows['duration'];
+										// 		echo "<p>Duration: $duration </p>";
+										// 	} else {
+										// 		echo "<p>Time end: Not yet started</p>";
+										// 	}
 											
 											
-										} else {
-											echo "<p>Time start: Not yet started</p>";
-											echo "<p>Time end: Not yet started</p>";
-										}
+										// } else {
+										// 	echo "<p>Time start: Not yet started</p>";
+										// 	echo "<p>Time end: Not yet started</p>";
+										// }
 									?>
 
 
@@ -574,8 +594,8 @@ include "connect.php";
 											<li>Practical assignments at the end of every session.</li>
 											<li>Practical learning experience with live project work and examples.cv</li>
 										</ul> -->
-									</div>
-								</div>
+									<!-- </div> -->
+								<!-- </div> -->
 							</div>
 							<!-- <div class="m-b30" id="curriculum">
 								<h4>Curriculum</h4>
@@ -974,7 +994,6 @@ include "connect.php";
         }, 1000); // Example delay: 1000 milliseconds (1 second)
     }
 </script>
-
 <!-- Live Notification -->
 <script type="text/javascript">
     function loadDoc() {
