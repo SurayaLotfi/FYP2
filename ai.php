@@ -1,3 +1,24 @@
+
+<?php 
+	session_start();
+	include "connect.php";
+
+	if($_SESSION['role'] == 'user'){
+		
+        $id = $_SESSION["id"];
+        $full_name = $_SESSION["full_name"];
+        $username = $_SESSION["username"];
+        $department = $_SESSION["department"];
+        $email = $_SESSION["email"];
+        $query = "SELECT * from class where user_id = $id";
+        $result = mysqli_query($db,$query);
+	}else{
+		header("Location: logout.php");
+	}
+
+	
+	
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -168,8 +189,8 @@
 									<a href="#" class="ttr-material-button ttr-submenu-toggle"><i class="fa fa-bell" aria-hidden="true" id="noti_number"></i><span class="notification-count"><?php echo $total_inbox?></span></a>
 									<div class="notification-popup ">
 									
-										<div class="ttr-notify-header" id="noti_number">
-											<span class="ttr-notify-text-top"><a href="inbox.php"><?php  echo $total_inbox ?> New Notifications</a></span>
+										<div class="ttr-notify-header" id="link">
+											<span class="ttr-notify-text-top"><a href="inbox.php" class="link-inbox"><?php  echo $total_inbox ?> New Notifications</a></span>
 											<span class="ttr-notify-text"><a href="inbox.php"></a>View All</span>
 										</div>
 										<br>
@@ -181,7 +202,7 @@
 													</span>
 													<span class="notification-text" >
 
-														<a href="#" class="deadline">You have <?php echo $total_deadline ?></a> knowledge that is almost due
+														<a href="inbox.php" class="deadline">You have <?php echo $total_deadline ?></a> knowledge that is almost due
 													</span>
 													<span class="notification-time">
 														<a href="#" class="fa fa-close"></a>
@@ -193,7 +214,7 @@
 													<i class="fa fa-exclamation"></i>
 													</span>
 													<span class="notification-text">
-														<a href="#" class="exceed">You have <?php echo $total_exceed ?></a> exceeded knowledge.
+														<a href="inbox_ke.php" class="exceed">You have <?php echo $total_exceed ?></a> exceeded knowledge.
 													</span>
 													<span class="notification-time">
 														<a href="#" class="fa fa-close"></a>
@@ -205,7 +226,7 @@
 														<i class="fa fa-check"></i>
 													</span>
 													<span class="notification-text">
-														<a href="#" class="accepted">You have <?php echo $total_ks ?></a> new accepted knowledge.
+														<a href="inbox_ka.php" class="accepted">You have <?php echo $total_ks ?></a> new accepted knowledge.
 													</span>
 													<span class="notification-time">
 														<a href="#" class="fa fa-close"></a>
@@ -217,7 +238,7 @@
 														<i class="fa fa-times"></i>
 													</span>
 													<span class="notification-text">
-														<a href="#" class="declined">You have <?php echo $total_declined ?></a> new declined knowledge.
+														<a href="inbox_kd.php" class="declined">You have <?php echo $total_declined ?></a> new declined knowledge.
 													</span>
 													<span class="notification-time">
 														<a href="#" class="fa fa-close"></a>
@@ -957,4 +978,5 @@
 
     loadDoc();
 </script>
+
 </html>

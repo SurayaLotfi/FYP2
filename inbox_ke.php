@@ -791,7 +791,7 @@
 			<script type="text/javascript">
 				function fetch_data(page) {
 					$.ajax({
-						url: "phpfiles/inbox_pagination.php",
+						url: "phpfiles/inbox_page_ke.php",
 						method: "GET",
 						data: {
 							page: page
@@ -884,42 +884,42 @@
 		</script>
 
 		<!-- Live Notification -->
-<!-- <script type="text/javascript">
-			function loadDoc() {
+            <!-- <script type="text/javascript">
+                        function loadDoc() {
 
-				setInterval(function(){
+                            setInterval(function(){
 
-					var xhttp = new XMLHttpRequest();
-					xhttp.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							var response = JSON.parse(this.responseText);
-							var notificationCount = document.getElementById("noti_number");
-							var deadline = document.getElementById("deadline");
-							var exceed = document.getElementById("exceed");
-							var accepted = document.getElementById("accepted");
-							var declined = document.getElementById("declined");
-                    		
-							// notificationCount.innerHTML = this.responseText;
-							// Optionally update the static "5" with the echoed value
-							document.querySelector('.notification-count').innerHTML = response.total_inbox;
-							document.querySelector('.link-inbox').innerHTML = response.new_noti;
-							document.querySelector('#deadline .deadline').innerHTML = response.notifications['deadline'].text;
-							document.querySelector('.exceed').innerHTML = response.notifications['exceed'].text;
-							document.querySelector('#accepted .accepted').innerHTML = response.notifications['accepted'].text;
-							document.querySelector('#declined .declined').innerHTML = response.notifications['declined'].text;
-						
-							
-						}
-					};
-					xhttp.open("GET", "phpfiles/notification.php", true);
-					xhttp.send();
-					
-				},1000);
-				console.log("loadDoc function called");
-				
-			}
+                                var xhttp = new XMLHttpRequest();
+                                xhttp.onreadystatechange = function() {
+                                    if (this.readyState == 4 && this.status == 200) {
+                                        var response = JSON.parse(this.responseText);
+                                        var notificationCount = document.getElementById("noti_number");
+                                        var deadline = document.getElementById("deadline");
+                                        var exceed = document.getElementById("exceed");
+                                        var accepted = document.getElementById("accepted");
+                                        var declined = document.getElementById("declined");
+                                        
+                                        // notificationCount.innerHTML = this.responseText;
+                                        // Optionally update the static "5" with the echoed value
+                                        document.querySelector('.notification-count').innerHTML = response.total_inbox;
+                                        document.querySelector('.link-inbox').innerHTML = response.new_noti;
+                                        document.querySelector('#deadline .deadline').innerHTML = response.notifications['deadline'].text;
+                                        document.querySelector('.exceed').innerHTML = response.notifications['exceed'].text;
+                                        document.querySelector('#accepted .accepted').innerHTML = response.notifications['accepted'].text;
+                                        document.querySelector('#declined .declined').innerHTML = response.notifications['declined'].text;
+                                    
+                                        
+                                    }
+                                };
+                                xhttp.open("GET", "phpfiles/notification.php", true);
+                                xhttp.send();
+                                
+                            },1000);
+                            console.log("loadDoc function called");
+                            
+                        }
 
-			loadDoc();
+                        loadDoc();
 		</script> -->
 	
 </body>

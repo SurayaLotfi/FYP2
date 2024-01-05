@@ -424,7 +424,9 @@
 						
 						<div class="col-lg-9 col-md-8 col-sm-12">
 						 
-							<div class="row" id="posts-container">	
+							<div class="row" id="posts-container">
+
+                            
 							<div style="margin-left: 50px;">
 							
 							<?php 
@@ -436,23 +438,24 @@
 
 						$start_from = ($page - 1)*$limit; //getting the range
 
-						$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-						WHERE class.department = '$department'
-						AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
-						AND username = '$username'
-						AND validity <= '$due_date_threshold'
-						AND content_record.due = 'false'
-						ORDER BY class.id DESC;
+						$query = "SELECT * FROM knowledge_sharing 
+                        WHERE status = 'Declined' 
+                        AND username = '$username'
+                        AND viewed = 0;
 						";
+
+                    
 
 						$result = mysqli_query($db, $query);
 						$total_records = mysqli_num_rows($result);
 						$total_pages = ceil($total_records/$limit);
-
+                                
 							//pagination code
 							//button to update the number is page-item
 							
-							?> <ul class = "pagination"><?php
+							?> 
+                            <h4> You have <?php echo mysqli_num_rows($result) ?> New declined knowledge.<br></h4>
+                            <ul class = "pagination"><?php
 						
 							if($page > 1){ //if page is not at page 1, it was clicked
 								$previous = $page - 1;
@@ -483,7 +486,7 @@
 
 							?>
 							</ul>
-							<h4> You have <?php echo mysqli_num_rows($result) ?> content that due is less than 10 days.<br></h4>
+							
 							
 						</div>
 						
@@ -501,74 +504,117 @@
 						
 							//get all wanted data
 							//getting class data
+
+                            //---------contents-000000000
+                            $query = "SELECT * FROM knowledge_sharing 
+                            WHERE status = 'Declined' 
+                            AND username = '$username'
+                            AND viewed = 0;
+                            ";
+
+                            $resulttemp = mysqli_query($db, $query);
+                            if(mysqli_num_rows($resulttemp) == 0){
+                                echo "
+
+                                <div class='cours-bx' style='padding: 50px; text-align: center; border-radius: 50px; '> 
+                                <h5><p>View Your Knowledge Shared Status <a href='knowledge_shared.php' style='text-decoration: underline;'>Here</a></p></h5>        
+                                </div>
+                                ";
+                            }
 							
 							
 							while($row = mysqli_fetch_assoc($result)){
 										//retrieving data that we want
 									
-										$validity = $row['validity'];
-										// $due = $row['due'];
+										// $validity = $row['validity'];
+										// // $due = $row['due'];
 											
-										$today = new DateTime();
-										$validity = new DateTime($validity);
-										// $due = new DateTime($due);
+										// $today = new DateTime();
+										// $validity = new DateTime($validity);
+										// // $due = new DateTime($due);
 										
 								
-										// Calculate days left
-										if ($today <= $validity) {
-											$days_left = $today->diff($validity);
+										// // Calculate days left
+										// if ($today <= $validity) {
+										// 	$days_left = $today->diff($validity);
 											
-										} else {
-											$days_left = $validity->diff($today);
+										// } else {
+										// 	$days_left = $validity->diff($today);
 											
-										}
+										// }
 				
 										
-										$remainingDays_valid = $days_left->format('%a'); // Number of days remaining										
-										$remainingDays_due = $days_left->format('%a');
-										$date_posted = $row['time_added'];
-										$date_posted = date('d-m-Y', strtotime($date_posted));
+										// $remainingDays_valid = $days_left->format('%a'); // Number of days remaining										
+										// $remainingDays_due = $days_left->format('%a');
+										// $date_posted = $row['time_added'];
+										// $date_posted = date('d-m-Y', strtotime($date_posted));
 
 								
 						?>
-						 <div class="cours-bx" >
-							<div class="action-box">
-								<img src="" alt="">
-									<a href="courses-details.php?course_id=<?php echo $row['class_id'] ?>" class="btn">Read More</a>
-								</div>
-									<div class="info-bx text-center">
-											<h5><a href="#"><?php echo $row['title'] ?></a></h5>
-											<span><?php echo $row['class_code'] ?></span>
-									</div>
-									<div class="cours-more-info">
-											<div class="review">
-												<?php if($today <= $validity){?>
-												<span>Validity: <?php echo $remainingDays_valid?> days</span>
-												
-												<!-- <span>Due (Exceeded days): <?php echo $remainingDays_due?> days</span> -->
-												<?php }else{?>
-												<span style="color: red;">Validity: 0 days</span>
-												<br>
-												<span style="color: red;">Due (Exceeded Days): <?php echo $remainingDays_due?> days</span>
-												<?php
-												} ?>
-												<br>
-												<span>Format: <?php echo $row['format']?></span>
-												<br>
-												<span>Date Posted: <?php echo $date_posted?></span>
-												
-											</div>
-											<div class="price">
-												<h7 style="font-size: 12px;">Class ID<h7>
-													<h5 style="font-size: 15px;"><?php echo $row['class_id'] ?></h5>
-												<h7 style="font-size: 12px;">Status<h7>
-												<h5 style="font-size: 12px;"> <?php
-													echo $row['status'];
-													?>
-												</h5>
-											</div>
-								</div>
-							</div>
+						  <div class="cours-bx" >
+        <div class="action-box">
+            <img src="" alt="">
+                <!-- <a href="declined_knowledge.php?knowledge_id=<?php echo $row['class_id'] ?>" class="btn">Read More</a> -->
+            </div>
+                <div class="info-bx text-center">
+                        <h5><a href="#"><?php echo $row['title'] ?></a></h5>
+                        <span><?php echo $row['class_id'] ?></span>
+                </div>
+                <div class="cours-more-info">
+                        <div class="review">
+                            
+                            <span>Format: <?php echo $row['format']?></span>
+                            <br>
+                            <span>Date Declined: <?php echo $row['timestamp']?></span>
+                            
+                        </div>
+                        <div class="price">
+                            <h7 style="font-size: 12px;">Class ID<h7>
+                                <h5 style="font-size: 15px;"><?php echo $row['class_id'] ?></h5>
+                            <h7 style="font-size: 12px;">Status<h7>
+                            <h5 style="font-size: 12px;"> <?php
+                                // if($content == "Knowledge Shared"){
+                                //     $query_ks = "SELECT * FROM class 
+                                //         JOIN content_record ON class.class_id = content_record.content_id
+                                //         WHERE class.department = ? 
+                                //         AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
+                                //         AND username = ? 
+                                //         AND validity <= ? 
+                                //         ORDER BY class.id DESC";
+
+                                //         $stmt = mysqli_prepare($db, $query_ks);
+                                //         mysqli_stmt_bind_param($stmt, "sss", $department, $username, $due_date_threshold);
+                                //         mysqli_stmt_execute($stmt);
+                                //         $result_ks = mysqli_stmt_get_result($stmt);
+
+                                //         if ($result_ks) {
+                                //             if (mysqli_num_rows($result_ks) > 0) {
+                                //                 $row_ks = mysqli_fetch_assoc($result_ks);
+                                //                 echo $row_ks['status'];
+                                //             } else {
+                                //                 echo "No results found.";
+                                //             }
+                                //         } else {
+                                //             echo "Query failed: " . mysqli_error($db);
+                                //         }
+                                        
+                                // }else{
+                                echo $row['status'];
+                                // }
+                                ?>
+                            </h5>
+                        </div>
+            </div>
+
+            <?php 
+
+                //update knowledge_sharing table, viewed = 1 once clicked
+                
+                $class_id = $row['class_id'];
+                $query_viewed = "UPDATE knowledge_sharing SET viewed = 1 WHERE class_id = '$class_id'";
+                $result_query_viewed = mysqli_query($db, $query_viewed);
+        ?>
+        </div>
 						
 									<br>
 									<br>
@@ -580,7 +626,7 @@
 								?>
 									
 								<br>
-								<div class="col-lg-12 m-b20">
+								<!-- <div class="col-lg-12 m-b20">
 									<div class="pagination-bx rounded-sm gray clearfix">
 										<ul class="pagination">
 											<li class="previous"><a href="#"><i class="ti-arrow-left"></i> Prev</a></li>
@@ -590,7 +636,7 @@
 											<li class="next"><a href="#">Next <i class="ti-arrow-right"></i></a></li>
 										</ul>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>
@@ -598,6 +644,7 @@
             </div>
         </div>
 		<!-- contact area END -->
+        
 		
     </div>
     <!-- Content END-->
@@ -758,40 +805,40 @@
 			});
 
 
-			function fetch_data2(page) {
-				// Check if selectedCategory is defined
-				if (selectedCategory !== undefined) {
-					$.ajax({
-						url: "fetch_inbox.php",
-						method: "GET",
-						data: {
-							page: page,
-							contents: selectedCategory
-						},
-						success: function (data) {
-							$("#posts-container").html(data);
-						}
-					});
-				}
-			}
+			// function fetch_data2(page) {
+			// 	// Check if selectedCategory is defined
+			// 	if (selectedCategory !== undefined) {
+			// 		$.ajax({
+			// 			url: "fetch_inbox.php",
+			// 			method: "GET",
+			// 			data: {
+			// 				page: page,
+			// 				contents: selectedCategory
+			// 			},
+			// 			success: function (data) {
+			// 				$("#posts-container").html(data);
+			// 			}
+			// 		});
+			// 	}
+			// }
 
 
 
-			fetch_data(1);
+			// fetch_data(1);
 
-			$(document).on("click", ".page-item", function () {
-				var page = $(this).attr("id");
-				fetch_data2(page);
-			});
+			// $(document).on("click", ".page-item", function () {
+			// 	var page = $(this).attr("id");
+			// 	fetch_data2(page);
+			// });
     });
 </script>
 
 		
 			<!-- Pagination -->
-			<script type="text/javascript">
+			<!-- <script type="text/javascript">
 				function fetch_data(page) {
 					$.ajax({
-						url: "phpfiles/inbox_pagination.php",
+						url: "phpfiles/inbox_page_kd.php",
 						method: "GET",
 						data: {
 							page: page
@@ -808,7 +855,7 @@
 					var page = $(this).attr("id");
 					fetch_data(page);
 				});
-			</script>
+			</script> -->
 
 		<!--Live Search-->
 		<script type="text/javascript">
@@ -884,42 +931,42 @@
 		</script>
 
 		<!-- Live Notification -->
-<!-- <script type="text/javascript">
-			function loadDoc() {
+            <!-- <script type="text/javascript">
+                        function loadDoc() {
 
-				setInterval(function(){
+                            setInterval(function(){
 
-					var xhttp = new XMLHttpRequest();
-					xhttp.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							var response = JSON.parse(this.responseText);
-							var notificationCount = document.getElementById("noti_number");
-							var deadline = document.getElementById("deadline");
-							var exceed = document.getElementById("exceed");
-							var accepted = document.getElementById("accepted");
-							var declined = document.getElementById("declined");
-                    		
-							// notificationCount.innerHTML = this.responseText;
-							// Optionally update the static "5" with the echoed value
-							document.querySelector('.notification-count').innerHTML = response.total_inbox;
-							document.querySelector('.link-inbox').innerHTML = response.new_noti;
-							document.querySelector('#deadline .deadline').innerHTML = response.notifications['deadline'].text;
-							document.querySelector('.exceed').innerHTML = response.notifications['exceed'].text;
-							document.querySelector('#accepted .accepted').innerHTML = response.notifications['accepted'].text;
-							document.querySelector('#declined .declined').innerHTML = response.notifications['declined'].text;
-						
-							
-						}
-					};
-					xhttp.open("GET", "phpfiles/notification.php", true);
-					xhttp.send();
-					
-				},1000);
-				console.log("loadDoc function called");
-				
-			}
+                                var xhttp = new XMLHttpRequest();
+                                xhttp.onreadystatechange = function() {
+                                    if (this.readyState == 4 && this.status == 200) {
+                                        var response = JSON.parse(this.responseText);
+                                        var notificationCount = document.getElementById("noti_number");
+                                        var deadline = document.getElementById("deadline");
+                                        var exceed = document.getElementById("exceed");
+                                        var accepted = document.getElementById("accepted");
+                                        var declined = document.getElementById("declined");
+                                        
+                                        // notificationCount.innerHTML = this.responseText;
+                                        // Optionally update the static "5" with the echoed value
+                                        document.querySelector('.notification-count').innerHTML = response.total_inbox;
+                                        document.querySelector('.link-inbox').innerHTML = response.new_noti;
+                                        document.querySelector('#deadline .deadline').innerHTML = response.notifications['deadline'].text;
+                                        document.querySelector('.exceed').innerHTML = response.notifications['exceed'].text;
+                                        document.querySelector('#accepted .accepted').innerHTML = response.notifications['accepted'].text;
+                                        document.querySelector('#declined .declined').innerHTML = response.notifications['declined'].text;
+                                    
+                                        
+                                    }
+                                };
+                                xhttp.open("GET", "phpfiles/notification.php", true);
+                                xhttp.send();
+                                
+                            },1000);
+                            console.log("loadDoc function called");
+                            
+                        }
 
-			loadDoc();
+                        loadDoc();
 		</script> -->
 	
 </body>

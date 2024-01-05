@@ -220,7 +220,7 @@
 													<i class="fa fa-exclamation"></i>
 													</span>
 													<span class="notification-text">
-														<a href="inbox.php" class="exceed">You have <?php echo $total_exceed ?></a> exceeded knowledge.
+														<a href="inbox_ke.php" class="exceed">You have <?php echo $total_exceed ?></a> exceeded knowledge.
 													</span>
 													<span class="notification-time">
 														<a href="#" class="fa fa-close"></a>
@@ -232,7 +232,7 @@
 														<i class="fa fa-check"></i>
 													</span>
 													<span class="notification-text">
-														<a href="inbox.php" class="accepted">You have <?php echo $total_ks ?></a> new accepted knowledge.
+														<a href="inbox_ka.php" class="accepted">You have <?php echo $total_ks ?></a> new accepted knowledge.
 													</span>
 													<span class="notification-time">
 														<a href="#" class="fa fa-close"></a>
@@ -244,7 +244,7 @@
 														<i class="fa fa-times"></i>
 													</span>
 													<span class="notification-text">
-														<a href="inbox.php" class="declined">You have <?php echo $total_declined ?></a> new declined knowledge.
+														<a href="inbox_kd.php" class="declined">You have <?php echo $total_declined ?></a> new declined knowledge.
 													</span>
 													<span class="notification-time">
 														<a href="#" class="fa fa-close"></a>

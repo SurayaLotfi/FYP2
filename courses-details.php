@@ -215,60 +215,64 @@ include "connect.php";
 
 								$total_inbox = $total_deadline + $total_exceed + $total_ks + $total_declined;
 							?>
+
+							
+							
 							
 								<li class="notification-icon">
-									<a href="#" class="ttr-material-button ttr-submenu-toggle"><i class="fa fa-bell"></i><span class="notification-count"><?php  echo $total_inbox?></span></a>
+									<a href="#" class="ttr-material-button ttr-submenu-toggle"><i class="fa fa-bell" aria-hidden="true" id="noti_number"></i><span class="notification-count"><?php echo $total_inbox?></span></a>
 									<div class="notification-popup ">
-										<div class="ttr-notify-header">
-											<span class="ttr-notify-text-top"><a href="inbox.php"><?php  echo $total_inbox?> New Notifications</a></span>
+									
+										<div class="ttr-notify-header" id="link">
+											<span class="ttr-notify-text-top"><a href="inbox.php" class="link-inbox"><?php  echo $total_inbox ?> New Notifications</a></span>
 											<span class="ttr-notify-text"><a href="inbox.php"></a>View All</span>
 										</div>
 										<br>
-										<div class="noti-box-list">
+										<div class="noti-box-list" >
 											<ul>
-												<li>
+												<li id="deadline">
 													<span class="notification-icon dashbg-gray">
 														<i class="fa fa-calendar"></i>
 													</span>
-													<span class="notification-text">
+													<span class="notification-text" >
 
-														<a href="#">You have <?php echo $total_deadline ?></a> knowledge that is almost due
+														<a href="inbox.php" class="deadline">You have <?php echo $total_deadline ?></a> knowledge that is almost due
 													</span>
 													<span class="notification-time">
 														<a href="#" class="fa fa-close"></a>
 														<span> 02:14</span>
 													</span>
 												</li>
-												<li>
+												<li id="exceed">
 													<span class="notification-icon dashbg-gray">
 													<i class="fa fa-exclamation"></i>
 													</span>
 													<span class="notification-text">
-														<a href="#">You have <?php echo $total_exceed ?></a> exceeded knowledge.
+														<a href="inbox_ke.php" class="exceed">You have <?php echo $total_exceed ?></a> exceeded knowledge.
 													</span>
 													<span class="notification-time">
 														<a href="#" class="fa fa-close"></a>
 														<span> 7 Min</span>
 													</span>
 												</li>
-												<li>
+												<li id="accepted">
 													<span class="notification-icon dashbg-gray">
 														<i class="fa fa-check"></i>
 													</span>
 													<span class="notification-text">
-														<a href="#">You have <?php echo $total_ks ?></a> new accepted knowledge.
+														<a href="inbox_ka.php" class="accepted">You have <?php echo $total_ks ?></a> new accepted knowledge.
 													</span>
 													<span class="notification-time">
 														<a href="#" class="fa fa-close"></a>
 														<span> 2 May</span>
 													</span>
 												</li>
-												<li>
+												<li id="declined">
 													<span class="notification-icon dashbg-gray">
 														<i class="fa fa-times"></i>
 													</span>
 													<span class="notification-text">
-														<a href="#">You have <?php echo $total_declined ?></a> new declined knowledge.
+														<a href="inbox_kd.php" class="declined">You have <?php echo $total_declined ?></a> new declined knowledge.
 													</span>
 													<span class="notification-time">
 														<a href="#" class="fa fa-close"></a>

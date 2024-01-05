@@ -216,9 +216,6 @@ $limit = 3;
                 $result = mysqli_query($db, $query);						
                 while($row = mysqli_fetch_assoc($result)){
                             //retrieving data that we want
-                        
-                        
-                       
 
                         if($content == 'Accepted Knowledge Shared'){ 
                             $validity = $row['validity'];
@@ -368,7 +365,7 @@ $limit = 3;
                                 $query_viewed = "UPDATE knowledge_sharing SET viewed = 1 WHERE class_id = '$class_id'";
                                 $result_query_viewed = mysqli_query($db, $query_viewed);
                                 ?>
-                                </div>
+                            </div>
                             
                                         <br>
                                         <br>
