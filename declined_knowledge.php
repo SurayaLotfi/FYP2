@@ -87,6 +87,10 @@ include "connect.php";
 	<link rel="stylesheet" type="text/css" href="assets/css/notification.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
+	<!--Sweet Alert-->
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
 	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rizalcss@2.1.0/css/cdn.rizal.css" integrity="sha256-pqCXaySV+OMUcpVQ0FeFtvz9VLMeI08z53Ar2a7QP5o=" crossorigin="anonymous">
 	<script defer src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 	<script defer src="https://kit.fontawesome.com/1e8d61f212.js"></script> -->
@@ -385,7 +389,7 @@ include "connect.php";
 											<h4>You are encouraged to revise and resubmit and this knowledge.</h4>
 										</div>
 										<div class="widget-inner">
-							<form class="edit-profile m-b30" action="k-resubmit.php" method="post" enctype="multipart/form-data">
+							<form id="shareForm" class="edit-profile m-b30" action="k-resubmit.php" method="post" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
@@ -476,11 +480,11 @@ include "connect.php";
 									</div>
 									<div class="form-group col-6">
 										<label class="col-form-label" for="folder-select">Upload new Knowledge (PDF Only)</label>
-										<input type="file" name="my_pdf">
+										<input type="file" name="my_pdf" id="file">
 									</div>
                                     <input type="hidden" name="knowledge_id" value="<?php echo $knowledge_id ?>">
 									<div class="col-12">
-									<button  type="submit" class="btn btn-info btn-rounded"  name="submit" type="submit">UPLOAD</button> 
+									<button  id="shareButton" class="btn btn-info btn-rounded"  name="submit" type="submit">UPLOAD</button> 
 									
 									</div>
 								</div>
@@ -800,6 +804,82 @@ include "connect.php";
     }
 
     loadDoc();
+</script>
+
+<script>
+
+	
+document.addEventListener("DOMContentLoaded", function () {
+    const shareButton = document.getElementById("shareButton");
+    const shareForm = document.getElementById("shareForm");
+
+	console.log(shareForm.submit); // Check if it's a function
+
+
+    shareButton.addEventListener("click", function (event) {
+
+		       // Prevent the default form submission
+			   event.preventDefault();
+			   
+        // Validate all fields before allowing the upload
+        const validationResult = validateForm();
+
+        if (validationResult.isValid) {
+            // Use SweetAlert to confirm submission
+            Swal.fire({
+                title: "Are you sure you want to re-submit this knowledge?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If the user clicks "Yes," submit the form
+					HTMLFormElement.prototype.submit.call(shareForm);
+                }
+            });
+        } else {
+            // Show an alert or perform any other action if validation fails
+            Swal.fire({
+                title: validationResult.errorMessage,
+                icon: "error",
+                confirmButtonText: "OK",
+            });
+        }
+    });
+
+    function validateForm() {
+        // Add validation logic for each field
+        const title = document.getElementById("title").value;
+        const dateValid = document.getElementById("validity").value;
+        const minimumTime = document.getElementById("minimum_time").value;
+        const message = document.getElementById("message").value;
+		const file = document.getElementById("file").value;
+
+        // Check for missing values in required fields
+        if (title.trim() === "" || dateValid === "" || message.trim() === "" || minimumTime.trim() === "" || file.trim() === "") {
+            return {
+                isValid: false,
+                errorMessage: "Please fill in all required fields before uploading.",
+            };
+        }
+
+        // Validate minimumTime format
+        const timeRegex = /^(\d+\s*(hours?|hrs?)\s*)?(\d+\s*minutes?)?$/i;
+
+        if (!timeRegex.test(minimumTime)) {
+            return {
+                isValid: false,
+                errorMessage: "Invalid format for estimated time completion.",
+            };
+        }
+
+        return {
+            isValid: true,
+        };
+    }
+});
+
 </script>
 </body>
 

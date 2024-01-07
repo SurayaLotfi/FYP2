@@ -6,7 +6,7 @@ if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
 }
 
-if (isset($_POST['submit']) && isset($_FILES['my_pdf'])) {
+
     $pdf_name = $_FILES['my_pdf']['name'];
     $pdf_size = $_FILES['my_pdf']['size'];
     $tmp_name = $_FILES['my_pdf']['tmp_name'];
@@ -48,9 +48,8 @@ if (isset($_POST['submit']) && isset($_FILES['my_pdf'])) {
                 
                 if ($stmt->execute()) {
                     echo '<script type="text/javascript">
-                        alert("Resubmitted, admins will get to you shortly. Thank You!");
-                        window.location = "knowledge_shared.php";
-                    </script>';
+                            window.location = "tq_ks.php";
+                        </script>';
                 } else {
                     echo "
                     <script type='text/javascript'>
@@ -68,9 +67,10 @@ if (isset($_POST['submit']) && isset($_FILES['my_pdf'])) {
             }
         }
     } else {
-        echo 'Unknown error occurred!';
+        echo '<script type="text/javascript">
+                    alert("Please insert a new file");
+                    window.location = "knowledge_share.php";
+                </script>';
     }
-} else {
-    echo 'Form submission failed.';
-}
+
 ?>

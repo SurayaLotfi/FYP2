@@ -6,7 +6,7 @@ if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
 }
 
-if (isset($_POST['submit']) && isset($_FILES['my_pdf'])) {
+
     $pdf_name = $_FILES['my_pdf']['name'];
     $pdf_size = $_FILES['my_pdf']['size'];
     $tmp_name = $_FILES['my_pdf']['tmp_name'];
@@ -84,7 +84,5 @@ if (isset($_POST['submit']) && isset($_FILES['my_pdf'])) {
     } else {
         echo 'Unknown error occurred!';
     }
-} else {
-    echo 'Form submission failed.';
-}
+
 ?>

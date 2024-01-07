@@ -60,61 +60,13 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 
+	<!--Sweet Alert-->
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
-	
-    	<!-- jQuery -->
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<!-- DataTables CSS and JS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-<script src= "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+ 
 
-  
-<script>
-
-var $j = jQuery.noConflict();
-$j(document).ready(function() {
-    console.log("Document ready");
-
-    var table = $j('#dataTableid').DataTable({
-        // DataTables options
-        "pagingType": "full_numbers",
-        "lengthMenu": [
-            [5, 10, 15, 50, -1],
-            [5, 10, 15, 50, "All"]
-        ],
-    });
-
-    // Add custom filter dropdown for Content Type
-    // var filterDropdown = $(
-    // 	'<select class="form-control mb-3" aria-label="Source"><option value="" selected disabled>Select Department</option><option value="">All</option><option value="engineering">Engineering</option><option value="others">Others</option></select>'
-    // )
-    // 	.css('width', '150px')
-    // 	.css('margin-top', '7px')
-    // 	.css('margin-left', '10px')
-    // 	.css('margin-right', '10px');
-
-    // // Insert filter dropdown next to the search input
-    // $('.dataTables_filter')
-    // 	.addClass('d-flex align-items-center')
-    // 	.append(filterDropdown);
-
-    // 	filterDropdown.on('change', function() {
-    // 	var filterValue = $j(this).val();
-
-    // 	if (filterValue === 'others') {
-    // 		// If "Others" is selected, filter values other than "admin"
-    // 		table.column(5).search('^(?!admin$).*$', true, false).draw();
-    // 	} else {
-    // 		// If any other option is selected, use the selected value for filtering
-    // 		table.column(5).search(filterValue).draw();
-    // 	}
-    // });
-});
-
-    </script>
 </head>
 <body class="ttr-opened-sidebar ttr-pinned-sidebar">
 	
@@ -518,22 +470,10 @@ $j(document).ready(function() {
 	</main>
 	<div class="ttr-overlay"></div>
 
-			<!--Sweet Alert-->
-			<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
 
-        if (alertType === "deletesuccess") {
-            Swal.fire("Success", "Knowledge has been deleted.", "success");
-        } else if (alertType === "editsuccess") {
-            Swal.fire("Success", "Knowledge has been updated.", "success");
-        }
-    });
-</script>
+
 
 <!-- External JavaScripts -->
 <script src="assets/js/jquery.min.js"></script>
@@ -549,10 +489,82 @@ $j(document).ready(function() {
 <script src="assets/vendors/masonry/filter.js"></script>
 <script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
 <script src='assets/vendors/scroll/scrollbar.min.js'></script>
-<script src="assets/js/functions.js"></script>
+<!-- <script src="assets/js/functions.js"></script> -->
 <script src="assets/vendors/chart/chart.min.js"></script>
 <script src="assets/js/admin.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
+
+   <!-- jQuery -->
+   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- DataTables CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script src= "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<script>
+
+var $j = jQuery.noConflict();
+$j(document).ready(function() {
+    console.log("Document ready");
+
+    var table = $j('#dataTableid').DataTable({
+        // DataTables options
+        "pagingType": "full_numbers",
+        "lengthMenu": [
+            [5, 10, 15, 50, -1],
+            [5, 10, 15, 50, "All"]
+        ],
+    });
+
+    // Add custom filter dropdown for Content Type
+    // var filterDropdown = $(
+    // 	'<select class="form-control mb-3" aria-label="Source"><option value="" selected disabled>Select Department</option><option value="">All</option><option value="engineering">Engineering</option><option value="others">Others</option></select>'
+    // )
+    // 	.css('width', '150px')
+    // 	.css('margin-top', '7px')
+    // 	.css('margin-left', '10px')
+    // 	.css('margin-right', '10px');
+
+    // // Insert filter dropdown next to the search input
+    // $('.dataTables_filter')
+    // 	.addClass('d-flex align-items-center')
+    // 	.append(filterDropdown);
+
+    // 	filterDropdown.on('change', function() {
+    // 	var filterValue = $j(this).val();
+
+    // 	if (filterValue === 'others') {
+    // 		// If "Others" is selected, filter values other than "admin"
+    // 		table.column(5).search('^(?!admin$).*$', true, false).draw();
+    // 	} else {
+    // 		// If any other option is selected, use the selected value for filtering
+    // 		table.column(5).search(filterValue).draw();
+    // 	}
+    // });
+});
+
+
+
+    </script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
+
+        if (alertType === "deletesuccess") {
+            Swal.fire("Success", "User has been deleted.", "success");
+        } else if (alertType === "editsuccess") {
+            Swal.fire("Success", "User has been updated.", "success");
+        }else if(alertType === "success"){
+			Swal.fire("Success", "User has been added.", "success");
+		}
+    });
+</script>
+  
+
 
 
 

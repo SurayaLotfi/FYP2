@@ -541,11 +541,11 @@
             let title, confirmButtonText;
 
             if (action === "update") {
-                title = "Are you sure you want to update?";
-                confirmButtonText = "Yes, update it!";
+                title = "Are you sure you want to update the changes made to this user?";
+                confirmButtonText = "Yes";
             } else if (action === "delete") {
-                title = "Are you sure you want to delete?";
-                confirmButtonText = "Yes, delete it!";
+                title = "Are you sure you want to delete this user?";
+                confirmButtonText = "Yes!";
             } else {
                 // Handle other actions if needed
                 return;

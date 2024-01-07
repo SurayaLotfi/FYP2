@@ -366,6 +366,7 @@
 									<th>Title</th>
 									<th>Status Request</th>
                                     <th>Duration</th>
+									<th>Time added</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -393,6 +394,10 @@
 									<td><?php echo $row['title'] ?></td>
 									<td><?php echo $row['status'] ?></td>
                                     <td><?php echo $row['minimum_time'] ?></td>
+									<td>
+										Date: <?php echo date("d/m/Y", strtotime($row['time_added'])); ?><br>
+										Time: <?php echo date("H:i:s", strtotime($row['time_added'])); ?>
+									</td>
 									<td style="display: flex; justify-content: center;">
 									<?php if($status == 'Declined'){
 										?><a href="declined_knowledge.php?knowledge_id=<?php echo $id?>" class='btn'>View Message</a><?php	

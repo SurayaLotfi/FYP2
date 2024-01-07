@@ -71,6 +71,10 @@ include "connect.php";
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/notification.css">
 
+	<!--Sweet Alert-->
+	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>	
+
 	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rizalcss@2.1.0/css/cdn.rizal.css" integrity="sha256-pqCXaySV+OMUcpVQ0FeFtvz9VLMeI08z53Ar2a7QP5o=" crossorigin="anonymous">
 	<script defer src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 	<script defer src="https://kit.fontawesome.com/1e8d61f212.js"></script> -->
@@ -372,7 +376,7 @@ include "connect.php";
 											<h4>Enter the following details:</h4>
 										</div>
 										<div class="widget-inner">
-							<form class="edit-profile m-b30" action="sharing.php" method="post" enctype="multipart/form-data">
+							<form  class="edit-profile m-b30" id="shareForm" action="sharing.php" method="post" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-12">
 										<div class="ml-auto">
@@ -470,10 +474,10 @@ include "connect.php";
 									</div>
 									<div class="form-group col-6">
 										<label class="col-form-label" for="folder-select">Upload PDF</label>
-										<input type="file" name="my_pdf">
+										<input type="file" name="my_pdf" id="file">
 									</div>
 									<div class="col-12">
-									<button  type="submit" class="btn btn-info btn-rounded"  name="submit" type="submit">UPLOAD</button> 
+									<button id="shareButton" type="submit" class="btn btn-info btn-rounded"  name="submit">UPLOAD</button> 
 									
 									</div>
 								</div>
@@ -648,28 +652,8 @@ include "connect.php";
 <script src="assets/js/contact.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
 <script src='../../www.google.com/recaptcha/api.js'></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var minimumTimeInput = document.getElementById('minimum_time');
-        var form = document.querySelector('form');
 
-        form.addEventListener('submit', function (e) {
-            var enteredTime = minimumTimeInput.value.trim();
 
-            if (!isValidTimeFormat(enteredTime)) {
-                e.preventDefault(); // Prevent form submission
-                alert("Please enter the time in the format 'X hours Y minutes', e.g., '6 hours 30 minutes'");
-            }
-        });
-
-        function isValidTimeFormat(timeString) {
-            // Regular expression to match the expected format, e.g., '6 hours 30 minutes'
-            var timePattern = /^\d+ hours \d+ minutes$/;
-            return timePattern.test(timeString);
-        }
-    });
-    </script>
-</body>
 <!-- Live Notification -->
 <!-- Live Notification -->
 <script type="text/javascript">
@@ -729,4 +713,81 @@ include "connect.php";
     loadDoc();
 </script>
 
+<script>
+
+	
+document.addEventListener("DOMContentLoaded", function () {
+    const shareButton = document.getElementById("shareButton");
+    const shareForm = document.getElementById("shareForm");
+
+	console.log(shareForm.submit); // Check if it's a function
+
+
+    shareButton.addEventListener("click", function (event) {
+
+		       // Prevent the default form submission
+			   event.preventDefault();
+			   
+        // Validate all fields before allowing the upload
+        const validationResult = validateForm();
+
+        if (validationResult.isValid) {
+            // Use SweetAlert to confirm submission
+            Swal.fire({
+                title: "Are you sure you want to share this knowledge?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If the user clicks "Yes," submit the form
+					HTMLFormElement.prototype.submit.call(shareForm);
+                }
+            });
+        } else {
+            // Show an alert or perform any other action if validation fails
+            Swal.fire({
+                title: validationResult.errorMessage,
+                icon: "error",
+                confirmButtonText: "OK",
+            });
+        }
+    });
+
+    function validateForm() {
+        // Add validation logic for each field
+        const title = document.getElementById("title").value;
+        const dateValid = document.getElementById("validity").value;
+        const minimumTime = document.getElementById("minimum_time").value;
+        const message = document.getElementById("message").value;
+		const file = document.getElementById("file").value;
+
+        // Check for missing values in required fields
+        if (title.trim() === "" || dateValid === "" || message.trim() === "" || minimumTime.trim() === "" || file.trim() === "") {
+            return {
+                isValid: false,
+                errorMessage: "Please fill in all required fields before uploading.",
+            };
+        }
+
+        // Validate minimumTime format
+        const timeRegex = /^(\d+\s*(hours?|hrs?)\s*)?(\d+\s*minutes?)?$/i;
+
+        if (!timeRegex.test(minimumTime)) {
+            return {
+                isValid: false,
+                errorMessage: "Invalid format for estimated time completion.",
+            };
+        }
+
+        return {
+            isValid: true,
+        };
+    }
+});
+
+</script>
+
+</body>
 </html>

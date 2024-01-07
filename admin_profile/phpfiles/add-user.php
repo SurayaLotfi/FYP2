@@ -14,10 +14,7 @@
         $result = mysqli_query($db, $query);
 
         if($result){
-            echo "<script> 
-            alert('Success');
-            window.location.href = '../manage-user.php';
-             </script>";
+            header("Location: ../manage-user.php?alert=success");
         }else{
             echo "Query error: " . mysqli_error($db);
         }

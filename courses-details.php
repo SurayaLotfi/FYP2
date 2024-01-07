@@ -104,6 +104,9 @@ include "connect.php";
 	<!--JQUERY-->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
+	<!--Sweet Alert-->
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 	
 </head>
 <body id="bg">
@@ -547,7 +550,7 @@ include "connect.php";
 												$duration =  $rows['duration'];
 												echo "<p>Duration: $duration </p>";
 											} else {
-												echo "<p>Time end: Not yet started</p>";
+												echo "<p>Time end: Not yet completed</p>";
 											}
 											
 											
@@ -903,64 +906,156 @@ include "connect.php";
 
 		<!--Time Tracker-->
 		<script>
-				$(document).ready(function() {
-					$("#startLink").click(function(event) {
+			// 	$(document).ready(function() {
+			// 		$("#startLink").click(function(event) {
 				
 
-					// Send an AJAX request to insert the start time
-					$.ajax({
-						type: "POST",
-						url: "phpfiles/insert_start_time.php", // Your server-side script to insert the start time
-						data: {
-						start_time: new Date().toISOString(),
-						content_id: '<?php echo $content_id; ?>'
+			// 		// Send an AJAX request to insert the start time
+			// 		$.ajax({
+			// 			type: "POST",
+			// 			url: "phpfiles/insert_start_time.php", // Your server-side script to insert the start time
+			// 			data: {
+			// 			start_time: new Date().toISOString(),
+			// 			content_id: '<?php echo $content_id; ?>'
 						
-						},
-						success: function(response) {
-						// Handle the server's response, if needed
-						console.log(response);
-						}
-					});
-					});
+			// 			},
+			// 			success: function(response) {
+			// 			// Handle the server's response, if needed
+			// 			console.log(response);
+			// 			}
+			// 		});
+			// 		});
 
-					$("#stopLink").click(function(event) {
-					event.preventDefault();
+			// 		$("#stopLink").click(function(event) {
+			// 		event.preventDefault();
 
-					// Send an AJAX request to check requirements on the server
-					$.ajax({
-						type: "POST",
-						url: "phpfiles/check_requirements.php", // Your server-side script to check the requirements
-						data: {
-							end_time: new Date().toISOString(), //retrieving current timestamp
-							content_id: '<?php echo $content_id; ?>'
+			// 		// Send an AJAX request to check requirements on the server
+			// 		$.ajax({
+			// 			type: "POST",
+			// 			url: "phpfiles/check_requirements.php", // Your server-side script to check the requirements
+			// 			data: {
+			// 				end_time: new Date().toISOString(), //retrieving current timestamp
+			// 				content_id: '<?php echo $content_id; ?>'
 							
-						},
-						success: function(response) {
-							response = response.trim().toLowerCase();
-							console.log(response)
-							if (response === 'requirement') {
-								// Requirements are met, send an AJAX request to update the stop time
-								$.ajax({
-									type: "POST",
-									url: "phpfiles/update_stop_time.php", // Your server-side script to update the stop time
-									data: {
-										end_time: new Date().toISOString(),
-										content_id: '<?php echo $content_id; ?>'
-									},
-									success: function(response) {
-										// Handle the server's response, if needed
-										alert(response);
-									}
-								});
-							} else {
-								// Requirements not met, display an alert to the user
-								alert(response);
-							}
-						}
-					});
-				});
+			// 			},
+			// 			success: function(response) {
+			// 				response = response.trim().toLowerCase();
+			// 				console.log(response)
+			// 				if (response === 'requirement') {
+			// 					// Requirements are met, send an AJAX request to update the stop time
+			// 					$.ajax({
+			// 						type: "POST",
+			// 						url: "phpfiles/update_stop_time.php", // Your server-side script to update the stop time
+			// 						data: {
+			// 							end_time: new Date().toISOString(),
+			// 							content_id: '<?php echo $content_id; ?>'
+			// 						},
+			// 						success: function(response) {
+			// 							// Handle the server's response, if needed
+			// 							Swal.fire({
+			// 							icon: 'success',
+			// 							title: 'Success',
+			// 							text: response
+			// 						});
+			// 						}
+			// 					});
+			// 				} else {
+			// 					// Requirements not met, display an alert to the user
+			// 					alert(response);
+			// 				}
+			// 			}
+			// 		});
+			// 	});
 
-			});
+			// });
+		</script>
+
+		<script>
+			$(document).ready(function() {
+    $("#startLink").click(function(event) {
+        // Send an AJAX request to insert the start time
+        $.ajax({
+            type: "POST",
+            url: "phpfiles/insert_start_time.php",
+            data: {
+                start_time: new Date().toISOString(),
+                content_id: '<?php echo $content_id; ?>'
+            },
+            success: function(response) {
+                // Handle the server's response, if needed
+                console.log(response);
+            }
+        });
+    });
+
+    $("#stopLink").click(function(event) {
+        event.preventDefault();
+
+        // Send an AJAX request to check requirements on the server
+        $.ajax({
+            type: "POST",
+            url: "phpfiles/check_requirements.php",
+            data: {
+                end_time: new Date().toISOString(),
+                content_id: '<?php echo $content_id; ?>'
+            },
+            success: function(response) {
+                response = response.trim().toLowerCase();
+                console.log(response);
+
+                if (response === 'requirement') {
+                    // Requirements are met, show confirmation prompt
+                    Swal.fire({
+                        icon: 'question',
+                        title: 'Are you sure you want to finish this knowledge?',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, finish it!',
+                        cancelButtonText: 'Cancel',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // User clicked "Yes, finish it!" - send AJAX request to update stop time
+                            $.ajax({
+                                type: "POST",
+                                url: "phpfiles/update_stop_time.php",
+                                data: {
+                                    end_time: new Date().toISOString(),
+                                    content_id: '<?php echo $content_id; ?>'
+                                },
+                                success: function(response) {
+                                    // Handle the server's response, if needed
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: response,
+                                        didClose: function() {
+                                            // Reload the page after the user clicks "OK"
+                                            location.reload();
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            // User clicked "Cancel"
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Cancelled',
+                                text: 'You can continue working on this knowledge.'
+                            });
+                        }
+                    });
+                } else {
+                    // Requirements not met, display an alert to the user
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Time',
+                        text: response
+                    });
+                }
+            }
+        });
+    });
+});
+
 		</script>
 
 <script>

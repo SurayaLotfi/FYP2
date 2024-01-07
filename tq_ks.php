@@ -335,13 +335,13 @@ include "connect.php";
     <!-- Content -->
     <div class="page-content bg-white">
         <!-- inner page banner -->
-		<div class="page-banner ovbl-dark" style="background-image:url(assets/images/malaysia-airlines-bg.jpeg);">
+		<!-- <div class="page-banner ovbl-dark" style="background-image:url(assets/images/malaysia-airlines-bg.jpeg);">
             <div class="container">
                 <div class="page-banner-entry">
                     <h1 class="text-white">Knowledge Sharing</h1>
 				 </div>
             </div>
-        </div>
+        </div> -->
 		<!-- Breadcrumb row -->
 		<div class="breadcrumb-row">
 			<div class="container">
