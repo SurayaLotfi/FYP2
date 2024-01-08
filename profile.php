@@ -65,6 +65,12 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/notification.css">
+
+	<!--Sweet Alert-->
+	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>	
+
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	
 </head>
 <body id="bg">
@@ -264,7 +270,7 @@
 							<a href="index.html"><img src="assets/images/logo.png" alt=""></a>
 						</div>
                         <ul class="nav navbar-nav">	
-						<li class="active"><a href="javascript:;">Home<i class="fa fa-chevron-down"></i></a>
+						<li class=""><a href="javascript:;">Home<i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									
 									<li><a href="home.php">Home</a></li>
@@ -278,7 +284,7 @@
 								</ul>
 							</li>
 							
-							<li class="active"><a href="javascript:;">Knowledge Base<i class="fa fa-chevron-down"></i></a>
+							<li class=""><a href="javascript:;">Knowledge Base<i class="fa fa-chevron-down"></i></a>
 									<ul class="sub-menu">
 										<li><a href="courses.php">Knowledge Base</a></li>
 										<li><a href="history.php">History</a></li>
@@ -295,7 +301,7 @@
 									<li><a href="blog-details.html">Blog Details</a></li>
 								</ul>
 							</li> -->
-							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
+							<li class="nav-dashboard active"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									<li><a href="profile.php">Dashboard</a></li>
 									<li><a href="knowledge_shared.php">Knowledge Shared Status</a></li>
@@ -343,20 +349,39 @@
 					 <div class="row">
 						<div class="col-lg-3 col-md-4 col-sm-12 m-b30">
 							<div class="profile-bx text-center">
-								<div class="user-profile-thumb">
-									<img src="assets/images/pp.png" alt=""/>
-								</div>
+
+								<?php
+									$query_pp = "SELECT * FROM users WHERE username = '$username'";
+									$result_pp = mysqli_query($db, $query_pp);
+									$row = mysqli_fetch_assoc($result_pp);
+									$profile_pic = $row['profile_picture'];
+
+									if($profile_pic != null){
+										?>
+											<div class="user-profile-thumb">
+												<img src="phpfiles/img/<?=$profile_pic?>"/></img>
+											</div>
+										<?php
+									}else{
+								?>
+										<div class="user-profile-thumb">
+											<img src="assets/images/pp.png" alt=""/></img>
+										</div>
+
+								<?php
+									}
+								?>
 								<div class="profile-info">
 									<h4><?php echo $username ?></h4>
 									<span><?php echo $email?></span>
 								</div>
 								<div class="profile-social">
-									<ul class="list-inline m-a0">
+									<!-- <ul class="list-inline m-a0">
 										<li><a href="#"><i class="fa fa-facebook"></i></a></li>
 										<li><a href="#"><i class="fa fa-twitter"></i></a></li>
 										<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
 										<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-									</ul>
+									</ul> -->
 								</div>
 								<div class="profile-tabnav">
 									<ul class="nav nav-tabs">
@@ -795,19 +820,28 @@
 										<div class="profile-head">
 											<h3>Edit Profile</h3>
 										</div>
-										<form class="edit-profile">
+
+										<?php
+
+										$query_profile = "SELECT * FROM users WHERE username = '$username'";
+										$result_profile = mysqli_query($db, $query_profile);
+										$row = mysqli_fetch_assoc($result_profile);
+										$current_fullname = $row['full_name'];
+										$current_email = $row['email'];
+
+										?>
+										<form id="editProfile" class="edit-profile m-b30" action="phpfiles/edit-profile.php" method="post" enctype="multipart/form-data">
 											<div class="">
-												
 												<div class="form-group row">
 													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Full Name</label>
 													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value= '<?php echo $full_name ?>'>
+														<input class="form-control" type="text" value= '<?php echo $current_fullname ?>' name="full_name">
 													</div>
 												</div>
 												<div class="form-group row">
 													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Email</label>
 													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-														<input class="form-control" type="text" value="<?php echo $email?>" >
+														<input class="form-control" type="text" value="<?php echo $current_email?>" name="email">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -822,8 +856,15 @@
 														<input class="form-control" type="text" value="<?php echo $department?>" disabled>
 													</div>
 												</div>
-												
-												
+												<div class="form-group row">
+													<label class="col-12 col-sm-3 col-md-3 col-lg-2 col-form-label">Profile Picture</label>
+													<div class="col-12 col-sm-9 col-md-9 col-lg-7">
+														<div class="custom-file">
+															<input type="file" class="custom-file-input" id="profilePicture" name="my_image">
+															<label class="custom-file-label" for="profilePicture">Choose file</label>
+														</div>
+													</div>
+												</div>	
 											</div>
 											<div class="">
 												<div class="">
@@ -831,8 +872,9 @@
 														<div class="col-12 col-sm-3 col-md-3 col-lg-2">
 														</div>
 														<div class="col-12 col-sm-9 col-md-9 col-lg-7">
-															<button type="reset" class="btn">Save changes</button>
-															<button type="reset" class="btn-secondry">Cancel</button>
+															<button type="submit" name="submit" id="submitButton" class="btn-secondry">Save changes</button>
+															
+														
 														</div>
 													</div>
 												</div>
@@ -1016,7 +1058,6 @@
 <script src='assets/vendors/switcher/switcher.js'></script>
 
 <!-- Live Notification -->
-<!-- Live Notification -->
 <script type="text/javascript">
     function loadDoc() {
         var previousTotalInbox = 0; // Variable to store the previous total inbox value
@@ -1072,6 +1113,31 @@
     }
 
     loadDoc();
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
+
+        if (alertType === "deletesuccess") {
+            Swal.fire("Success", "User has been deleted.", "success");
+        } else if (alertType === "wrongformat") {
+            Swal.fire("Success", "User has been updated.", "success");
+        }else if(alertType === "success"){
+			Swal.fire("Success", "Your profile has been updated.", "success");
+		}
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Add change event listener to the file input
+        $('#profilePicture').change(function () {
+            // Update the label text with the selected file name
+            var fileName = $(this).val().split('\\').pop();
+            $('.custom-file-label').text(fileName);
+        });
+    });
 </script>
 </body>
 

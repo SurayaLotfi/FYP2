@@ -303,7 +303,7 @@
 								</ul>
 							</li>
 				
-							<li class="active"><a href="javascript:;">Knowledge Base<i class="fa fa-chevron-down"></i></a>
+							<li class=""><a href="javascript:;">Knowledge Base<i class="fa fa-chevron-down"></i></a>
 									<ul class="sub-menu">
 										<li><a href="courses.php">Knowledge Base</a></li>
 										<li><a href="history.php">History</a></li>
@@ -312,7 +312,7 @@
 									</ul>	
 							</li>
 
-							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
+							<li class="nav-dashboard active"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									<li><a href="profile.php">Dashboard</a></li>
 									<li><a href="knowledge_shared.php">Knowledge Shared Status</a></li>

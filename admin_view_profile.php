@@ -79,19 +79,19 @@
 			<div class="container">
 				<div class="row d-flex justify-content-between">
 					<div class="topbar-left">
-						<ul>
+						<!-- <ul>
 							<li><a href="faq-1.html"><i class="fa fa-question-circle"></i>Ask a Question</a></li>
 							<li><a href="javascript:;"><i class="fa fa-envelope-o"></i>Support@website.com</a></li>
-						</ul>
+						</ul> -->
 					</div>
 					<div class="topbar-right">
 						<ul>
-							<li>
-								<select class="header-lang-bx">
+							<!-- <li> -->
+								<!-- <select class="header-lang-bx">
 									<option data-icon="flag flag-uk">English UK</option>
 									<option data-icon="flag flag-us">English US</option>
 								</select>
-							</li>
+							</li> -->
 							<?php 
 								if(!empty($_SESSION["id"])){ //if a user is still in a session and wants to login, we won't allow them.
 									?><li><a href="admin_profile/index.php">Back</a></li><?php
@@ -123,11 +123,11 @@
                     <div class="secondary-menu">
                         <div class="secondary-inner">
                             <ul>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
+								<!-- <li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
 								<li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
+								<li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li> -->
 								<!-- Search Button ==== -->
-								<li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
+								<!-- <li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li> -->
 							</ul>
 						</div>
                     </div>
@@ -140,7 +140,7 @@
 						<span id="search-remove"><i class="ti-close"></i></span>
                     </div>
 					<!-- Navigation Menu ==== -->
-                    <div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
+                    <!-- <div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
 						<div class="menu-logo">
 							<a href="index.html"><img src="assets/images/logo.png" alt=""></a>
 						</div>
@@ -150,7 +150,7 @@
 									
 									<li><a href="index-2.html">Library</a></li>
 								</ul>
-							</li>
+							</li> -->
 							<!-- <li><a href="javascript:;">Pages <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									<li><a href="javascript:;">About<i class="fa fa-angle-right"></i></a>
@@ -183,7 +183,7 @@
 									<li><a href="error-404.html">404 Page</a></li>
 								</ul>
 							</li> -->
-							<li class="add-mega-menu"><a href="javascript:;">Classes<i class="fa fa-chevron-down"></i></a>
+							<!-- <li class="add-mega-menu"><a href="javascript:;">Classes<i class="fa fa-chevron-down"></i></a>
 								
 									<ul class="sub-menu">
 									
@@ -191,7 +191,7 @@
 									</ul>
 									
 								
-							</li>
+							</li> -->
 							<!-- <li><a href="javascript:;">Blog <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									<li><a href="blog-classic-grid.html">Blog Classic</a></li>
@@ -201,7 +201,7 @@
 									<li><a href="blog-details.html">Blog Details</a></li>
 								</ul>
 							</li> -->
-							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
+							<!-- <li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									<li><a href="admin_profile/index.html">Dashboard</a></li>
 									
@@ -213,7 +213,7 @@
 							<a href="javascript:;"><i class="fa fa-google-plus"></i></a>
 							<a href="javascript:;"><i class="fa fa-linkedin"></i></a>
 						</div>
-                    </div>
+                    </div> -->
 					<!-- Navigation Menu END ==== -->
                 </div>
             </div>
@@ -248,20 +248,38 @@
 					 <div class="row">
 						<div class="col-lg-3 col-md-4 col-sm-12 m-b30">
 							<div class="profile-bx text-center">
-								<div class="user-profile-thumb">
-									<img src="assets/images/profile/pic1.jpg" alt=""/>
-								</div>
+							<?php
+									$query_pp = "SELECT * FROM users WHERE username = '$username'";
+									$result_pp = mysqli_query($db, $query_pp);
+									$row = mysqli_fetch_assoc($result_pp);
+									$profile_pic = $row['profile_picture'];
+
+									if($profile_pic != null){
+										?>
+											<div class="user-profile-thumb">
+												<img src="phpfiles/img/<?=$profile_pic?>"/></img>
+											</div>
+										<?php
+									}else{
+								?>
+										<div class="user-profile-thumb">
+											<img src="assets/images/pp.png" alt=""/></img>
+										</div>
+
+								<?php
+									}
+								?>
 								<div class="profile-info">
 									<h4><?php echo $username ?></h4>
 									<span><?php echo $email?></span>
 								</div>
 								<div class="profile-social">
-									<ul class="list-inline m-a0">
+									<!-- <ul class="list-inline m-a0">
 										<li><a href="#"><i class="fa fa-facebook"></i></a></li>
 										<li><a href="#"><i class="fa fa-twitter"></i></a></li>
 										<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
 										<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-									</ul>
+									</ul> -->
 								</div>
 								<div class="profile-tabnav">
 									<ul class="nav nav-tabs">
@@ -287,7 +305,10 @@
 									<div class="tab-pane active" id="courses">
 										
 										<?php
-											$query = "SELECT * FROM content_record WHERE username = ?";
+											$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+											WHERE username = ?
+											AND department = ?";
+
 											$statusCounts = array(
 												'completed' => 0,
 												'in_progress' => 0,
@@ -295,7 +316,7 @@
 											);
 											
 											if ($stmt = mysqli_prepare($db, $query)) {
-												mysqli_stmt_bind_param($stmt, "s", $username);
+												mysqli_stmt_bind_param($stmt, "ss", $username, $department);
 												mysqli_stmt_execute($stmt);
 												$result = mysqli_stmt_get_result($stmt);
 											
@@ -323,49 +344,57 @@
 			<h3>My Progress</h3>
 			<div class="feature-filters style1 ml-auto">
 				<ul class="filters" data-toggle="buttons">
-					<li data-filter="" class="btn active">
+					<!-- <li data-filter="" class="btn active">
 						<input type="radio">
 						<a href="#"><span>All</span></a> 
-					</li>
-					<li data-filter="publish" class="btn">
+					</li> -->
+					<!-- <li data-filter="publish" class="btn">
 						<input type="radio">
 						<a href="#"><span>Publish</span></a> 
 					</li>
 					<li data-filter="pending" class="btn">
 						<input type="radio">
 						<a href="#"><span>Pending</span></a> 
-					</li>
+					</li> -->
 				</ul>
 			</div>
 		</div>
 
 		
 		<?php
-		//RETRIEVING TOTAL TIME SPENT ON MODULES
-				include "phpfiles/convertTime.php";
+			//RETRIEVING TOTAL TIME SPENT ON MODULES
+			include "phpfiles/convertTime.php";
 
-				$query = "SELECT * FROM content_record WHERE username = '$username'";
-				$result = mysqli_query($db, $query);
-				$total_time_spent = 0;
-				
+			$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+				WHERE  username = '$username'";
+			$result = mysqli_query($db, $query);
+			$total_time_spent = 0;
+			
 
-				while($row = mysqli_fetch_assoc($result)){
-					if($row['duration'] != null){
-					$totalSeconds = convertToSeconds($row['duration']);
-					$totalHours = $totalSeconds / 3600;
-					$total_time_spent += $totalHours;
-					}
+			while($row = mysqli_fetch_assoc($result)){
+				if($row['duration'] != null){
+				$totalSeconds = convertToSeconds($row['duration']);
+				$totalHours = $totalSeconds / 3600;
+				$total_time_spent += $totalHours;
 				}
+			}
 
-				$total_time_spent = number_format($total_time_spent,2);
+			$total_time_spent = number_format($total_time_spent,2);
 				
 		//RETRIEVING TOTAL KNOWLEDGE SHARED
 				$query = "SELECT * FROM knowledge_sharing WHERE username = '$username' AND status = 'Accepted'";
 				$result = mysqli_query($db, $query);
+				$total_knowledge_accepted = mysqli_num_rows($result);
+
+				$query = "SELECT * FROM knowledge_sharing WHERE username = '$username'";
+				$result = mysqli_query($db, $query);
 
 				$total_knowledge_shared = mysqli_num_rows($result);
 
-				$on_time_query = "SELECT * FROM content_record WHERE username = '$username' AND due = 'true'";
+				$on_time_query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+				WHERE class.department = '$department'
+				AND username = '$username'
+				AND content_record.due = 'true'";
 				$result_on_time = mysqli_query($db, $on_time_query);
 				$total_exceed = mysqli_num_rows($result_on_time);
 			?>

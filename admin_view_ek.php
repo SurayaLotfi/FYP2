@@ -109,14 +109,14 @@
 					</div>
 					<div class="topbar-right">
 						<ul>
-							<li>
+							<!-- <li>
 								<select class="header-lang-bx">
 									<option data-icon="flag flag-uk">English UK</option>
 									<option data-icon="flag flag-us">English US</option>
 								</select>
-							</li>
+							</li> -->
 							<?php if(!empty($_SESSION['id'])){?>
-								<li><a href="logout.php">Logout</a></li>
+								<li><a href="admin_view_profile.php?user_id=<?php echo $id?>">Back</a></li>
 							<?php }else{?>
 								<li><a href="login.php">Login</a></li>
 							<?php } ?>
@@ -131,7 +131,7 @@
                 <div class="container clearfix">
 					<!-- Header Logo ==== -->
 					<div class="menu-logo">
-						<a href="index.html"><img src="" alt=""></a>
+						<a href=""><img src="assets/images/Malaysia-Airlines-Logo.png" alt=""></a>
 					</div>
 					<!-- Mobile Nav Button ==== -->
                     <button class="navbar-toggler collapsed menuicon justify-content-end" type="button" data-toggle="collapse" data-target="#menuDropdown" aria-controls="menuDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -140,17 +140,17 @@
 						<span></span>
 					</button>
 					<!-- Author Nav ==== -->
-                    <div class="secondary-menu">
+                    <!-- <div class="secondary-menu">
                         <div class="secondary-inner">
                             <ul>
 								<li><a href="javascript:;" class="btn-link"><i class="fa fa-facebook"></i></a></li>
 								<li><a href="javascript:;" class="btn-link"><i class="fa fa-google-plus"></i></a></li>
-								<li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li>
+								<li><a href="javascript:;" class="btn-link"><i class="fa fa-linkedin"></i></a></li> -->
 								<!-- Search Button ==== -->
-								<li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
+								<!-- <li class="search-btn"><button id="quik-search-btn" type="button" class="btn-link"><i class="fa fa-search"></i></button></li>
 							</ul>
 						</div>
-                    </div>
+                    </div> -->
 					<!-- Search Box ==== -->
                     <div class="nav-search-bar">
                         <!-- <form action="#">
@@ -161,7 +161,7 @@
 						<span id="search-remove"><i class="ti-close"></i></span>
                     </div>
 					<!-- Navigation Menu ==== -->
-					<div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
+					<!-- <div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
 						<div class="menu-logo">
 							<a href="index.html"><img src="assets/images/logo.png" alt=""></a>
 						</div>
@@ -199,7 +199,7 @@
 							<a href="javascript:;"><i class="fa fa-google-plus"></i></a>
 							<a href="javascript:;"><i class="fa fa-linkedin"></i></a>
 						</div>
-                    </div>
+                    </div> -->
 					<!-- Navigation Menu END ==== -->
                 </div>
             </div>
@@ -222,7 +222,7 @@
 			<div class="container">
 				<ul class="list-inline">
                     <li><a href="admin_profile/index.php">Admin</a></li>
-					<li><a href="admin_view_profile.php?user_id=<?php echo $id?>">Dashboard</a></li>
+					<li><a href="admin_view_profile.php?user_id=<?php echo $id?>">User Dashboard</a></li>
 					<li><a href="" style="color: red;">Exceeded Knowledge Due</a></li>
 				</ul>
 			</div>
