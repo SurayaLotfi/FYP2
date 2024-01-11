@@ -38,7 +38,7 @@
 
     <?php
               
-        $check = "SELECT * FROM class WHERE class_id = '$class_id' AND department = '$department'";
+        $check = "SELECT * FROM class WHERE class_id = '$class_id' AND (department = '$department' || department = 'All')";
         $result_check = mysqli_query($db, $check);
 
         if(mysqli_num_rows($result_check) > 0){
@@ -58,12 +58,12 @@
     if($insert){
         //insert in user's record
         if($department == "All"){
-            $query = "SELECT * FROM users";
+            $query = "SELECT * FROM users WHERE role = 'user'";
             $result = mysqli_query($db, $query);
         
             while($row = mysqli_fetch_assoc($result)){
                 $username = $row['username'];
-                $query2 = "SELECT * FROM class WHERE department = '$department'";
+                $query2 = "SELECT * FROM class WHERE department = '$department'"; //choose class db where the department equals to 'All'
                 $result2 = mysqli_query($db, $query2);
                 $row = mysqli_fetch_assoc($result2); //tak guna ?? lol
                 

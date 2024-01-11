@@ -82,10 +82,10 @@
 			<div class="container">
 				<div class="row d-flex justify-content-between">
 					<div class="topbar-left">
-						<ul>
+						<!-- <ul>
 							<li><a href="faq-1.html"><i class="fa fa-question-circle"></i>Ask a Question</a></li>
 							<li><a href="javascript:;"><i class="fa fa-envelope-o"></i>Support@website.com</a></li>
-						</ul>
+						</ul> -->
 					</div>
 					<div class="topbar-right">
 						<ul>

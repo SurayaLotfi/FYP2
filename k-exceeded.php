@@ -394,6 +394,8 @@
 									$class_id = $row['class_id'];
 									$validity = $row['validity'];
 									$due = $row['due'];
+									$start_time = $row['start_time'];
+									$end_time = $row['end_time'];
 										
 									$today = new DateTime();
 									$validity = new DateTime($validity);
@@ -429,7 +431,17 @@
 									<td><?php echo $row['start_time'] ?></td>
 									<td><?php echo $row['end_time'] ?></td>
                                     <td><?php echo $row['duration'] ?></td>
-									<td style="color: red;"><?php echo $remainingDays_due ?> days</td>
+									<td style="color: red;"><?php 
+									   //if completed, take the exceeded days
+									   if($row['status'] == 'Completed'){
+										$start_time = new DateTime($start_time);
+										$end_time = new DateTime($end_time);
+										$days_exceeded = $start_time->diff($end_time)->days;
+
+										echo $days_exceeded ?> days </td> <?php
+										}else{
+										echo $remainingDays_due ?> days</td>
+										<?php } ?>
 									<td>
 									<a href="courses-details.php?course_id=<?php echo $id?>" class='btn'>View Content</a>
 									</td>

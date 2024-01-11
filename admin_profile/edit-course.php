@@ -287,7 +287,7 @@ if(isset($_GET['course_id'])){
 		                </a>
 		            </li>
 					<li>
-						<a href="courses.html" class="ttr-material-button">
+						<a href="courses.php" class="ttr-material-button">
 							<span class="ttr-icon"><i class="ti-book"></i></span>
 		                	<span class="ttr-label">Knowledge Base</span>
 		                </a>
@@ -346,7 +346,8 @@ if(isset($_GET['course_id'])){
 			<div class="db-breadcrumb">
 				<h4 class="breadcrumb-title">Edit Knowledge</h4>
 				<ul class="db-breadcrumb-list">
-					<li><a href="#"><i class="fa fa-home"></i>Home</a></li>
+					<li><a href="index.php"><i class="fa fa-home"></i>Home</a></li>
+					<li><a href="courses.php">Knowledge Base</a></li>
 					<li>Edit Knowledge</li>
 				</ul>
 			</div>	
@@ -477,6 +478,7 @@ if(isset($_GET['course_id'])){
 									<input type="hidden" name="updateid" value="<?php echo $content_id ?>">
     								<button type="submit" id="updateButton" class="btn btn-info btn-rounded my-4" name="update">Update</button>
 									<button id="deleteButton" class="btn-secondry" name="delete" data-content-id="<?php echo $content_id ?>">Delete</button>
+									
 									<!--<a href='submit.php?deleteid=<?php echo $id; ?>' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#confirmDeleteModal'>Delete</a>-->
 									</div>
 								</div>

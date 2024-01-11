@@ -1,7 +1,9 @@
 <?php 
-	session_start();
-	include "connect.php";
-
+// Check if the cookie exists
+session_start();
+include "connect.php";
+	
+	
 	if($_SESSION['role'] == 'user'){
 		
         $id = $_SESSION["id"];
@@ -14,9 +16,26 @@
 	}else{
 		header("Location: logout.php");
 	}
+
+    if(isset($_GET['knowledge_id'])){
+        $knowledge_id = $_GET['knowledge_id'];
+
+        $query = "SELECT * FROM knowledge_sharing JOIN ks_declined ON knowledge_sharing.knowledge_id = ks_declined.ks_id
+                    WHERE knowledge_id = $knowledge_id";
+        $result = mysqli_query($db, $query);
+        $row = mysqli_fetch_assoc($result);
+        $message = $row['message_admin'];
+        $title = $row['title'];
+        $post_to = $row['post_to'];
+        $content = $row['content'];
+        $validity = $row['validity'];
+        $minimum_time = $row['minimum_time'];
+        $previous_message = $row['message'];
+
+    }
+	
 	
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,18 +86,35 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/notification.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/notification.css">
-	<!-- <link rel="stylesheet" type="text/css" href="admin_profile/assets/css/style.css"> -->
-	<!-- <link rel="stylesheet" type="text/css" href="admin_profile/assets/css/dashboard.css"> -->
-	<!-- <link class="skin" rel="stylesheet" type="text/css" href="admin_profile/assets/css/color/color-1.css"> -->
+
+	<!--Sweet Alert-->
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rizalcss@2.1.0/css/cdn.rizal.css" integrity="sha256-pqCXaySV+OMUcpVQ0FeFtvz9VLMeI08z53Ar2a7QP5o=" crossorigin="anonymous">
+	<script defer src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+	<script defer src="https://kit.fontawesome.com/1e8d61f212.js"></script> -->
+
+	<!--Javascript-->
+	<!DOCTYPE html>
+<html>
+<head>
+    <!-- Your other head content -->
+
+
+</head>
+<body>
+    <!-- Your HTML content -->
+</body>
+</html>
+
 	
 </head>
-
-
 <body id="bg">
 <div class="page-wraper">
 <div id="loading-icon-bx"></div>
-	<!-- Header Top ==== -->
+
+    <!-- Header Top ==== -->
     <header class="header rs-nav">
 		<div class="top-bar">
 			<div class="container">
@@ -97,9 +133,12 @@
 									<option data-icon="flag flag-us">English US</option>
 								</select>
 							</li> -->
-							
-							<li><a href="logout.php">Logout</a></li>
-							<li><a href="profile.php"><?php echo $username?></a></li>
+							<?php if(!empty($_SESSION['id'])){?>
+								<li><a href="logout.php">Logout</a></li>
+							<?php }else{?>
+								<li><a href="login.php">Login</a></li>
+							<?php } ?>
+							<li><a href="#"><?php echo $username?></a></li>
 						</ul>
 					</div>
 				</div>
@@ -119,7 +158,6 @@
 						<span></span>
 					</button>
 					<!-- Author Nav ==== -->
-					
 					<div class="secondary-menu">
 						<div class="secondary-inner">
 							<!-- <ul>
@@ -253,8 +291,6 @@
 					
 						</div>
 					</div>
-					
-					
 					<!-- Search Box ==== -->
                     <div class="nav-search-bar">
                         <form action="#">
@@ -264,32 +300,33 @@
 						<span id="search-remove"><i class="ti-close"></i></span>
                     </div>
 					<!-- Navigation Menu ==== -->
-					<div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
+                    <div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
 						<div class="menu-logo">
-							<a href="index.html"><img src="assets/images/logo.png" alt=""></a>
+							<a href="index.html"><img src="assets/images/Malaysia-Airlines-Logo.png" alt=""></a>
 						</div>
-						
                         <ul class="nav navbar-nav">	
-						<li><a href="javascript:;">Home<i class="fa fa-chevron-down"></i></a>
-								<ul class="sub-menu">	
-									<li><a href="home.php">Home</a></li>
+						<li class="active"><a href="javascript:;">Home<i class="fa fa-chevron-down"></i></a>
+								<ul class="sub-menu">
+									
+									<li><a href="index-2.html">Home</a></li>
 								</ul>
 							</li>
-							
 							<li><a href="javascript:;">Library<i class="fa fa-chevron-down"></i></a>
-								<ul class="sub-menu">	
+								<ul class="sub-menu">
+									
 									<li><a href="library.php">Library</a></li>
 									<li><a href="ai.php">Chatbot</a></li>
 								</ul>
 							</li>
-				
-							<li class="active"><a href="javascript:;">Knowledge Base<i class="fa fa-chevron-down"></i></a>
+							<li class="add-mega-menu"><a href="javascript:;">Knowledge Base<i class="fa fa-chevron-down"></i></a>
+								
 									<ul class="sub-menu">
-										<li><a href="courses.php">Knowledge Base</a></li>
-										<li><a href="history.php">History</a></li>
-										<li><a href="inbox.php">Inbox</a></li>
-										<li><a href="knowledge_share.php">Create Knowledge</a></li>
-									</ul>	
+									
+									<li><a href="courses.php">Knowledge Base</a></li>
+									<li><a href="history.php">History</a></li>
+									<li><a href="inbox.php">Inbox</a></li>
+									<li><a href="knowledge_share.php">Create Knowledge</a></li>
+									</ul>								
 							</li>
 
 							<li class="nav-dashboard"><a href="javascript:;">Dashboard <i class="fa fa-chevron-down"></i></a>
@@ -311,15 +348,15 @@
             </div>
         </div>
     </header>
-    <!-- header END -->
+    <!-- header END ==== -->
     <!-- Content -->
     <div class="page-content bg-white">
         <!-- inner page banner -->
 		<div class="page-banner ovbl-dark" style="background-image:url(assets/images/malaysia-airlines-bg.jpeg);">
             <div class="container">
                 <div class="page-banner-entry">
-                    <h1 class="text-white">Library</h1>
-				</div>
+                    <h1 class="text-white">Edit Knowledge</h1>
+				 </div>
             </div>
         </div>
 		<!-- Breadcrumb row -->
@@ -327,228 +364,218 @@
 			<div class="container">
 				<ul class="list-inline">
 					<li><a href="#">Home</a></li>
-					<li>Library</li>
+                    <li><a href="knowledge_shared.php">Back</a></li>
+					<li>Edit Knowledge</li>
 				</ul>
 			</div>
 		</div>
 		<!-- Breadcrumb row END -->
-        <div class="content-block">
-			<div class="section-area section-sp1">
-				<div class="container">
-					<div class="row">
-						<!-- left part start -->
-						<div class="col-lg-8 col-xl-8 col-md-7">
-							<!-- blog grid -->    
-						<div id="masonry">
-							<div id="posts-container" class="ttr-blog-g row">
-							
-                            <?php
-                            //RETRIEVING KNOWLEDGE FROM DATABASE
-                            include "phpfiles/connect.php";
-                                $query = "SELECT * FROM class ORDER BY id";
-                                $result = mysqli_query($db, $query);
-
-                               
-
-                                while($row = mysqli_fetch_assoc($result)){
-
-                                    $dbTime_added = $row['time_added'];
-                                    $dateTime = new DateTime($dbTime_added);
-                                    $formattedDate = $dateTime->format("M d Y");
-                            ?>
-							
-								<div class="post action-card col-xl-6 col-lg-6 col-md-12 col-xs-12 m-b40">
-									<div class="recent-news">
-										<div class="action-box">	
+	
+        <!-- inner page banner -->
+        <div class="page-banner contact-page section-sp2">
+            <div class="container">
+                <div class="row">
+					<div class="col-lg-9 col-md-7">
+						<!-- <form  action="sharing.php" method="post"> -->
+							<!-- <div class="heading-bx">
+								<h2 class="title-head">Message from <span>Admin</span></h2>
+								<p><?php echo $message ?></p>
+								
+							</div> -->
+							<div class="row">
+								<!-- Your Profile Views Chart -->
+								<div class="col-lg-12 m-b30">
+									<div class="widget-box">
+										<div class="wc-title">
+											<h4>Edit Knowledge</h4>
 										</div>
-										<div class="info-bx">
-											<ul class="media-post">
-												<li><a href="library_view.php?course_id=<?php echo $row['class_id']?>"><i class="fa fa-calendar"></i><?php echo $formattedDate?></a></li>
-												<li><a href="library_view.php?course_id=<?php echo $row['class_id']?>"><i class="fa fa-user"></i>By <?php echo $row['source']?></a></li>
-											</ul>
-											<h5 class="post-title"><a href="blog-details.html"><?php echo $row['title']?></a></h5>
-											<!-- <p>Knowing that, you’ve optimised your pages countless amount of times, written tons.</p> -->
-											<div class="post-extra">
-												<a href="library_view.php?course_id=<?php echo $row['class_id']?>" class="btn-link">VIEW</a>
-                                                <a href="library_view.php?course_id=<?php echo $row['class_id']?>" class="comments-bx"><i class="fa fa-building" aria-hidden="true"></i><?php echo $row['department']?></a>	
-											</div>
+										<div class="widget-inner">
+							<form id="shareForm" class="edit-profile m-b30" action="phpfiles/edit-knowledge.php" method="post" enctype="multipart/form-data">
+								<div class="row">
+									<div class="col-12">
+										<div class="ml-auto">
+											<h3>1. Basic Info</h3>
 										</div>
 									</div>
-								</div>
-							
-
-                                <?php
-                                }
-                                ?>
-								</div>
-								</div>
-							
-								<!-- <div class="post action-card col-xl-6 col-lg-6 col-md-12 col-xs-12 m-b40">
-									<div class="recent-news">
-										<div class="action-box">
-											<img src="assets/images/blog/latest-blog/pic2.jpg" alt="">
+									<div class="form-group col-6">
+										<label class="col-form-label">Knowledge title</label>
+										<div>
+										<input class="form-control" type="text" id="title" name="title" value="<?php echo $title?>">
 										</div>
-										<div class="info-bx">
-											<ul class="media-post">
-												<li><a href="#"><i class="fa fa-calendar"></i>Feb 05 2019</a></li>
-												<li><a href="#"><i class="fa fa-user"></i>By John</a></li>
-											</ul>
-											<h5 class="post-title"><a href="blog-details.html">What Will Education Be Like In The Next 50 Years?</a></h5>
-											<p>As desperate as you are right now, you have done everything you can on your.</p>
-											<div class="post-extra">
-												<a href="#" class="btn-link">READ MORE</a>
-												<a href="#" class="comments-bx"><i class="fa fa-comments-o"></i>14 Comment</a>
+									</div>
+									<div class="form-group col-6">
+										<label class="col-form-label">Estimated Validity</label>
+										<div>
+										<input class="form-control" type="date" id="validity" name="validity" value="<?php echo $validity?>">
+										</div>
+									</div>
+									<div class="form-group col-6">
+										<label class="col-form-label">Estimated time completion (Eg: 6 hours 30 minutes)</label>
+										<div>
+										<input class="form-control" type="text" id="minimum_time" name="minimum_time" value="<?php echo $minimum_time?>">
+										</div>
+									</div>
+									<div class="form-group col-6">
+										<label class="col-form-label" for="content-type-select">For which Department</label>
+										<select class="form-control" id="department" name="department">
+											<option value="Training" <?php if ($post_to == 'Training') echo 'selected'?>>Training</option>
+											<option value="Engineering" <?php if ($post_to == 'Engineering') echo 'selected'?>>Engineering</option>
+											<option value="IT" <?php if ($post_to == 'IT') echo 'selected'?>>IT</option>
+											<option value="Business" <?php if ($post_to == 'Business') echo 'selected'?>>Business</option>
+											<option value="All" <?php if ($post_to == 'All') echo 'selected'?>>All</option>
+										</select>
+									</div>
+									<div class="seperator"></div>
+									<div class="col-12 m-t20">
+										<div class="ml-auto m-b5">
+											<h3>2. Message</h3>
+										</div>
+									</div>
+									<div class="form-group col-12">
+										<label class="col-form-label" for="message">Message</label>
+										<div>
+										<textarea class="form-control" name="message" id="message"><?php echo $previous_message ?></textarea>
+										</div>
+									</div>
+
+									<div class="col-12 m-t20">
+										<div class="ml-auto m-b5">
+											<h3>3. Knowledge Upload</h3>
+										</div>
+									</div>
+                                    <div class="form-group col-6">
+										<label class="col-form-label" for="folder-select">Uploaded Knowledge</label>
+										<div class="d-flex">
+											<input class="form-control" type="text" id="content" name="content" value="<?php echo $content?>">
+									<?php
+										
+										//include "../pdf";
+										$folderPath = 'pdf/'. $content; // Replace with the actual folder path
+										
+										// Use glob to get a list of files with the .html extension in the folder
+										$folder = $folderPath . '/' . $content;
+										//echo $folder;
+										// $files = glob($folder . '/*.html');
+										// $pdf = glob($folder . '/*.pdf');
+										
+										
+										if (empty($folderPath)) {
+											// $htmlFile = reset($files); // Get the first element of the array
+								
+											//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
+											echo 'Not Found';
+											
+										} else {
+											//$pdfFile = reset($pdf);
+											echo '<a href="' . $folder . '" target="_blank" class="btn ml-2">View</a>';
+										}
+										
+										
+									?>
+											<!-- <a href="knowledge_details.php?knowledge_id=<?php echo $id?>" class="btn ml-2">View</a> -->
+										</div>
+									</div>
+                                    <br>
+                                    <div class="form-group col-6">
+
+									</div>
+									<div class="form-group col-6">
+										<label class="col-form-label" for="folder-select">Upload new Knowledge (PDF Only)</label>
+										<input type="file" name="my_pdf" id="file">
+									</div>
+                                    <input type="hidden" name="knowledge_id" value="<?php echo $knowledge_id ?>">
+									<div class="col-12">
+									<button  id="shareButton" class="btn btn-info btn-rounded"  name="submit" type="submit">Edit</button> 
+									
+									</div>
+								</div>
+							</form>
+						</div>
+									</div>
+								</div>
+
+								<!-- <div class="col-lg-12">
+									<div class="form-group">
+										<div class="container">
+											<div class="row">
+												<div class="col"> -->
+										<!--PDF-->
+										<!-- <div class="card">
+										<h5 class="card-header info-color white-text text-center py-4">
+										<div class="col-12">
+										<strong>Upload PDF Form</strong>
+										</div>
+										</h5>
+										<div class="card-body  px-lg-5 pt-0">
+											<div class="container" style="display: flex; justify-content: center; align-items: center">
+											<div class="row" style="padding: 10px"><br><br>
+												<form action="sharing.php" method="post" enctype="multipart/form-data" > -->
+													<!--Document Title-->
+													<!-- <div class="form-group col-6">
+														<label for="Title">Title</label>
+														<input type="text" class="form-control" id="content_name" name="content_name" placeholder="Enter Title">
+													</div>
+													<div class="form-group col-6">
+														<label for="Name">Name</label>
+														
+														<input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
+													</div>
+													<div class="form-group">
+														<label for="Title">email</label>
+														<input type="text" class="form-control" id="email" name="email" placeholder="Enter Email">
+													</div>
+													<div class="form-group">
+														<label for="Title">phone</label>
+														<input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Numbers">
+													</div>
+													<div class="form-group">
+														<label for="Title">subject</label>
+														<input type="text" class="form-control" id="subject" name="subject" placeholder="Enter Title">
+													</div>
+													<div class="form-group">
+														<label for="Title">Message</label>
+														<input type="text" class="form-control" id="message" name="message" placeholder="Enter Title">
+													</div>
+													
+												<br>
+												<input type="file" name="my_pdf"> 
+												<button  type="submit" class="btn btn-info btn-rounded btn-block my-4 waves-effect z-depth-0"  name="submit" type="submit">UPLOAD</button> 
+												<br>
+												<footer style="font-size: 12px"><b>File Type:</b><font color="red"><i> .pdf only</i></font></footer>
+												</form>
+												
 											</div>
+											</div>  
+										</div>
+										</div>
 										</div>
 									</div>
 								</div> -->
-								
-							
-							<!-- blog grid END -->
-							<!-- Pagination -->
-							<!-- <div class="pagination-bx rounded-sm gray clearfix">
-								<ul class="pagination">
-									<li class="previous"><a href="#"><i class="ti-arrow-left"></i> Prev</a></li>
-									<li class="active"><a href="#">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li class="next"><a href="#">Next <i class="ti-arrow-right"></i></a></li>
-								</ul>
-							</div> -->
-							<!-- Pagination END -->
-						</div>
-						<!-- left part END -->
-						<!-- Side bar start -->
-						<div class="col-lg-4 col-xl-4 col-md-5 sticky-top">
-							<aside class="side-bar sticky-top">
-								<div class="widget">
-									<h6 class="widget-title">Search Title</h6>
-									<div class="search-bx style-1">
-										<form role="search" method="post">
-											<div class="input-group">
-												<input name="text"   type="text" class="form-control" id="live-search" placeholder="Enter your keywords...">
-												<!-- <span class="input-group-btn">
-													<button type="submit" class="fa fa-search text-primary"></button>
-												</span>  -->
-											</div>
-										</form>
-									</div>
-								</div>
-
-								<div class="widget">
-									<div class="input-group">
-										<label class="col-form-label" id="department-dropdown" for="content-type-select">Filter by Department</label>
-											<select class="form-control" id="department" name="department">
-												<option value="All">All</option>
-												<option value="Training">Training</option>
-												<option value="Engineering">Engineering</option>
-												<option value="IT">IT</option>
-												<option value="Business">Business</option>
-											</select>
-									</div>
-								</div>
-
-                                <?php
-
-
-                                ?>
-								<div class="widget recent-posts-entry">
-									<h6 class="widget-title">Recent Posts</h6>
-									<div class="widget-post-bx">
-                                        <?php 
-                                            $query = "SELECT * FROM class  ORDER BY id DESC LIMIT 2";
-                                            $result = mysqli_query($db, $query);
-                                            while($row = mysqli_fetch_assoc($result)){
-
-                                                $dbTime_added = $row['time_added'];
-                                                $dateTime = new DateTime($dbTime_added);
-                                                $formattedDate = $dateTime->format("M d Y");
-                                        ?>
-										<div class="widget-post clearfix">
-											<div class="ttr-post-info">
-												<div class="ttr-post-header">
-													<h6 class="post-title"><a href="blog-details.html"><?php echo $row['title']?></a></h6>
-												</div>
-												<ul class="media-post">
-													<li><a href="#"><i class="fa fa-calendar"></i><?php echo $formattedDate?></a></li>
-													<li><a href="#"><i class="fa fa-building-o"></i><?php echo $row['department']?></a></li>
-												</ul>
-											</div>
-										</div>
-
-                                        <?php } ?>
+								<!-- <div class="col-lg-12">
+									<div class="form-group">
 										
 									</div>
 								</div>
-								<!-- <div class="widget widget-newslatter">
-									<h6 class="widget-title">Newsletter</h6>
-									<div class="news-box">
-										<p>Enter your e-mail and subscribe to our newsletter.</p>
-										<form class="subscription-form" action="http://educhamp.themetrades.com/demo/assets/script/mailchamp.php" method="post">
-											<div class="ajax-message"></div>
-											<div class="input-group">
-												<input name="dzEmail" required="required" type="email" class="form-control" placeholder="Your Email Address"/>
-												<button name="submit" value="Submit" type="submit" class="btn black radius-no">
-													<i class="fa fa-paper-plane-o"></i>
-												</button>
-											</div>
-										</form>
-									</div>
+								<div class="col-lg-12">
+									<button name="submit" type="submit" value="submit" class="btn button-md">Send Your Knowledge</button>
 								</div> -->
-								<!-- <div class="widget widget_gallery gallery-grid-4">
-									<h6 class="widget-title">Our Gallery</h6>
-									<ul>
-										<li><div><a href="#"><img src="assets/images/gallery/pic2.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic1.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic5.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic7.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic8.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic9.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic3.jpg" alt=""></a></div></li>
-										<li><div><a href="#"><img src="assets/images/gallery/pic4.jpg" alt=""></a></div></li>
-									</ul>
-								</div> -->
-								<!-- <div class="widget widget_tag_cloud">
-									<h6 class="widget-title">Tags</h6>
-									<div class="tagcloud"> 
-										<a href="#">Design</a> 
-										<a href="#">User interface</a> 
-										<a href="#">SEO</a> 
-										<a href="#">WordPress</a> 
-										<a href="#">Development</a> 
-										<a href="#">Joomla</a> 
-										<a href="#">Design</a> 
-										<a href="#">User interface</a> 
-										<a href="#">SEO</a> 
-										<a href="#">WordPress</a> 
-										<a href="#">Development</a> 
-										<a href="#">Joomla</a> 
-										<a href="#">Design</a> 
-										<a href="#">User interface</a> 
-										<a href="#">SEO</a> 
-										<a href="#">WordPress</a> 
-										<a href="#">Development</a> 
-										<a href="#">Joomla</a> 
-									</div>
-								</div> -->
-							</aside>
-						</div>
-						<!-- Side bar END -->
+							</div>
+						<!-- </form> -->
 					</div>
 				</div>
-			</div>
-        </div>
+            </div>
+		</div>
+        <!-- inner page banner END -->
     </div>
-    <!-- Left & right section END -->
     <!-- Content END-->
-<!-- Footer ==== -->
+    <!-- Footer ==== -->
     <footer>
         <div class="footer-top">
 			<div class="pt-exebar">
 				<div class="container">
 					<div class="d-flex align-items-stretch">
 						<div class="pt-logo mr-auto">
-							<a href="index.html"><img src="assets/images/logo-white.png" alt=""/></a>
+							<a href="index.html"><img src="" alt=""/></a>
 						</div>
 						<div class="pt-social-link">
 							<ul class="list-inline m-a0">
@@ -650,6 +677,38 @@
     <!-- scroll top button -->
     <button class="back-to-top fa fa-chevron-up" ></button>
 </div>
+<script>
+    // Get a reference to the select element
+    const departmentSelect = document.getElementById("department");
+
+    // Add an event listener to detect changes in the selection
+    departmentSelect.addEventListener("change", function() {
+        // Get the selected option value
+        const selectedDepartment = departmentSelect.value;
+
+        // Perform an action based on the selected department
+        switch (selectedDepartment) {
+            case "training":
+                // Code to perform when Training is selected
+                break;
+            case "engineering":
+                // Code to perform when Engineering is selected
+                break;
+            case "it":
+                // Code to perform when IT is selected
+                break;
+            case "business":
+                // Code to perform when Business is selected
+                break;
+            case "all":
+                // Code to perform when All is selected
+                break;
+            default:
+                // Handle any other cases here
+        }
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- External JavaScripts -->
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/vendors/bootstrap/js/popper.min.js"></script>
@@ -666,7 +725,30 @@
 <script src="assets/js/functions.js"></script>
 <script src="assets/js/contact.js"></script>
 <script src='assets/vendors/switcher/switcher.js'></script>
+<script src='../../www.google.com/recaptcha/api.js'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var minimumTimeInput = document.getElementById('minimum_time');
+        var form = document.querySelector('form');
 
+        form.addEventListener('submit', function (e) {
+            var enteredTime = minimumTimeInput.value.trim();
+
+            if (!isValidTimeFormat(enteredTime)) {
+                e.preventDefault(); // Prevent form submission
+                alert("Please enter the time in the format 'X hours Y minutes', e.g., '6 hours 30 minutes'");
+            }
+        });
+
+        function isValidTimeFormat(timeString) {
+            // Regular expression to match the expected format, e.g., '6 hours 30 minutes'
+            var timePattern = /^\d+ hours \d+ minutes$/;
+            return timePattern.test(timeString);
+        }
+    });
+    </script>
+
+	<!-- Live Notification -->
 <!-- Live Notification -->
 <script type="text/javascript">
     function loadDoc() {
@@ -725,44 +807,81 @@
     loadDoc();
 </script>
 
+<script>
 
-		<script type="text/javascript">
+	
+document.addEventListener("DOMContentLoaded", function () {
+    const shareButton = document.getElementById("shareButton");
+    const shareForm = document.getElementById("shareForm");
 
-			$(document).ready(function(){
-				console.log("function called")
-				$("#live-search, #department").on('input change', function(){
-					console.log("Event triggered!");
-					var searchText = $("#live-search").val();
-					var dropdownValue = $("#department").val(); // Assuming your dropdown has the id "dropdown-menu"
+	console.log(shareForm.submit); // Check if it's a function
 
-					console.log("Search Text: " + searchText);
-					console.log("Dropdown Value: " + dropdownValue);
 
-					if (searchText !== "" || dropdownValue !== "") {
-						console.log("Event triggered!");
-						// Perform the search when either the text input or dropdown is not empty
-						$.ajax({
-							url: "phpfiles/library_server.php",
-							method: "POST",
-							data: { searchText: searchText, dropdownValue: dropdownValue },
-							success: function(data) {
-								$("#posts-container").html(data);
-							}
-						});
-					} else {
-						// Load the full list when both the text input and dropdown are empty
-						$.ajax({
-							url: "phpfiles/library_server.php", // Adjust the URL to fetch the full list
-							method: "POST", // Use GET or POST, depending on your server-side code
-							data: { searchText: searchText, dropdownValue: dropdownValue },
-							success: function(data) {
-								$("#posts-container").html(data);
-							}
-						});
-					}
-				});
-			});
-		</script>
+    shareButton.addEventListener("click", function (event) {
+
+		       // Prevent the default form submission
+			   event.preventDefault();
+			   
+        // Validate all fields before allowing the upload
+        const validationResult = validateForm();
+
+        if (validationResult.isValid) {
+            // Use SweetAlert to confirm submission
+            Swal.fire({
+                title: "Are you sure you want to edit this knowledge?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If the user clicks "Yes," submit the form
+					HTMLFormElement.prototype.submit.call(shareForm);
+                }
+            });
+        } else {
+            // Show an alert or perform any other action if validation fails
+            Swal.fire({
+                title: validationResult.errorMessage,
+                icon: "error",
+                confirmButtonText: "OK",
+            });
+        }
+    });
+
+    function validateForm() {
+        // Add validation logic for each field
+        const title = document.getElementById("title").value;
+        const dateValid = document.getElementById("validity").value;
+        const minimumTime = document.getElementById("minimum_time").value;
+        const message = document.getElementById("message").value;
+		const file = document.getElementById("file").value;
+
+        // Check for missing values in required fields
+        if (title.trim() === "" || dateValid === "" || message.trim() === "" || minimumTime.trim() === "" ) {
+            return {
+                isValid: false,
+                errorMessage: "Please fill in all required fields before uploading.",
+            };
+        }
+
+        // Validate minimumTime format
+        const timeRegex = /^(\d+\s*(hours?|hrs?)\s*)?(\d+\s*minutes?)?$/i;
+
+        if (!timeRegex.test(minimumTime)) {
+            return {
+                isValid: false,
+                errorMessage: "Invalid format for estimated time completion.",
+            };
+        }
+
+        return {
+            isValid: true,
+        };
+    }
+});
+
+</script>
 </body>
 
 

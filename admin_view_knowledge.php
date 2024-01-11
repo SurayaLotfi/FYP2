@@ -2,14 +2,14 @@
 session_start();
 include "connect.php";
 
-	$username = $_SESSION['username'];
-	$department = $_SESSION['department'];
+
 	//get all wanted data
 	//getting class data
-	if(isset($_GET['course_id'])){
+	if(isset($_GET['course_id']) && isset($_GET['department'])){
 		$course_id = $_GET['course_id'];
-		
-		$sql = "SELECT * FROM class WHERE class_id='$course_id' AND department='$department' || department = 'All'";
+		$department = $_GET['department'];
+        
+		$sql = "SELECT * FROM class WHERE class_id='$course_id' AND (department='$department' || department = 'All')";//need to include department since multiple departments can have the same knowledge id but different titles, so we need to grab the title or other details for that department
 		$result=mysqli_query($db, $sql);
 		$row = mysqli_fetch_assoc($result);
 		$content = $row["content"];
@@ -118,10 +118,10 @@ include "connect.php";
 			<div class="container">
 				<div class="row d-flex justify-content-between">
 					<div class="topbar-left">
-						<ul>
+						<!-- <ul>
 							<li><a href="faq-1.html"><i class="fa fa-question-circle"></i>Ask a Question</a></li>
 							<li><a href="javascript:;"><i class="fa fa-envelope-o"></i>Support@website.com</a></li>
-						</ul>
+						</ul> -->
 					</div>
 					<div class="topbar-right">
 						<ul>
@@ -132,12 +132,12 @@ include "connect.php";
 								</select>
 							</li> -->
 							
-							<?php if(!empty($_SESSION['id'])){?>
-								<li><a href="logout.php">Logout</a></li>
-							<?php }else{?>
-								<li><a href="login.php">Login</a></li>
-							<?php } ?>
-							<li><a href="#"><?php echo $username?></a></li>
+							
+								<li><a href="admin_profile/courses.php">Back</a></li>
+							
+								
+							
+							
 						</ul>
 					</div>
 				</div>
@@ -157,139 +157,7 @@ include "connect.php";
 						<span></span>
 					</button>
 					<!-- Author Nav ==== -->
-					<div class="secondary-menu">
-						<div class="secondary-inner">
-							<!-- <ul>
-								<li class="notification-icon">
-									<a href="javascript:;" class="btn-link">
-										<i class="fa fa-bell"></i>
-										<span class="notification-count">3</span>
-									</a>
-									
-									<div class="notification-popup">
-										
-										<ul class="notification-list">
-											<li><a href="inbox.php">You have a new message</a></li>
-											<li>Meeting at 2 PM</li>
-											<li>Task deadline approaching</li>
-										</ul>
-									</div>
-								</li>
-							</ul> -->
-							<?php
-							//Near Deadline
-							$due_date_threshold = date('Y-m-d', strtotime('+10 days')); 
-
-								$query_deadline = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-								WHERE class.department = '$department'
-								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
-								AND username = '$username'
-                                AND validity <= '$due_date_threshold'
-                                AND content_record.due = 'false'
-								ORDER BY class.id DESC";
-
-								$result_deadline = mysqli_query($db, $query_deadline);
-								$total_deadline = mysqli_num_rows($result_deadline);
-							//exceeded knowledge
-								$query_exceed = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-								WHERE class.department = '$department'
-								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
-								AND username = '$username'
-								AND validity <= '$due_date_threshold'
-								AND content_record.due = 'true'
-								ORDER BY class.id DESC";
-
-								$result_exceed = mysqli_query($db, $query_exceed);
-								$total_exceed = mysqli_num_rows($result_exceed);
-							
-							//knowledge that is successfully shared
-								$query_ks = "SELECT * FROM knowledge_sharing WHERE status = 'Accepted' AND username = '$username' AND viewed = 0";
-
-								$result_ks = mysqli_query($db, $query_ks);
-								$total_ks = mysqli_num_rows($result_ks);
-
-								
-
-							//knowledge that is declined
-								$query_declined = "SELECT * FROM knowledge_sharing WHERE status = 'Declined' AND username = '$username' AND viewed = 0";
-								$result_declined = mysqli_query($db, $query_declined);
-
-								$total_declined = mysqli_num_rows($result_declined);
-
-								$total_inbox = $total_deadline + $total_exceed + $total_ks + $total_declined;
-							?>
-
-							
-							
-							
-								<li class="notification-icon">
-									<a href="#" class="ttr-material-button ttr-submenu-toggle"><i class="fa fa-bell" aria-hidden="true" id="noti_number"></i><span class="notification-count"><?php echo $total_inbox?></span></a>
-									<div class="notification-popup ">
-									
-										<div class="ttr-notify-header" id="link">
-											<span class="ttr-notify-text-top"><a href="inbox.php" class="link-inbox"><?php  echo $total_inbox ?> New Notifications</a></span>
-											<span class="ttr-notify-text"><a href="inbox.php"></a>View All</span>
-										</div>
-										<br>
-										<div class="noti-box-list" >
-											<ul>
-												<li id="deadline">
-													<span class="notification-icon dashbg-gray">
-														<i class="fa fa-calendar"></i>
-													</span>
-													<span class="notification-text" >
-
-														<a href="inbox.php" class="deadline">You have <?php echo $total_deadline ?></a> knowledge that is almost due
-													</span>
-													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 02:14</span>
-													</span>
-												</li>
-												<li id="exceed">
-													<span class="notification-icon dashbg-gray">
-													<i class="fa fa-exclamation"></i>
-													</span>
-													<span class="notification-text">
-														<a href="inbox_ke.php" class="exceed">You have <?php echo $total_exceed ?></a> exceeded knowledge.
-													</span>
-													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 7 Min</span>
-													</span>
-												</li>
-												<li id="accepted">
-													<span class="notification-icon dashbg-gray">
-														<i class="fa fa-check"></i>
-													</span>
-													<span class="notification-text">
-														<a href="inbox_ka.php" class="accepted">You have <?php echo $total_ks ?></a> new accepted knowledge.
-													</span>
-													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 2 May</span>
-													</span>
-												</li>
-												<li id="declined">
-													<span class="notification-icon dashbg-gray">
-														<i class="fa fa-times"></i>
-													</span>
-													<span class="notification-text">
-														<a href="inbox_kd.php" class="declined">You have <?php echo $total_declined ?></a> new declined knowledge.
-													</span>
-													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 14 July</span>
-													</span>
-												</li>
-												
-									</ul>
-								</div>
-							</div>
-						</li>
 					
-						</div>
-					</div>
 					<!-- Search Box ==== -->
                     <div class="nav-search-bar">
                         <form action="#">
@@ -393,13 +261,13 @@ include "connect.php";
 										
 										if (!empty($files)) {
 											$htmlFile = reset($files);
-											echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink" onclick="openContentPage(\'' . $htmlFile . '\')">Go To Content</a>';
+											echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" onclick="openContentPage(\'' . $htmlFile . '\')">Go To Content</a>';
 										} elseif (!empty($pdf)) {
 											$pdfFile = reset($pdf);
-											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink" onclick="openContentPage(\'' . $pdfFile . '\')">Go To Content</a>';
+											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase"  onclick="openContentPage(\'' . $pdfFile . '\')">Go To Content</a>';
 										} else {
 											$pdfFile = reset($pdf);
-											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink" onclick="openContentPage(\'' . $pdfFile . '\')">Go To Content</a>';
+											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase"  onclick="openContentPage(\'' . $pdfFile . '\')">Go To Content</a>';
 										}
 									} else {
 										$folderPath = 'pdf/' . $content;
@@ -408,35 +276,15 @@ include "connect.php";
 										if (empty($folderPath)) {
 											echo 'Not Found';
 										} else {
-											echo '<a href="' . $folder . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink" onclick="openContentPage(\'' . $folder . '\')">Go To Content</a>';
+											echo '<a href="' . $folder . '" target="_blank" class="btn radius-xl text-uppercase"  onclick="openContentPage(\'' . $folder . '\')">Go To Content</a>';
 										}
 									}
 									?>
 									<br>
 									<br>
 								
-							<?php
-								//check status.. if completed, then the link shall show "completed" and cannot be clicked
-								$sql = "SELECT * FROM content_record WHERE content_id = '$content_id' AND username = '$username';
-								";
-
-								$result = mysqli_query($db, $sql);
-
-								if($result){
-									$row = mysqli_fetch_assoc($result);
-									$status = $row['status'];
-									
-									
-									if($status == 'In Progress'){
-										?><a href="" class="btn radius-xl text-uppercase" id="stopLink">Finish</a><?php 
-									}elseif($status == 'Completed'){
-										?><div class="btn radius-xl text-uppercase" disabled>Completed</div><?php
-									}else{
-										?><a href="" class="btn radius-xl text-uppercase" id="stopLink">Finish</a><?php 
-									}
-								}else{}
-							?>
-								
+							
+                                    <button type="button" class="btn radius-xl text-uppercase">Finish</button>
 									<!--the link should be filled with a variable, php will store the path-->
 								</div>
 								<div class="teacher-bx">
@@ -531,36 +379,10 @@ include "connect.php";
 									</div>
 									<div class="col-md-12 col-lg-8">
 									<h5 class="m-b5">Your Progress</h5>
-									<?php
-										$sql = "SELECT DATE_FORMAT(start_time, '%Y-%m-%d %H:%i:%s') AS formatted_start_time, DATE_FORMAT(end_time, '%Y-%m-%d %H:%i:%s') AS formatted_end_time FROM content_record WHERE content_id = '$content_id' AND username = '$username'";
-										$result = mysqli_query($db, $sql);
+									
 
-										if (mysqli_num_rows($result) > 0) {
-											$row = mysqli_fetch_assoc($result);
-											$formattedStartTime = $row['formatted_start_time'];
-											$formattedEndTime = $row['formatted_end_time'];
-
-											echo "<p>Time start: $formattedStartTime</p>";
-
-											if ($formattedEndTime != '0000-00-00 00:00:00') {
-												echo "<p>Time end: $formattedEndTime</p>";
-												$query = "SELECT * FROM content_record WHERE content_id = '$content_id' AND username = '$username'";
-												$res = mysqli_query($db, $query);
-												$rows = mysqli_fetch_assoc($res);
-												$duration =  $rows['duration'];
-												echo "<p>Duration: $duration </p>";
-											} else {
-												echo "<p>Time end: Not yet completed</p>";
-											}
-											
-											
-										} else {
-											echo "<p>Time start: Not yet started</p>";
-											echo "<p>Time end: Not yet started</p>";
-										}
-									?>
-
-
+                                        <p>Time start: Not yet started</p>
+                                        <p>Time end: Not yet completed</p>
 										
 										
 										<!-- <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p> -->
@@ -971,161 +793,161 @@ include "connect.php";
 		</script>
 
 		<script>
-			$(document).ready(function() {
-    $("#startLink").click(function(event) {
-        // Send an AJAX request to insert the start time
-        $.ajax({
-            type: "POST",
-            url: "phpfiles/insert_start_time.php",
-            data: {
-                start_time: new Date().toISOString(),
-                content_id: '<?php echo $content_id; ?>'
-            },
-            success: function(response) {
-                // Handle the server's response, if needed
-                console.log(response);
-            }
-        });
-    });
+// 			$(document).ready(function() {
+//     $("#startLink").click(function(event) {
+//         // Send an AJAX request to insert the start time
+//         $.ajax({
+//             type: "POST",
+//             url: "phpfiles/insert_start_time.php",
+//             data: {
+//                 start_time: new Date().toISOString(),
+//                 content_id: '<?php echo $content_id; ?>'
+//             },
+//             success: function(response) {
+//                 // Handle the server's response, if needed
+//                 console.log(response);
+//             }
+//         });
+//     });
 
-    $("#stopLink").click(function(event) {
-        event.preventDefault();
+//     $("#stopLink").click(function(event) {
+//         event.preventDefault();
 
-        // Send an AJAX request to check requirements on the server
-        $.ajax({
-            type: "POST",
-            url: "phpfiles/check_requirements.php",
-            data: {
-                end_time: new Date().toISOString(),
-                content_id: '<?php echo $content_id; ?>'
-            },
-            success: function(response) {
-                response = response.trim().toLowerCase();
-                console.log(response);
+//         // Send an AJAX request to check requirements on the server
+//         $.ajax({
+//             type: "POST",
+//             url: "phpfiles/check_requirements.php",
+//             data: {
+//                 end_time: new Date().toISOString(),
+//                 content_id: '<?php echo $content_id; ?>'
+//             },
+//             success: function(response) {
+//                 response = response.trim().toLowerCase();
+//                 console.log(response);
 
-                if (response === 'requirement') {
-                    // Requirements are met, show confirmation prompt
-                    Swal.fire({
-                        icon: 'question',
-                        title: 'Are you sure you want to finish this knowledge?',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, finish it!',
-                        cancelButtonText: 'Cancel',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // User clicked "Yes, finish it!" - send AJAX request to update stop time
-                            $.ajax({
-                                type: "POST",
-                                url: "phpfiles/update_stop_time.php",
-                                data: {
-                                    end_time: new Date().toISOString(),
-                                    content_id: '<?php echo $content_id; ?>'
-                                },
-                                success: function(response) {
-                                    // Handle the server's response, if needed
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Success',
-                                        text: response,
-                                        didClose: function() {
-                                            // Reload the page after the user clicks "OK"
-                                            location.reload();
-                                        }
-                                    });
-                                }
-                            });
-                        } else {
-                            // User clicked "Cancel"
-                            Swal.fire({
-                                icon: 'info',
-                                title: 'Cancelled',
-                                text: 'You can continue working on this knowledge.'
-                            });
-                        }
-                    });
-                } else {
-                    // Requirements not met, display an alert to the user
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Time',
-                        text: response
-                    });
-                }
-            }
-        });
-    });
-});
+//                 if (response === 'requirement') {
+//                     // Requirements are met, show confirmation prompt
+//                     Swal.fire({
+//                         icon: 'question',
+//                         title: 'Are you sure you want to finish this knowledge?',
+//                         showCancelButton: true,
+//                         confirmButtonText: 'Yes, finish it!',
+//                         cancelButtonText: 'Cancel',
+//                     }).then((result) => {
+//                         if (result.isConfirmed) {
+//                             // User clicked "Yes, finish it!" - send AJAX request to update stop time
+//                             $.ajax({
+//                                 type: "POST",
+//                                 url: "phpfiles/update_stop_time.php",
+//                                 data: {
+//                                     end_time: new Date().toISOString(),
+//                                     content_id: '<?php echo $content_id; ?>'
+//                                 },
+//                                 success: function(response) {
+//                                     // Handle the server's response, if needed
+//                                     Swal.fire({
+//                                         icon: 'success',
+//                                         title: 'Success',
+//                                         text: response,
+//                                         didClose: function() {
+//                                             // Reload the page after the user clicks "OK"
+//                                             location.reload();
+//                                         }
+//                                     });
+//                                 }
+//                             });
+//                         } else {
+//                             // User clicked "Cancel"
+//                             Swal.fire({
+//                                 icon: 'info',
+//                                 title: 'Cancelled',
+//                                 text: 'You can continue working on this knowledge.'
+//                             });
+//                         }
+//                     });
+//                 } else {
+//                     // Requirements not met, display an alert to the user
+//                     Swal.fire({
+//                         icon: 'error',
+//                         title: 'Time',
+//                         text: response
+//                     });
+//                 }
+//             }
+//         });
+//     });
+// });
 
 		</script>
 
 <script>
-    function openContentPage(file) {
-        // Open the file in a new tab
-        window.open(file, '_blank');
+//     function openContentPage(file) {
+//         // Open the file in a new tab
+//         window.open(file, '_blank');
 
-        // Reload the current page after a delay (adjust the delay as needed)
-        setTimeout(function () {
-            location.reload();
-        }, 1000); // Example delay: 1000 milliseconds (1 second)
-    }
-</script>
+//         // Reload the current page after a delay (adjust the delay as needed)
+//         setTimeout(function () {
+//             location.reload();
+//         }, 1000); // Example delay: 1000 milliseconds (1 second)
+//     }
+// </script>
 
-<!-- Live Notification -->
-<script type="text/javascript">
-    function loadDoc() {
-        var previousTotalInbox = 0; // Variable to store the previous total inbox value
+// <!-- Live Notification -->
+// <script type="text/javascript">
+//     function loadDoc() {
+//         var previousTotalInbox = 0; // Variable to store the previous total inbox value
 
-        // Fetch the initial value of total_inbox
-        var initialXhttp = new XMLHttpRequest();
-        initialXhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var initialResponse = JSON.parse(this.responseText);
-                previousTotalInbox = initialResponse.total_inbox;
-				console.log(previousTotalInbox);
-            }
-        };
-        initialXhttp.open("GET", "phpfiles/notification.php", false);
-        initialXhttp.send();
+//         // Fetch the initial value of total_inbox
+//         var initialXhttp = new XMLHttpRequest();
+//         initialXhttp.onreadystatechange = function () {
+//             if (this.readyState == 4 && this.status == 200) {
+//                 var initialResponse = JSON.parse(this.responseText);
+//                 previousTotalInbox = initialResponse.total_inbox;
+// 				console.log(previousTotalInbox);
+//             }
+//         };
+//         initialXhttp.open("GET", "phpfiles/notification.php", false);
+//         initialXhttp.send();
 
-        setInterval(function () {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var response = JSON.parse(this.responseText);
+//         setInterval(function () {
+//             var xhttp = new XMLHttpRequest();
+//             xhttp.onreadystatechange = function () {
+//                 if (this.readyState == 4 && this.status == 200) {
+//                     var response = JSON.parse(this.responseText);
 
-                    // Check if the total inbox value has changed
-                    if (previousTotalInbox !== response.total_inbox) {
-                        // Update the previous value
-                        previousTotalInbox = response.total_inbox;
+//                     // Check if the total inbox value has changed
+//                     if (previousTotalInbox !== response.total_inbox) {
+//                         // Update the previous value
+//                         previousTotalInbox = response.total_inbox;
 
-                        // Update the DOM elements
-                        var notificationCount = document.getElementById("noti_number");
-                        var deadline = document.getElementById("deadline");
-                        var exceed = document.getElementById("exceed");
-                        var accepted = document.getElementById("accepted");
-                        var declined = document.getElementById("declined");
+//                         // Update the DOM elements
+//                         var notificationCount = document.getElementById("noti_number");
+//                         var deadline = document.getElementById("deadline");
+//                         var exceed = document.getElementById("exceed");
+//                         var accepted = document.getElementById("accepted");
+//                         var declined = document.getElementById("declined");
 
-                        document.querySelector('.notification-count').innerHTML = response.total_inbox;
-                        document.querySelector('.ttr-notify-text-top').innerHTML = response.new_noti;
-                        document.querySelector('#deadline .deadline').innerHTML = response.notifications['deadline'].text;
-                        document.querySelector('.exceed').innerHTML = response.notifications['exceed'].text;
-                        document.querySelector('#accepted .accepted').innerHTML = response.notifications['accepted'].text;
-                        document.querySelector('#declined .declined').innerHTML = response.notifications['declined'].text;
+//                         document.querySelector('.notification-count').innerHTML = response.total_inbox;
+//                         document.querySelector('.ttr-notify-text-top').innerHTML = response.new_noti;
+//                         document.querySelector('#deadline .deadline').innerHTML = response.notifications['deadline'].text;
+//                         document.querySelector('.exceed').innerHTML = response.notifications['exceed'].text;
+//                         document.querySelector('#accepted .accepted').innerHTML = response.notifications['accepted'].text;
+//                         document.querySelector('#declined .declined').innerHTML = response.notifications['declined'].text;
 
-                        // Add AJAX request to send email
-                        var emailRequest = new XMLHttpRequest();
-                        emailRequest.open("GET", "email.php", true);
-                        emailRequest.send();
-                    }
-                }
-            };
-            xhttp.open("GET", "phpfiles/notification.php", true);
-            xhttp.send();
-        }, 1000);
-        console.log("loadDoc function called");
-    }
+//                         // Add AJAX request to send email
+//                         var emailRequest = new XMLHttpRequest();
+//                         emailRequest.open("GET", "email.php", true);
+//                         emailRequest.send();
+//                     }
+//                 }
+//             };
+//             xhttp.open("GET", "phpfiles/notification.php", true);
+//             xhttp.send();
+//         }, 1000);
+//         console.log("loadDoc function called");
+//     }
 
-    loadDoc();
+//     loadDoc();
 </script>
 
 </body>

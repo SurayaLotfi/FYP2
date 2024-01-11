@@ -41,7 +41,7 @@ $limit = 3;
 
                 if($content == "All"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-								WHERE class.department = '$department'
+								WHERE (class.department = '$department' || class.department = 'All')
 								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
 								AND username = '$username'
 								ORDER BY class.id DESC";
@@ -49,7 +49,7 @@ $limit = 3;
 
                 }elseif($content == "PDF"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                    WHERE class.department = '$department'
+                   WHERE (class.department = '$department' || class.department = 'All')
                     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                     AND username = '$username'
                     AND format = 'PDF'
@@ -58,7 +58,7 @@ $limit = 3;
             
                 }elseif($content == "Others"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                    WHERE class.department = '$department'
+                    WHERE (class.department = '$department' || class.department = 'All')
                     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                     AND username = '$username'
                     AND format = 'Others'
@@ -66,7 +66,7 @@ $limit = 3;
                   
                 }elseif($content == "Video"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                    WHERE class.department = '$department'
+                   WHERE (class.department = '$department' || class.department = 'All')
                     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                     AND username = '$username'
                     AND format = 'Video'
@@ -74,7 +74,7 @@ $limit = 3;
                     
                 }elseif($content == "Images"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                    WHERE class.department = '$department'
+                    WHERE (class.department = '$department' || class.department = 'All')
                     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                     AND username = '$username'
                     AND format = 'Image'
@@ -82,7 +82,7 @@ $limit = 3;
                    
                 }elseif($content == "Validity Date"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                    WHERE class.department = '$department'
+                    WHERE (class.department = '$department' || class.department = 'All')
                     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                     AND username = '$username'
                     AND content_record.due = 'false'
@@ -91,7 +91,7 @@ $limit = 3;
                     
                 }elseif($content == "Exceeded"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                    WHERE class.department = '$department'
+                    WHERE (class.department = '$department' || class.department = 'All')
                     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                     AND username = '$username'
                     AND content_record.due = 'true'
@@ -99,21 +99,21 @@ $limit = 3;
 
                 }elseif($content == "Not Yet Started"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                    WHERE class.department = '$department'
+                   WHERE (class.department = '$department' || class.department = 'All')
                     AND content_record.status = 'Not yet started'
                     AND username = '$username'
                     ORDER BY class.id DESC";
                     
                 }elseif($content == "In Progress"){
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                    WHERE class.department = '$department'
+                    WHERE (class.department = '$department' || class.department = 'All')
                     AND content_record.status = 'In Progress'
                     AND username = '$username'
                     ORDER BY class.id DESC";
                     
                 }else{
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                    WHERE class.department = '$department'
+                    WHERE (class.department = '$department' || class.department = 'All')
                     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                     AND username = '$username'
                     ORDER BY class.id DESC";
@@ -177,7 +177,7 @@ $limit = 3;
                     <?php
                             if($content == "All"){
                             $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                                        WHERE class.department = '$department'
+                                       WHERE (class.department = '$department' || class.department = 'All')
                                         AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                         AND username = '$username'
                                         ORDER BY class.id DESC";
@@ -185,7 +185,7 @@ $limit = 3;
             
                             }elseif($content == "PDF"){
                                 $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                                WHERE class.department = '$department'
+                                WHERE (class.department = '$department' || class.department = 'All')
                                 AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                 AND username = '$username'
                                 AND format = 'PDF'
@@ -201,7 +201,7 @@ $limit = 3;
                                 }
                             }elseif($content == "Others"){
                                 $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                                WHERE class.department = '$department'
+                               WHERE (class.department = '$department' || class.department = 'All')
                                 AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                 AND username = '$username'
                                 AND format = 'Others'
@@ -216,7 +216,7 @@ $limit = 3;
                                 }
                             }elseif($content == "Video"){
                                 $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                                WHERE class.department = '$department'
+                               WHERE (class.department = '$department' || class.department = 'All')
                                 AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                 AND username = '$username'
                                 AND format = 'Video'
@@ -231,7 +231,7 @@ $limit = 3;
                                 }
                             }elseif($content == "Images"){
                                 $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                                WHERE class.department = '$department'
+                                WHERE (class.department = '$department' || class.department = 'All')
                                 AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                 AND username = '$username'
                                 AND format = 'Image'
@@ -246,7 +246,7 @@ $limit = 3;
                                 }
                             }elseif($content == "Validity Date"){
                                 $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                                WHERE class.department = '$department'
+                               WHERE (class.department = '$department' || class.department = 'All')
                                 AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                 AND username = '$username'
                                 AND content_record.due = 'false'
@@ -255,7 +255,7 @@ $limit = 3;
                                 
                             }elseif($content == "Exceeded"){
                                 $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                                WHERE class.department = '$department'
+                                WHERE (class.department = '$department' || class.department = 'All')
                                 AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                 AND username = '$username'
                                 AND content_record.due = 'true'
@@ -264,7 +264,7 @@ $limit = 3;
             
                             }elseif($content == "Not Yet Started"){
                                 $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                                WHERE class.department = '$department'
+                                WHERE (class.department = '$department' || class.department = 'All')
                                 AND content_record.status = 'Not yet started'
                                 AND username = '$username'
                                 ORDER BY class.id DESC
@@ -272,7 +272,7 @@ $limit = 3;
                                 
                             }elseif($content == "In Progress"){
                                 $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                                WHERE class.department = '$department'
+                               WHERE (class.department = '$department' || class.department = 'All')
                                 AND content_record.status = 'In Progress'
                                 AND username = '$username'
                                 ORDER BY class.id DESC
@@ -280,7 +280,7 @@ $limit = 3;
                                 
                             }else{
                                 $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                                WHERE class.department = '$department'
+                                WHERE (class.department = '$department' || class.department = 'All')
                                 AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                 AND username = '$username'
                                 ORDER BY class.id DESC
@@ -294,7 +294,7 @@ $limit = 3;
                         
                         $validity = $row['validity'];
                         $due = $row['due'];
-                            
+                        $validity_date = date('d-m-Y', strtotime($validity));    
                         $today = new DateTime();
                         $validity = new DateTime($validity);
                        // $due = new DateTime($due);
@@ -342,6 +342,8 @@ $limit = 3;
                             <span>Format: <?php echo $row['format']?></span>
                             <br>
                             <span>Date Posted: <?php echo $date_posted?></span>
+                            <br>
+						    <span>Deadline: <?php echo $validity_date?></span>
                             
                         </div>
                         <div class="price">

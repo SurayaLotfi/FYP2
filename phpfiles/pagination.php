@@ -43,7 +43,7 @@
                     $start_from = ($page - 1)*$limit; //getting the range
                     //getting the total pages for pagination display
                     $query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                            WHERE class.department = '$department'
+                            WHERE (class.department = '$department' || class.department = 'All')
                             AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                             AND username = '$username'";
 
@@ -98,7 +98,7 @@
 
         //fetch courses
         $query_paged = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-                        WHERE class.department = '$department'
+                        WHERE (class.department = '$department' || class.department = 'All')
                         AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                         AND username = '$username'
                         ORDER BY class.id DESC
@@ -110,7 +110,7 @@
         
                     $validity = $row['validity'];
                     $due = $row['due'];
-                        
+                    $validity_date = date('d-m-Y', strtotime($validity));
                     $today = new DateTime();
                     $validity = new DateTime($validity);
                 // $due = new DateTime($due);
@@ -158,6 +158,8 @@
                         <span>Format: <?php echo $row['format']?></span>
                         <br>
                         <span>Date Posted: <?php echo $date_posted?></span>
+                        <br>
+						<span>Deadline: <?php echo $validity_date?></span>
                         
                     </div>
                     <div class="price">

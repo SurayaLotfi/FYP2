@@ -420,7 +420,10 @@
 
 									
 									<td>
-									<a href="edit-course.php?course_id=<?php echo $id?>&source=<?php echo $source?>" class='btn'>Edit</a>
+									<div style="display: flex; justify-content: center;">
+									<a href="edit-course.php?course_id=<?php echo $id?>&source=<?php echo $source?>" class='btn' style="margin-right: 10px;">Edit</a>
+									<a href="../admin_view_knowledge.php?course_id=<?php echo $row['class_id']?>&department=<?php echo $row['department']?>" class='btn-secondry'>Preview</a>
+									</div>
 									</td>
 								</tr>
 							<?php

@@ -444,7 +444,7 @@
 
 									<div class="form-group col-6">
 									<label class="col-form-label" for="folder-select">Choose Folder from Server</label>
-										<select  name="content" class="folder-select" id="content-select"> 
+										<select  name="content" class="folder-select" id="content-select" > 
 										<option value="">Click Here</option>
 											<?php	
 											error_reporting(E_ALL);
@@ -551,43 +551,62 @@
         uploadButton.addEventListener("click", function (event) {
             event.preventDefault(); // Prevent the default form submission behavior
 
+			const validationResult = validateForm();
+
             // Validate all fields before allowing the upload
-            if (validateForm()) {
+            if (validationResult.isValid) {
                 Swal.fire({
                     title: "Are you sure you want to upload this?",
                     icon: "question",
                     showCancelButton: true,
-                    confirmButtonText: "Yes, upload it!",
-                    cancelButtonText: "No, cancel!",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // If the user clicks "Yes, upload it!", submit the form
-                        uploadForm.submit();
+                        HTMLFormElement.prototype.submit.call(uploadForm);
                     }
                 });
             } else {
                 // Show an alert or perform any other action if validation fails
                 Swal.fire({
-                    title: "Please fill in all fields before uploading.",
-                    icon: "error",
-                    confirmButtonText: "OK",
+				title: validationResult.errorMessage,
+                icon: "error",
+                confirmButtonText: "OK",
                 });
             }
         });
 
-        function validateForm() {
-            // Add validation logic for each field
-            const title = document.getElementById("title").value;
-            const dateValid = document.getElementById("validity").value;
-            const minimumTime = document.getElementById("minimum_time").value;
+		function validateForm() {
+        // Add validation logic for each field
+        const title = document.getElementById("title").value;
+        const dateValid = document.getElementById("validity").value;
+        const minimumTime = document.getElementById("minimum_time").value;
+        // const message = document.getElementById("message").value;
+		const file = document.getElementById("content-select").value;
 
-            // Add additional validation checks if needed
-            if (title.trim() === "" || dateValid === "" || minimumTime.trim() === "") {
-                return false; // Validation failed
-            }
-
-            return true; // Validation passed
+        // Check for missing values in required fields
+        if (title.trim() === "" || dateValid === "" ||  minimumTime.trim() === "" || file.trim() === "") {
+            return {
+                isValid: false,
+                errorMessage: "Please fill in all required fields before uploading.",
+            };
         }
+
+        // Validate minimumTime format
+        const timeRegex = /^(\d+\s*(hours?|hrs?)\s*)?(\d+\s*minutes?)?$/i;
+
+        if (!timeRegex.test(minimumTime)) {
+            return {
+                isValid: false,
+                errorMessage: "Invalid format for estimated time completion.",
+            };
+        }
+
+        return {
+            isValid: true,
+        };
+    }
     });
 </script>
 
@@ -598,7 +617,7 @@
         const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
 
         if (alertType === "knowledge_exists") {
-            Swal.fire("Knowledge Already Exist");
+            Swal.fire("Knowledge already exist in the system");
         } else if (alertType === "success") {
             Swal.fire("Success", "Knowledge has been successfully uploaded.", "success");
         }

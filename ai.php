@@ -93,14 +93,15 @@
 					</div>
 					<div class="topbar-right">
 						<ul>
-							<li>
+							<!-- <li>
 								<select class="header-lang-bx">
 									<option data-icon="flag flag-uk">English UK</option>
 									<option data-icon="flag flag-us">English US</option>
 								</select>
-							</li>
-							<li><a href="login.html">Login</a></li>
-							<li><a href="register.html">Register</a></li>
+							</li> -->
+							
+							<li><a href="logout.php">Logout</a></li>
+							<li><a href="profile.php"><?php echo $username?></a></li>
 						</ul>
 					</div>
 				</div>

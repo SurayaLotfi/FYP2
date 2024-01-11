@@ -102,6 +102,7 @@
     
                 $validity = $row['validity'];
                 $due = $row['due'];
+             
                     
                 $today = new DateTime();
                 $validity = new DateTime($validity);
@@ -117,7 +118,7 @@
                     
                 }
 
-                
+             
                 $remainingDays_valid = $days_left->format('%a'); // Number of days remaining										
                 $remainingDays_due = $days_left->format('%a');
                 $date_posted = $row['time_added'];

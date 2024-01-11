@@ -74,10 +74,15 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
     	<!--Data Table-->
 	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+	
 
 	<!--Initializing Data Table-->
 	<script>
@@ -401,7 +406,9 @@
 									<td style="display: flex; justify-content: center;">
 									<?php if($status == 'Declined'){
 										?><a href="declined_knowledge.php?knowledge_id=<?php echo $id?>" class='btn'>View Message</a><?php	
-									}else{?>
+									}elseif($status == 'Pending'){
+										
+										?>
 									<!-- <a href="courses-details.php?course_id=<?php echo $id?>" class='btn'>View Content</a> -->
 									<?php
 										$folderPath = 'pdf/'. $content;
@@ -416,8 +423,33 @@
 											//$pdfFile = reset($pdf);
 											echo '<a href="' . $folder . '" target="_blank"  class="btn-secondry" id="startLink">View Content</a>';
 										}
+
+										?>
+											<a href="edit_knowledge.php?knowledge_id=<?php echo $id?>" class='btn' style="margin-left: 10px;">Edit</a>	
+										<?php
+									}else{
+										
+										?>
+									<!-- <a href="courses-details.php?course_id=<?php echo $id?>" class='btn'>View Content</a> -->
+									<?php
+										$folderPath = 'pdf/'. $content;
+										$folder = $folderPath . '/' . $content;
+										if (empty($folderPath)) {
+											// $htmlFile = reset($files); // Get the first element of the array
+
+											//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
+											echo 'Not Found';
+											
+										} else {
+											//$pdfFile = reset($pdf);
+											echo '<a href="' . $folder . '" target="_blank"  class="btn-secondry" id="startLink">View Content</a>';
+										}
+
+										?>
+											
+										<?php
 									}?>
-									
+										
 									</td>
 								</tr>
 							<?php
@@ -623,6 +655,17 @@
     loadDoc();
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
+
+        if (alertType === "deletesuccess") {
+            Swal.fire("Success", "Knowledge has been deleted.", "success");
+        } else if (alertType === "editsuccess") {
+            Swal.fire("Success", "Knowledge has been updated.", "success");
+        }
+    });
+</script>
 	
 </body>
 

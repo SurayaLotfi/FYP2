@@ -383,7 +383,7 @@
                                 <h5 class="widget-title style-1">Recent Courses</h5>
                                 <div class="widget-post-bx">
                                     <?php
-										$query = "SELECT * FROM class WHERE department = '$department' ORDER BY id DESC LIMIT 2";
+										$query = "SELECT * FROM class WHERE department = '$department' || department ='All' ORDER BY id DESC LIMIT 2";
 										$result = mysqli_query($db, $query);
 										while($row = mysqli_fetch_assoc($result)){
 	
@@ -425,6 +425,7 @@
 								FROM class
 								LEFT JOIN content_record ON class.id = content_record.content_id
 								WHERE class.department = '$department'
+								OR class.department ='All'
 								AND (content_record.status = 'In progress' OR content_record.content_id IS NULL)
 								AND validity <= '$due_date_threshold'";
 								
@@ -453,7 +454,8 @@
 											$start_from = ($page - 1)*$limit; //getting the range
 										 	//getting the total pages for pagination display
 											$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-																		WHERE class.department = '$department'
+																		WHERE (class.department = '$department'
+																		OR class.department = 'All')
 																		AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
 																		AND username = '$username'";
 											$result = mysqli_query($db, $query);
@@ -529,6 +531,7 @@
                                             $validity = $row['validity'];
                                             $due = $row['due'];
 												
+											$validity_date = date('d-m-Y', strtotime($validity));
 											$today = new DateTime();
 											$validity = new DateTime($validity);
 											//S$due = new DateTime($due);
@@ -579,6 +582,8 @@
 												<span>Format: <?php echo $row['format']?></span>
 												<br>
 												<span>Date Posted: <?php echo $date_posted?></span>
+												<br>
+												<span>Deadline: <?php echo $validity_date?></span>
 												
 											</div>
 											<div class="price">
