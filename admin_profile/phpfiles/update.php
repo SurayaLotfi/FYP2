@@ -52,6 +52,12 @@
         // $minimum_time = $_GET['minimum_time'];
         // $format = $_GET['format'];
 
+        //get the original department
+        $search1 = "SELECT * FROM class WHERE class_id = '$class_id'";
+        $result_search1 = mysqli_query($db, $search1);
+        $row = mysqli_fetch_assoc($result_search1);
+        $db_department = $row['department']; //original department
+
         // Update database using prepared statements
         $update = $db->prepare("UPDATE class SET title=?, format=?, validity=?, department=?, content=?, minimum_time=?, class_id=? WHERE id=?");
 
@@ -65,6 +71,8 @@
         $update->close();
     
         if($update){
+            if($db_department != $department){ //if the original department is not the same with the new department, insert the knowledge to the users with the new department and delete the old
+            //if the changing was department, remove the old ones and insert to the new ones
             //find past rows that has the old department
             $search = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id 
             WHERE department != '$department'"; 
@@ -92,7 +100,12 @@
 
                 header("Location: ../courses.php?alert=editsuccess");
 
-            }else{
+           }else{
+
+            header("Location: ../courses.php?alert=editsuccess");
+
+           }
+         }else{
             echo "Query error: " . mysqli_error($db); // Display the error message
         }
     // } else{

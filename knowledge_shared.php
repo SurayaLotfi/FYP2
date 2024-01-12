@@ -17,7 +17,12 @@
 	}
 	
 ?>
+<style>
+.swal2-select {
+    display: none !important;
+}
 
+</style>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -411,21 +416,21 @@
 										?>
 									<!-- <a href="courses-details.php?course_id=<?php echo $id?>" class='btn'>View Content</a> -->
 									<?php
-										$folderPath = 'pdf/'. $content;
-										$folder = $folderPath . '/' . $content;
-										if (empty($folderPath)) {
-											// $htmlFile = reset($files); // Get the first element of the array
+										// $folderPath = 'pdf/'. $content;
+										// $folder = $folderPath . '/' . $content;
+										// if (empty($folderPath)) {
+										// 	// $htmlFile = reset($files); // Get the first element of the array
 
-											//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
-											echo 'Not Found';
+										// 	//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
+										// 	echo 'Not Found';
 											
-										} else {
-											//$pdfFile = reset($pdf);
-											echo '<a href="' . $folder . '" target="_blank"  class="btn-secondry" id="startLink">View Content</a>';
-										}
+										// } else {
+										// 	//$pdfFile = reset($pdf);
+										// 	echo '<a href="' . $folder . '" target="_blank"  class="btn-secondry" id="startLink">View Content</a>';
+										// }
 
 										?>
-											<a href="edit_knowledge.php?knowledge_id=<?php echo $id?>" class='btn' style="margin-left: 10px;">Edit</a>	
+											<a href="edit_knowledge.php?knowledge_id=<?php echo $id?>" class='btn-secondry' style="margin-left: 10px;">Edit</a>	
 										<?php
 									}else{
 										
@@ -595,8 +600,6 @@
 <script src='assets/vendors/switcher/switcher.js'></script>
 <script src='filter.js'></script>
 
-
-<!-- Live Notification -->
 <!-- Live Notification -->
 <script type="text/javascript">
     function loadDoc() {

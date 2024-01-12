@@ -101,7 +101,7 @@
                         WHERE (class.department = '$department' || class.department = 'All')
                         AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                         AND username = '$username'
-                        ORDER BY class.id DESC
+                        ORDER BY content_record.timestamp DESC
                         LIMIT $start_from, $limit";
                        
         $result = mysqli_query($db, $query_paged);

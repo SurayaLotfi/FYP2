@@ -383,7 +383,10 @@
                                 <h5 class="widget-title style-1">Recent Courses</h5>
                                 <div class="widget-post-bx">
                                     <?php
-										$query = "SELECT * FROM class WHERE department = '$department' || department ='All' ORDER BY id DESC LIMIT 2";
+										$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
+										WHERE (class.department = '$department' || class.department = 'All')
+										AND username = '$username'
+										ORDER BY content_record.timestamp DESC LIMIT 2";
 										$result = mysqli_query($db, $query);
 										while($row = mysqli_fetch_assoc($result)){
 	

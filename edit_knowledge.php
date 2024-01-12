@@ -20,11 +20,10 @@ include "connect.php";
     if(isset($_GET['knowledge_id'])){
         $knowledge_id = $_GET['knowledge_id'];
 
-        $query = "SELECT * FROM knowledge_sharing JOIN ks_declined ON knowledge_sharing.knowledge_id = ks_declined.ks_id
-                    WHERE knowledge_id = $knowledge_id";
+        $query = "SELECT * FROM knowledge_sharing WHERE knowledge_id = $knowledge_id";
         $result = mysqli_query($db, $query);
         $row = mysqli_fetch_assoc($result);
-        $message = $row['message_admin'];
+        // $message = $row['message_admin'];
         $title = $row['title'];
         $post_to = $row['post_to'];
         $content = $row['content'];
@@ -121,8 +120,8 @@ include "connect.php";
 				<div class="row d-flex justify-content-between">
 					<div class="topbar-left">
 						<ul>
-							<li><a href="faq-1.html"><i class="fa fa-question-circle"></i>Ask a Question</a></li>
-							<li><a href="javascript:;"><i class="fa fa-envelope-o"></i>Support@website.com</a></li>
+							<!-- <li><a href="faq-1.html"><i class="fa fa-question-circle"></i>Ask a Question</a></li> -->
+							<li><a href="javascript:;"><i class="fa fa-envelope-o"></i>KMS4MAE</a></li>
 						</ul>
 					</div>
 					<div class="topbar-right">
@@ -379,7 +378,7 @@ include "connect.php";
 						<!-- <form  action="sharing.php" method="post"> -->
 							<!-- <div class="heading-bx">
 								<h2 class="title-head">Message from <span>Admin</span></h2>
-								<p><?php echo $message ?></p>
+								<p></p>
 								
 							</div> -->
 							<div class="row">
@@ -486,7 +485,7 @@ include "connect.php";
                                     <input type="hidden" name="knowledge_id" value="<?php echo $knowledge_id ?>">
 									<div class="col-12">
 									<button  id="shareButton" class="btn btn-info btn-rounded"  name="submit" type="submit">Edit</button> 
-									
+									<button id="deleteButton" class="btn-secondry" name="delete" data-content-id="<?php echo $knowledge_id ?>">Delete</button>
 									</div>
 								</div>
 							</form>
@@ -808,79 +807,99 @@ include "connect.php";
 </script>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const shareButton = document.getElementById("shareButton");
+        const shareForm = document.getElementById("shareForm");
+        const deleteButton = document.getElementById("deleteButton");
 
-	
-document.addEventListener("DOMContentLoaded", function () {
-    const shareButton = document.getElementById("shareButton");
-    const shareForm = document.getElementById("shareForm");
+        console.log(shareForm.submit); // Check if it's a function
 
-	console.log(shareForm.submit); // Check if it's a function
+        shareButton.addEventListener("click", function (event) {
+            // Prevent the default form submission
+            event.preventDefault();
 
+            // Validate all fields before allowing the upload
+            const validationResult = validateForm();
 
-    shareButton.addEventListener("click", function (event) {
+            if (validationResult.isValid) {
+                // Use SweetAlert to confirm submission
+                Swal.fire({
+                    title: "Are you sure you want to edit this knowledge?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // If the user clicks "Yes," submit the form
+                        HTMLFormElement.prototype.submit.call(shareForm);
+                    }
+                });
+            } else {
+                // Show an alert or perform any other action if validation fails
+                Swal.fire({
+                    title: validationResult.errorMessage,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+            }
+        });
 
-		       // Prevent the default form submission
-			   event.preventDefault();
-			   
-        // Validate all fields before allowing the upload
-        const validationResult = validateForm();
+        if (deleteButton) {
+            deleteButton.addEventListener("click", function (event) {
+                handleDeleteAction(event);
+            });
+        }
 
-        if (validationResult.isValid) {
-            // Use SweetAlert to confirm submission
+        function handleDeleteAction(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
             Swal.fire({
-                title: "Are you sure you want to edit this knowledge?",
+                title: "Are you sure you want to delete?",
                 icon: "question",
                 showCancelButton: true,
-                confirmButtonText: "Yes",
-                cancelButtonText: "No",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // If the user clicks "Yes," submit the form
-					HTMLFormElement.prototype.submit.call(shareForm);
+                    // If the user clicks "Yes", take appropriate action
+                    const contentId = deleteButton.dataset.contentId;
+                    window.location.href = 'phpfiles/delete-knowledge.php?deleteid=' + contentId;
                 }
             });
-        } else {
-            // Show an alert or perform any other action if validation fails
-            Swal.fire({
-                title: validationResult.errorMessage,
-                icon: "error",
-                confirmButtonText: "OK",
-            });
+        }
+
+        function validateForm() {
+            // Add validation logic for each field
+            const title = document.getElementById("title").value;
+            const dateValid = document.getElementById("validity").value;
+            const minimumTime = document.getElementById("minimum_time").value;
+            const message = document.getElementById("message").value;
+            const file = document.getElementById("file").value;
+
+            // Check for missing values in required fields
+            if (title.trim() === "" || dateValid === "" || message.trim() === "" || minimumTime.trim() === "") {
+                return {
+                    isValid: false,
+                    errorMessage: "Please fill in all required fields before uploading.",
+                };
+            }
+
+            // Validate minimumTime format
+            const timeRegex = /^(\d+\s*(hours?|hrs?)\s*)?(\d+\s*minutes?)?$/i;
+
+            if (!timeRegex.test(minimumTime)) {
+                return {
+                    isValid: false,
+                    errorMessage: "Invalid format for estimated time completion.",
+                };
+            }
+
+            return {
+                isValid: true,
+            };
         }
     });
-
-    function validateForm() {
-        // Add validation logic for each field
-        const title = document.getElementById("title").value;
-        const dateValid = document.getElementById("validity").value;
-        const minimumTime = document.getElementById("minimum_time").value;
-        const message = document.getElementById("message").value;
-		const file = document.getElementById("file").value;
-
-        // Check for missing values in required fields
-        if (title.trim() === "" || dateValid === "" || message.trim() === "" || minimumTime.trim() === "" ) {
-            return {
-                isValid: false,
-                errorMessage: "Please fill in all required fields before uploading.",
-            };
-        }
-
-        // Validate minimumTime format
-        const timeRegex = /^(\d+\s*(hours?|hrs?)\s*)?(\d+\s*minutes?)?$/i;
-
-        if (!timeRegex.test(minimumTime)) {
-            return {
-                isValid: false,
-                errorMessage: "Invalid format for estimated time completion.",
-            };
-        }
-
-        return {
-            isValid: true,
-        };
-    }
-});
-
 </script>
 </body>
 

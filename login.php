@@ -34,14 +34,22 @@ if(isset($_POST["submit"])){
                 header("Location: home.php");
         }
         else{
-            // echo "<script> alert('Wrong Password or Email!'); </script>";
-			echo mysqli_error($db);
+			header("Location: login.php?alert=wrongpassword");
+			//echo mysqli_error($db);
         }
     }else{
-        echo "<script> alert('User not registered!'); </script>";
+        header("Location: login.php?alert=wrongusername");
     }
 }
 ?>
+
+<style>
+.swal2-select {
+    display: none !important;
+}
+
+</style>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,6 +72,8 @@ if(isset($_POST["submit"])){
 	<meta property="og:description" content="EduChamp : Education HTML Template" />
 	<meta property="og:image" content="" />
 	<meta name="format-detection" content="telephone=no">
+
+
 	
 	<!-- FAVICONS ICON ============================================= -->
 	<link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
@@ -80,6 +90,7 @@ if(isset($_POST["submit"])){
 	<script src="assets/js/respond.min.js"></script>
 	<![endif]-->
 	
+	
 	<!-- All PLUGINS CSS ============================================= -->
 	<link rel="stylesheet" type="text/css" href="assets/css/assets.css">
 	
@@ -92,6 +103,9 @@ if(isset($_POST["submit"])){
 	<!-- STYLESHEETS ============================================= -->
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link class="skin" rel="stylesheet" type="text/css" href="assets/css/color/color-1.css">
+
+
+	
 	
 </head>
 <body id="bg">
@@ -151,21 +165,43 @@ if(isset($_POST["submit"])){
 	</div>
 </div>
 <!-- External JavaScripts -->
+<script>
+    var swal = Swal.noConflict();
+</script>
 <script src="assets/js/jquery.min.js"></script>
-<script src="assets/vendors/bootstrap/js/popper.min.js"></script>
-<script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+<!-- <script src="assets/vendors/bootstrap/js/popper.min.js"></script> -->
+<!-- <script src="assets/vendors/bootstrap/js/bootstrap.min.js"></script> -->
 <script src="assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
 <script src="assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
-<script src="assets/vendors/magnific-popup/magnific-popup.js"></script>
-<script src="assets/vendors/counter/waypoints-min.js"></script>
-<script src="assets/vendors/counter/counterup.min.js"></script>
-<script src="assets/vendors/imagesloaded/imagesloaded.js"></script>
-<script src="assets/vendors/masonry/masonry.js"></script>
-<script src="assets/vendors/masonry/filter.js"></script>
-<script src="assets/vendors/owl-carousel/owl.carousel.js"></script>
+<!-- <script src="assets/vendors/magnific-popup/magnific-popup.js"></script> -->
+<!-- <script src="assets/vendors/counter/waypoints-min.js"></script> -->
+<!-- <script src="assets/vendors/counter/counterup.min.js"></script> -->
+<!-- <script src="assets/vendors/imagesloaded/imagesloaded.js"></script> -->
+<!-- <script src="assets/vendors/masonry/masonry.js"></script> -->
+<!-- <script src="assets/vendors/masonry/filter.js"></script> -->
+<!-- <script src="assets/vendors/owl-carousel/owl.carousel.js"></script> -->
 <script src="assets/js/functions.js"></script>
-<script src="assets/js/contact.js"></script>
-<script src='assets/vendors/switcher/switcher.js'></script>
+<!-- <script src="assets/js/contact.js"></script> -->
+<!-- <script src='assets/vendors/switcher/switcher.js'></script> -->
+
+		<!--Sweet Alert-->
+		<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+	
+
+<script>
+	
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
+		
+        if (alertType === "wrongusername") {
+            Swal.fire("Error", "User does not exist.", "error");
+        } else if (alertType === "wrongpassword") {
+            Swal.fire("Error", "Wrong password entered.", "error");
+        }
+    });
+</script>
 </body>
 
 </html>
