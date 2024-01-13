@@ -359,12 +359,24 @@ include "connect.php";
                 <div class="row">
 					<div class="col-lg-9 col-md-7">
 						<!-- <form  action="sharing.php" method="post"> -->
+
+                        <?php 
+                         $content_id = $_GET['content'];
+                         $query = "SELECT * FROM class WHERE class_id = '$content_id' AND department = '$department'";
+                         $result = mysqli_query($db, $query);
+                         $row = mysqli_fetch_assoc($result);
+                         $title = $row['title'];
+                        
+                        ?> 
 							<div class="heading-bx">
-								<h2 class="title-head">Thank You for Sharing your <span>Knowledge</span></h2>
-								<p>You can check the status of your knowledge at your dashboard.  </p>
-                                <a href="knowledge_shared.php" class="btn m-r5">Go to Status</a>
-						        <a href="knowledge_share.php" class="btn outline black">Back</a>
-                                
+								<h2 class="title-head">Knowledge no longer <span>Exist in the FTP Server</span></h2>
+								<p>Do contact the admin of this page along with the <u>Knowledge title</u> and <u>ID</u> to resolve this issue.</p>
+                                <h6>Email: kms4mabes@gmail.com </h6>
+                                <h6>Knowledge ID: <?php echo $content_id?> </h6>
+                                <h6>Knowledge Title: '<?php echo $title?>'' </h6>
+                                <br>
+                                <a href="courses.php" class="btn m-r5">Go to Knowledge Base</a>
+                                <a href="courses-details.php?course_id=<?php echo urlencode($content_id); ?>" class="btn outline black">Back</a>
 								
 							</div>	
 						</div>

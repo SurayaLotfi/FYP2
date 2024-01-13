@@ -397,9 +397,10 @@ include "connect.php";
 										} elseif (!empty($pdf)) {
 											$pdfFile = reset($pdf);
 											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink" onclick="openContentPage(\'' . $pdfFile . '\')">Go To Content</a>';
+										
 										} else {
 											$pdfFile = reset($pdf);
-											echo '<a href="' . $pdfFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink" onclick="openContentPage(\'' . $pdfFile . '\')">Go To Content</a>';
+											echo '<a href="error.php?content=' . urlencode($content) . '" target="" class="btn radius-xl text-uppercase">Go To Content</a>';
 										}
 									} else {
 										$folderPath = 'pdf/' . $content;
