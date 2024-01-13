@@ -360,7 +360,7 @@ include "connect.php";
 			<div class="container">
 				<ul class="list-inline">
 					<li><a href="#">Home</a></li>
-					<li><a href="#">Knowledge Base</a></li>
+					<li><a href="courses.php">Knowledge Base</a></li>
 					<li>Knowledge Details</li>
 				</ul>
 			</div>
@@ -432,7 +432,7 @@ include "connect.php";
 									}elseif($status == 'Completed'){
 										?><div class="btn radius-xl text-uppercase" disabled>Completed</div><?php
 									}else{
-										?><a href="" class="btn radius-xl text-uppercase" id="stopLink">Finish</a><?php 
+										?><div class="btn radius-xl text-uppercase" disabled>Start to Finish</div><?php 
 									}
 								}else{}
 							?>

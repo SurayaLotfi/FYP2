@@ -283,7 +283,7 @@ $limit = 3;
                                 WHERE (class.department = '$department' || class.department = 'All')
                                 AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
                                 AND username = '$username'
-                                ORDER BY class.id DESC
+                                ORDER BY class.time_added DESC
                                 LIMIT $start_from, $limit";
                             }
 

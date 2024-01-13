@@ -72,6 +72,15 @@
     
         if($update){
             if($db_department != $department){ //if the original department is not the same with the new department, insert the knowledge to the users with the new department and delete the old
+                 //change the time_added since we're gonna upload it to the new department
+                // Update database using prepared statements
+                $update = $db->prepare("UPDATE class SET time_added=NOW() WHERE id=?");
+
+                // Bind parameters
+                $update->bind_param("i", $id);
+
+                $update_result = $update->execute();
+
             //if the changing was department, remove the old ones and insert to the new ones
             //find past rows that has the old department
             $search = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id 

@@ -307,6 +307,7 @@ $limit = 3;
                                 <div class="action-box">
                                     <img src="" alt="">
                                         <!-- <a href="declined_knowledge.php?knowledge_id=<?php echo $row['class_id'] ?>" class="btn">Read More</a> -->
+                                        <a href="knowledge_shared.php" class="btn">Read More</a>
                                     </div>
                                         <div class="info-bx text-center">
                                                 <h5><a href="#"><?php echo $row['title'] ?></a></h5>

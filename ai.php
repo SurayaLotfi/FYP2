@@ -317,7 +317,7 @@
 	<iframe src="http://127.0.0.1:8001/" width="1530" height="800"></iframe>
     <div class="page-content bg-white">
         <!-- Main Slider -->
-        <div class="section-area section-sp1 ovpr-dark bg-fix online-cours" style="background-image:url(assets/images/malaysia-airlines-bg.jpeg);">
+        <!-- <div class="section-area section-sp1 ovpr-dark bg-fix online-cours" style="background-image:url(assets/images/malaysia-airlines-bg.jpeg);">
 				<div class="container">
 					<div class="row">
 						<div class="col-md-12 text-center text-white">
@@ -345,7 +345,7 @@
                             </div>
 							
                         </div>
-                    </div>
+                    </div> -->
 					<!-- <div class="mw800 m-auto">
 						<div class="row">
 							<div class="col-md-4 col-sm-6">
@@ -374,15 +374,15 @@
 							</div>
 						</div>
 					</div> -->
-				</div>
-			</div>
+				<!-- </div>
+			</div> -->
         <!-- Main Slider -->
-		<div class="content-block">
+		<!-- <div class="content-block"> -->
             
 
                 
             <!-- Popular Courses -->
-			<div class="section-area section-sp2 popular-courses-bx">
+			<!-- <div class="section-area section-sp2 popular-courses-bx">
                 <div class="container">
 					<div class="row">
 						<div class="col-md-12 heading-bx left">
@@ -507,11 +507,11 @@
 					</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- Popular Courses END -->
-			<hr style="border-width: 10px;">
+			<!-- <hr style="border-width: 10px;"> -->
 			<!-- Recommended Courses -->
-			<div class="section-area section-sp2 popular-courses-bx">
+			<!-- <div class="section-area section-sp2 popular-courses-bx">
                 <div class="container">
 					<div class="row">
 						<div class="col-md-12 heading-bx left">
@@ -636,9 +636,9 @@
 					</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 						<!-- Recommended Courses END -->
-			<div class="section-area section-sp2 bg-fix ovbl-dark join-bx text-center" style="background-image:url(assets/images/background/bg1.jpg);">
+			<!-- <div class="section-area section-sp2 bg-fix ovbl-dark join-bx text-center" style="background-image:url(assets/images/background/bg1.jpg);"> -->
                 <!-- <div class="container">
 					<div class="row">
 						<div class="col-md-12">
@@ -651,9 +651,9 @@
 						</div>
 					</div>
 				</div> -->
-				<div class="content-block">
+				<!-- <div class="content-block"> -->
 					<!-- Blog Grid ==== -->
-						<div class="container">
+						<!-- <div class="container">
 							<div class="join-content-bx text-white" style="padding-top: 0px;">
 								<h2>See What Other's are saying<br> your time</h2>
 								<h4><span class="counter">57,000</span> Online Courses</h4>
@@ -773,9 +773,9 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<!-- Pagination ==== -->
-							<div class="pagination-bx rounded-sm gray clearfix">
+							<!-- <div class="pagination-bx rounded-sm gray clearfix">
 								<ul class="pagination">
 									<li class="previous"><a href="#"><i class="ti-arrow-left"></i> Prev</a></li>
 									<li class="active"><a href="#">1</a></li>
@@ -783,21 +783,21 @@
 									<li><a href="#">3</a></li>
 									<li class="next"><a href="#">Next <i class="ti-arrow-right"></i></a></li>
 								</ul>
-							</div>
+							</div> -->
 							<!-- Pagination END ==== -->
-						</div>
+						<!-- </div> -->
 					
 					<!-- Blog Grid END ==== -->
-				</div>
+				<!-- </div>
 			</div>
 
-        </div>
+        </div> -->
 		<!-- contact area END -->
     </div>
     <!-- Content END-->
 	<!-- Footer ==== -->
     <footer>
-        <div class="footer-top">
+        <!-- <div class="footer-top">
 			<div class="pt-exebar">
 				<div class="container">
 					<div class="d-flex align-items-stretch">
@@ -891,7 +891,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="footer-bottom">
             <div class="container">
                 <div class="row">

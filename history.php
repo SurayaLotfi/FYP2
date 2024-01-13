@@ -378,13 +378,14 @@
 
 							if($result){
 								while($row = mysqli_fetch_assoc($result)){
-									$id = $row['content_id'];								
-                                    
+									$id = $row['content_id'];								            
 						   ?>
 
 								<tr>
 									<td><?php echo $i ?></td>
-									<td><?php echo $row['title'] ?></td>
+									<td><?php 
+									//check whether the content_id is 	
+										echo $row['title'] ?></td>
 									<td>
 										Date: <?php echo date("d/m/Y", strtotime($row['start_time'])); ?><br>
 										Time: <?php echo date("H:i:s", strtotime($row['start_time'])); ?>

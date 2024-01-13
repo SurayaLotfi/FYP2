@@ -443,6 +443,8 @@ include "connect.php";
 											<option value="Engineering">Engineering</option>
 											<option value="IT">IT</option>
 											<option value="Business">Business</option>
+											<option value="Maintenance">Maintenance</option>
+											<option value="Security">Security</option>
 										</select>
 									</div>
 									

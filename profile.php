@@ -7,6 +7,7 @@
         $full_name = $_SESSION["full_name"];
         $username = $_SESSION["username"];
         $department = $_SESSION["department"];
+		$role = $_SESSION['role'];
         $email = $_SESSION["email"];
         $query = "SELECT * from class where user_id = $id";
         $result = mysqli_query($db,$query);
@@ -67,8 +68,8 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/notification.css">
 
 	<!--Sweet Alert-->
-	<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>	
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	
@@ -409,7 +410,7 @@
 										<?php
 											$query = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
 											WHERE username = ?
-											AND department = ?";
+											AND (department = ? || department = 'All')";
 
 											$statusCounts = array(
 												'completed' => 0,
@@ -761,20 +762,20 @@
 					$result_score = mysqli_query($db, $update_score);
 				} else {
 					// Username does not exist, insert a new record
-					$insert_query = "INSERT INTO achievements (username, knowledge_shared, completed, exceeded, score) VALUES ('$username', $total_knowledge_accepted , $totalCompleted, $total_exceed, $score)";
+					$insert_query = "INSERT INTO achievements (username, knowledge_shared, completed, exceeded, score, role) VALUES ('$username', $total_knowledge_accepted , $totalCompleted, $total_exceed, $score, '$role')";
 					$result_insert = mysqli_query($db, $insert_query);
 			
 					if (!$result_insert) {
-						echo "Error: " . mysqli_error($db);
+						echo "Error: " . mysqli_error($db) . "whah";
 					}
 				}
 			} else {
-				echo "Error: " . mysqli_error($db);
+				echo "Error: " . mysqli_error($db) . "whah";
 			}
 			
 			
 
-			$query = "SELECT * FROM achievements WHERE role = 'user' ORDER BY score DESC";
+			$query = "SELECT * FROM achievements WHERE role = 'user' ORDER BY score DESC LIMIT 5";
 			$result = mysqli_query($db, $query);
 
 		?>
@@ -934,7 +935,7 @@
     <!-- Content END-->
 	<!-- Footer ==== -->
     <footer>
-        <div class="footer-top">
+        <!-- <div class="footer-top">
 			<div class="pt-exebar">
 				<div class="container">
 					<div class="d-flex align-items-stretch">
@@ -1028,7 +1029,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="footer-bottom">
             <div class="container">
                 <div class="row">
@@ -1115,7 +1116,7 @@
     loadDoc();
 </script>
 
-<script>
+<!-- <script>
     document.addEventListener("DOMContentLoaded", function () {
         const alertType = "<?php echo isset($_GET['alert']) ? $_GET['alert'] : '' ?>";
 
@@ -1127,7 +1128,7 @@
 			Swal.fire("Success", "Your profile has been updated.", "success");
 		}
     });
-</script>
+</script> -->
 
 <script>
     $(document).ready(function () {
