@@ -47,6 +47,18 @@ include "connect.php";
 		$date_posted = date('d-m-Y', strtotime($date_posted));
 		$val = $row['validity'];
 		$deadline = date('d-m-Y', strtotime($val));
+
+		
+		// Assuming $date_posted and $deadline are in the format 'd-m-Y'
+		$date_posted_obj = DateTime::createFromFormat('d-m-Y', $date_posted);
+		$deadline_obj = DateTime::createFromFormat('d-m-Y', $deadline);
+
+		// Calculate the difference
+		$interval = $date_posted_obj->diff($deadline_obj);
+
+		// Access the difference in days
+		$days_difference = $interval->days;
+	   
 	   
 	}
 ?>
@@ -367,8 +379,11 @@ include "connect.php";
 										<ul class="course-features">
 											<!-- <li><i class="ti-book"></i> <span class="label">Lectures</span> <span class="value">8</span></li> -->
 											<!-- <li><i class="ti-help-alt"></i> <span class="label">Quizzes</span> <span class="value">1</span></li> -->
+												<!-- <li><i class="ti-book"></i> <span class="label">Lectures</span> <span class="value">8</span></li> -->
+											<!-- <li><i class="ti-help-alt"></i> <span class="label">Quizzes</span> <span class="value">1</span></li> -->
 											<li><i class="ti-time"></i> <span class="label">Duration</span> <span class="value"><?php echo $minimum_time?></span></li>
-											<li><i class="ti-stats-up"></i> <span class="label">Validity</span> <span class="value"><?php echo $remainingDays_valid?> days left</span></li>
+                                            <li><i class="ti-book"></i> <span class="label">Days given to complete</span> <span class="value"><?php echo $days_difference?> days</span></li>
+											<!-- <li><i class="ti-stats-up"></i> <span class="label">Validity</span> <span class="value"><?php echo $remainingDays_valid?> days left</span></li> -->
 											<li><i class="ti-calendar"></i> <span class="label">Date Posted</span> <span class="value"><?php echo $date_posted ?></span></li>
 											<li><i class="ti-announcement"></i> <span class="label">Deadline</span> <span class="value"><?php echo $deadline?></span></li>
 											

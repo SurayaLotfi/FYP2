@@ -678,8 +678,8 @@ if(isset($_GET['knowledge_id'])){
                 title: "Are you sure you want to approve this knowledge?",
                 icon: "question",
                 showCancelButton: true,
-                confirmButtonText: "Yes, upload it!",
-                cancelButtonText: "No, cancel!",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
             }).then((result) => {
                 if (result.isConfirmed) {
                     // If the user clicks "Yes, upload it!", submit the form

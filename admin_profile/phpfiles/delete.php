@@ -20,22 +20,41 @@ include "connect.php";
         // Check for errors
 
         // Continue with processing the result set
-        $fetch_username = "SELECT * FROM users WHERE department = '$department'";
-        $result_username = mysqli_query($db, $fetch_username);
+        if($department!='All'){
+            $fetch_username = "SELECT * FROM users WHERE department = '$department'";
+            $result_username = mysqli_query($db, $fetch_username);
 
-        while ($row = mysqli_fetch_assoc($result_username)) {
-            $username = $row['username'];
-            //fetch content_record that has the class_id and username
-            // $fetch_content_record = "SELECT * FROM content_record WHERE username = '$username' AND content_id = '$class_id'";
-            $delete_query = "DELETE FROM content_record WHERE username = '$username' AND content_id = '$class_id'";
-            $result_inner = mysqli_query($db, $delete_query);
+                    while ($row = mysqli_fetch_assoc($result_username)) {
+                        $username = $row['username'];
+                        //fetch content_record that has the class_id and username
+                        // $fetch_content_record = "SELECT * FROM content_record WHERE username = '$username' AND content_id = '$class_id'";
+                        $delete_query = "DELETE FROM content_record WHERE username = '$username' AND content_id = '$class_id'";
+                        $result_inner = mysqli_query($db, $delete_query);
 
-        // Check for errors in the inner query
-        if (!$result_inner) {
-            // Handle errors
-            echo "Error deleting record: " . mysqli_error($db);
+                    // Check for errors in the inner query
+                    if (!$result_inner) {
+                        // Handle errors
+                        echo "Error deleting record: " . mysqli_error($db);
+                    }
+                }
+        }else{
+            $fetch_username = "SELECT * FROM users";
+            $result_username = mysqli_query($db, $fetch_username);
+
+                    while ($row = mysqli_fetch_assoc($result_username)) {
+                        $username = $row['username'];
+                        //fetch content_record that has the class_id and username
+                        // $fetch_content_record = "SELECT * FROM content_record WHERE username = '$username' AND content_id = '$class_id'";
+                        $delete_query = "DELETE FROM content_record WHERE username = '$username' AND content_id = '$class_id'";
+                        $result_inner = mysqli_query($db, $delete_query);
+
+                    // Check for errors in the inner query
+                    if (!$result_inner) {
+                        // Handle errors
+                        echo "Error deleting record: " . mysqli_error($db);
+                    }
+                }
         }
-    }
 
 
     

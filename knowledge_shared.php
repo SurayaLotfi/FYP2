@@ -175,7 +175,7 @@
 							$due_date_threshold = date('Y-m-d', strtotime('+10 days')); 
 
 								$query_deadline = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-								WHERE class.department = '$department'
+								WHERE (class.department = '$department' || class.department = 'All')
 								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
 								AND username = '$username'
                                 AND validity <= '$due_date_threshold'
@@ -186,7 +186,7 @@
 								$total_deadline = mysqli_num_rows($result_deadline);
 							//exceeded knowledge
 								$query_exceed = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-								WHERE class.department = '$department'
+								WHERE (class.department = '$department' || class.department = 'All')
 								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
 								AND username = '$username'
 								AND validity <= '$due_date_threshold'
@@ -236,8 +236,8 @@
 														<a href="inbox.php" class="deadline">You have <?php echo $total_deadline ?></a> knowledge that is almost due
 													</span>
 													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 02:14</span>
+														<!-- <a href="#" class="fa fa-close"></a>
+														<span> 02:14</span> -->
 													</span>
 												</li>
 												<li id="exceed">
@@ -248,8 +248,8 @@
 														<a href="inbox_ke.php" class="exceed">You have <?php echo $total_exceed ?></a> exceeded knowledge.
 													</span>
 													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 7 Min</span>
+														<!-- <a href="#" class="fa fa-close"></a>
+														<span> 7 Min</span> -->
 													</span>
 												</li>
 												<li id="accepted">
@@ -260,8 +260,8 @@
 														<a href="inbox_ka.php" class="accepted">You have <?php echo $total_ks ?></a> new accepted knowledge.
 													</span>
 													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 2 May</span>
+														<!-- <a href="#" class="fa fa-close"></a>
+														<span> 2 May</span> -->
 													</span>
 												</li>
 												<li id="declined">
@@ -272,8 +272,8 @@
 														<a href="inbox_kd.php" class="declined">You have <?php echo $total_declined ?></a> new declined knowledge.
 													</span>
 													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 14 July</span>
+														<!-- <a href="#" class="fa fa-close"></a>
+														<span> 14 July</span> -->
 													</span>
 												</li>
 												
@@ -394,7 +394,7 @@
 								while($row = mysqli_fetch_assoc($result)){
 									$id = $row['knowledge_id'];	
 									$content = $row['content'];	
-									
+									$class_id = $row['class_id'];
 									$status = $row['status'];						
                                     
 						   ?>
@@ -437,18 +437,26 @@
 										?>
 									<!-- <a href="courses-details.php?course_id=<?php echo $id?>" class='btn'>View Content</a> -->
 									<?php
-										$folderPath = 'pdf/'. $content;
-										$folder = $folderPath . '/' . $content;
-										if (empty($folderPath)) {
-											// $htmlFile = reset($files); // Get the first element of the array
+										$query_admin = "SELECT * FROM class WHERE source = '$username' AND class_id = '$class_id'";
+										$result_admin = mysqli_query($db, $query_admin);
+										$row_admin = mysqli_fetch_assoc($result_admin);
+										$department = $row_admin['department']; //get the department chosen by admin (in case dorg ada tukar)
 
-											//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
-											echo 'Not Found';
+										?>
+										<a href="user_view_knowledge.php?course_id=<?php echo $class_id?>&department=<?php echo $department?>" class='btn-secondry'>Preview</a>
+										<?php
+										// $folderPath = 'pdf/'. $content;
+										// $folder = $folderPath . '/' . $content;
+										// if (empty($folderPath)) {
+										// 	// $htmlFile = reset($files); // Get the first element of the array
+
+										// 	//echo '<a href="' . $htmlFile . '" target="_blank" class="btn radius-xl text-uppercase" id="startLink">Go To Content</a>';
+										// 	echo 'Not Found';
 											
-										} else {
-											//$pdfFile = reset($pdf);
-											echo '<a href="' . $folder . '" target="_blank"  class="btn-secondry" id="startLink">View Content</a>';
-										}
+										// } else {
+										// 	//$pdfFile = reset($pdf);
+										// 	echo '<a href="' . $folder . '" target="_blank"  class="btn-secondry" id="startLink">View Content</a>';
+										// }
 
 										?>
 											

@@ -22,7 +22,7 @@
     $due_date_threshold = date('Y-m-d', strtotime('+10 days')); 
 
     $query_deadline = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-    WHERE class.department = '$department'
+    WHERE (class.department = '$department' || class.department = 'All')
     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
     AND username = '$username'
     AND validity <= '$due_date_threshold'
@@ -40,7 +40,7 @@
     
 //exceeded knowledge
     $query_exceed = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-    WHERE class.department = '$department'
+    WHERE (class.department = '$department' || class.department = 'All')
     AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
     AND username = '$username'
     AND validity <= '$due_date_threshold'

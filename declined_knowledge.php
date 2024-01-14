@@ -182,7 +182,7 @@ include "connect.php";
 							$due_date_threshold = date('Y-m-d', strtotime('+10 days')); 
 
 								$query_deadline = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-								WHERE class.department = '$department'
+								WHERE (class.department = '$department' || class.department = 'All')
 								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
 								AND username = '$username'
                                 AND validity <= '$due_date_threshold'
@@ -193,7 +193,7 @@ include "connect.php";
 								$total_deadline = mysqli_num_rows($result_deadline);
 							//exceeded knowledge
 								$query_exceed = "SELECT * FROM class JOIN content_record ON class.class_id = content_record.content_id
-								WHERE class.department = '$department'
+								WHERE (class.department = '$department' || class.department = 'All')
 								AND (content_record.status = 'In Progress' OR content_record.status = 'Not yet started')
 								AND username = '$username'
 								AND validity <= '$due_date_threshold'
@@ -243,8 +243,8 @@ include "connect.php";
 														<a href="inbox.php" class="deadline">You have <?php echo $total_deadline ?></a> knowledge that is almost due
 													</span>
 													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 02:14</span>
+														<!-- <a href="#" class="fa fa-close"></a>
+														<span> 02:14</span> -->
 													</span>
 												</li>
 												<li id="exceed">
@@ -255,8 +255,8 @@ include "connect.php";
 														<a href="inbox_ke.php" class="exceed">You have <?php echo $total_exceed ?></a> exceeded knowledge.
 													</span>
 													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 7 Min</span>
+														<!-- <a href="#" class="fa fa-close"></a>
+														<span> 7 Min</span> -->
 													</span>
 												</li>
 												<li id="accepted">
@@ -267,8 +267,8 @@ include "connect.php";
 														<a href="inbox_ka.php" class="accepted">You have <?php echo $total_ks ?></a> new accepted knowledge.
 													</span>
 													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 2 May</span>
+														<!-- <a href="#" class="fa fa-close"></a>
+														<span> 2 May</span> -->
 													</span>
 												</li>
 												<li id="declined">
@@ -279,8 +279,8 @@ include "connect.php";
 														<a href="inbox_kd.php" class="declined">You have <?php echo $total_declined ?></a> new declined knowledge.
 													</span>
 													<span class="notification-time">
-														<a href="#" class="fa fa-close"></a>
-														<span> 14 July</span>
+														<!-- <a href="#" class="fa fa-close"></a>
+														<span> 14 July</span> -->
 													</span>
 												</li>
 												
